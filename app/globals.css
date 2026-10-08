@@ -334,6 +334,45 @@
     linear-gradient(150deg, #0b192c 0%, #0b3a4a 55%, #00766a 100%);
 }
 
+/* Consultorio virtual: fondo off-white con luz ambiental teal muy suave (sin animación). */
+@utility consulta-ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 15% 0%, rgb(0 168 150 / 0.1), transparent 70%),
+    radial-gradient(45% 40% at 100% 30%, rgb(2 132 199 / 0.07), transparent 70%);
+}
+
+/* Check «del dolor al alivio» de /cita-confirmada: el trazo se dibuja una sola vez. */
+.relief-check .relief-ring {
+  stroke-dasharray: 264;
+  stroke-dashoffset: 264;
+  animation: relief-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.relief-check .relief-tick {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: relief-draw 0.5s 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes relief-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .relief-check .relief-ring,
+  .relief-check .relief-tick {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+[data-reduce-motion="true"] .relief-check .relief-ring,
+[data-reduce-motion="true"] .relief-check .relief-tick {
+  animation: none;
+  stroke-dashoffset: 0;
+}
+
 /* Fondo navy inmersivo: halos de luz teal/azul que oscilan muy lento */
 @utility immersive-glow {
   position: absolute;

@@ -1,3 +1,5 @@
+import { formatLimaDateTime } from "@/lib/lima-format";
+
 /**
  * Confirmación de cita por WhatsApp Cloud API (opcional). Solo se activa si existen
  * WHATSAPP_CLOUD_TOKEN y WHATSAPP_PHONE_ID; la plantilla debe estar aprobada por Meta
@@ -32,18 +34,6 @@ export function whatsappCloudConfig(env: WhatsAppEnv): WhatsAppCloudConfig | nul
     languageCode: env.WHATSAPP_TEMPLATE_LANG?.trim() || DEFAULT_LANG,
     graphVersion: env.WHATSAPP_GRAPH_VERSION?.trim() || DEFAULT_GRAPH_VERSION,
   };
-}
-
-/** "2026-10-06T14:00:00Z" → "martes 6 de octubre, 9:00 a. m." (hora de Lima). */
-export function formatLimaDateTime(iso: string): string {
-  return new Intl.DateTimeFormat("es-PE", {
-    timeZone: "America/Lima",
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(iso));
 }
 
 interface ConfirmationInput {

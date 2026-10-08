@@ -7,6 +7,8 @@ import { breadcrumbSchema } from "@/lib/schema";
 
 export interface LegalSection {
   heading: string;
+  /** Ancla estable para enlazar la sección (p. ej. #consentimiento-teleconsulta). */
+  anchor?: string;
   paragraphs?: readonly string[];
   bullets?: readonly string[];
 }
@@ -42,7 +44,7 @@ export function LegalDocument({ id, title, crumbs, intro, sections, children }: 
           <ol className="mt-2 grid gap-1 sm:grid-cols-2">
             {sections.map((section, index) => (
               <li key={section.heading}>
-                <a href={`#${id}-${index + 1}`} className="inline-flex min-h-10 items-center text-primary hover:underline">
+                <a href={`#${section.anchor ?? `${id}-${index + 1}`}`} className="inline-flex min-h-10 items-center text-primary hover:underline">
                   {index + 1}. {section.heading}
                 </a>
               </li>
@@ -51,7 +53,7 @@ export function LegalDocument({ id, title, crumbs, intro, sections, children }: 
         </nav>
         <div className="mt-10 space-y-10 leading-relaxed text-fg">
           {sections.map((section, index) => (
-            <section key={section.heading} id={`${id}-${index + 1}`} className="scroll-mt-28">
+            <section key={section.heading} id={section.anchor ?? `${id}-${index + 1}`} className="scroll-mt-28">
               <h2 className="text-h3">
                 {index + 1}. {section.heading}
               </h2>

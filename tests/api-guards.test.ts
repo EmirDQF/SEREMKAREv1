@@ -95,7 +95,8 @@ describe("verifyCalcomSignature", () => {
 });
 
 describe("WhatsApp Cloud (opcional)", async () => {
-  const { buildTemplatePayload, formatLimaDateTime, whatsappCloudConfig } = await import("@/lib/api/whatsapp-cloud");
+  const { buildTemplatePayload, whatsappCloudConfig } = await import("@/lib/api/whatsapp-cloud");
+  const { formatLimaDateTime } = await import("@/lib/lima-format");
 
   it("stays off without token and phone id", () => {
     expect(whatsappCloudConfig({})).toBeNull();

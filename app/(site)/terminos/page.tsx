@@ -39,9 +39,24 @@ const SECTIONS: readonly LegalSection[] = [
     ],
   },
   {
+    heading: "Consentimiento informado para la teleconsulta",
+    anchor: "consentimiento-teleconsulta",
+    paragraphs: [
+      "La teleconsulta es una atención médica a distancia por videollamada (WhatsApp, Zoom o Google Meet), prestada conforme a la Ley N.° 30421, Ley Marco de Telesalud, y sus normas complementarias.",
+      "Al marcar el consentimiento al reservar declaras que entiendes y aceptas lo siguiente:",
+    ],
+    bullets: [
+      "La teleconsulta no permite un examen físico completo. Si el médico lo considera necesario, te indicará una evaluación presencial o exámenes complementarios.",
+      "No es un servicio para emergencias. Ante una emergencia acude al servicio de emergencias más cercano o llama al SAMU 106.",
+      "Al terminar recibes en formato digital tu plan de tratamiento y, si el doctor lo indica, la receta y las órdenes de exámenes, además de las indicaciones para tu seguimiento.",
+      "Necesitas un celular, tablet o computadora con cámara, micrófono e internet estable.",
+      "Tus datos personales y de salud se tratan según nuestra política de privacidad (Ley N.° 29733). Puedes retirar este consentimiento y pedir atención presencial en cualquier momento.",
+    ],
+  },
+  {
     heading: "Precios y pagos",
     paragraphs: [
-      "Los precios y coberturas de seguros o EPS se informan al agendar y pueden variar según el servicio. Emitimos el comprobante de pago correspondiente.",
+      "Al agendar por WhatsApp te confirmamos el monto, el momento del pago y los datos para pagar. Los precios y medios de pago que aún no están publicados figuran como «por confirmar».",
     ],
   },
   {
