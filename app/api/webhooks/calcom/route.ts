@@ -1,4 +1,5 @@
 import { logEvent } from "@/lib/api/http";
+import { exceedsContentLength } from "@/lib/api/rate-limit";
 import { verifyCalcomSignature } from "@/lib/api/webhook-signature";
 import { sendBookingConfirmation, whatsappCloudConfig } from "@/lib/api/whatsapp-cloud";
 
@@ -17,6 +18,7 @@ interface CalcomWebhook {
 /** POST /api/webhooks/calcom — eventos firmados de Cal.com (confirmación por WhatsApp opcional). */
 export async function POST(request: Request) {
   const secret = process.env.CALCOM_WEBHOOK_SECRET ?? "";
+  if (exceedsContentLength(request.headers, MAX_BODY_BYTES)) return new Response(null, { status: 413 });
   const raw = await request.text();
   if (raw.length > MAX_BODY_BYTES) return new Response(null, { status: 413 });
   if (!verifyCalcomSignature(raw, request.headers.get("x-cal-signature-256"), secret)) {

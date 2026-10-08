@@ -1,17 +1,20 @@
 import type { NextRequest } from "next/server";
 import { doctors } from "@/data/doctors";
 import { RATE_LIMITED_MESSAGE, errorResponse, logEvent, respond } from "@/lib/api/http";
-import { clientKey, createRateLimiter } from "@/lib/api/rate-limit";
+import { clientKey, createRateLimiter, exceedsContentLength, fingerprint } from "@/lib/api/rate-limit";
 import { createBookingSchema, firstIssue } from "@/lib/api/schemas";
 import { resolveProvider } from "@/lib/booking-provider";
 
 /** 8 reservas por IP cada 10 minutos: de sobra para una persona, poco para un bot. */
 const limiter = createRateLimiter({ limit: 8, windowMs: 10 * 60_000 });
+/** 3 reservas por paciente (correo + documento) por hora. */
+const identityLimiter = createRateLimiter({ limit: 3, windowMs: 60 * 60_000 });
 const MAX_BODY_BYTES = 8 * 1024;
 
 /** POST /api/booking/create — crea la cita (Cal.com o demo). Nunca registra datos personales. */
 export async function POST(request: NextRequest) {
   if (!limiter.check(clientKey(request.headers))) return errorResponse("rate_limited", RATE_LIMITED_MESSAGE);
+  if (exceedsContentLength(request.headers, MAX_BODY_BYTES)) return errorResponse("validation", "La solicitud es demasiado grande.");
 
   const raw = await request.text();
   if (raw.length > MAX_BODY_BYTES) return errorResponse("validation", "La solicitud es demasiado grande.");
@@ -33,6 +36,10 @@ export async function POST(request: NextRequest) {
   }
   if (Date.parse(input.start) <= Date.now()) {
     return errorResponse("slot_unavailable", "Ese horario ya pasó. Elige otro, por favor.");
+  }
+  // Segundo límite por identidad (no depende de la IP): solo se guarda una huella SHA-256.
+  if (!identityLimiter.check(await fingerprint(`${patient.email}|${patient.document}`))) {
+    return errorResponse("rate_limited", RATE_LIMITED_MESSAGE);
   }
 
   const provider = resolveProvider(process.env, input.doctorId, input.modality);

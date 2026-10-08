@@ -49,13 +49,35 @@ export const ENABLED_MODALITIES: readonly Modality[] = visibility.phoneCallModal
   ? ["videollamada", "llamada"]
   : ["videollamada"];
 
-/** Señales de alarma: si alguna aplica, la teleconsulta no es el canal adecuado. */
+/**
+ * Señales de alarma: si alguna aplica, la teleconsulta no es el canal adecuado.
+ * Revisadas por seguridad clínica (artritis séptica, cauda equina, arteritis de células
+ * gigantes, fractura por fragilidad, déficit neurológico, dolor torácico y disnea).
+ */
 export const RED_FLAGS: readonly RedFlag[] = [
-  { id: "fractura", label: "Golpe fuerte con deformidad o posible fractura reciente" },
+  {
+    id: "articulacion",
+    label: "Una articulación que se hinchó, enrojeció o se puso caliente de golpe (en horas o pocos días), con o sin fiebre",
+  },
+  { id: "fiebre", label: "Fiebre con dolor de articulaciones o de espalda" },
+  {
+    id: "fractura",
+    label: "Posible fractura reciente (aunque el golpe o la caída hayan sido leves), deformidad, o no puedes apoyar ni mover la zona",
+  },
+  {
+    id: "esfinteres",
+    label: "Pérdida del control de la orina o de las heces, o adormecimiento en la zona genital o entre las piernas",
+  },
+  {
+    id: "vision",
+    label: "Pérdida o alteración súbita de la visión, o dolor de cabeza nuevo e intenso con dolor de mandíbula al masticar",
+  },
+  {
+    id: "debilidad",
+    label: "Pérdida súbita de fuerza o de sensibilidad (cara, brazo o pierna) o dificultad repentina para hablar",
+  },
   { id: "pecho", label: "Dolor de pecho" },
   { id: "aire", label: "Falta de aire" },
-  { id: "fiebre", label: "Fiebre con una articulación muy hinchada y caliente" },
-  { id: "debilidad", label: "Pérdida súbita de fuerza o de sensibilidad (cara, brazo o pierna)" },
 ];
 
 export const SINCE_OPTIONS: readonly { id: SinceId; label: string }[] = [
@@ -66,7 +88,7 @@ export const SINCE_OPTIONS: readonly { id: SinceId; label: string }[] = [
 ];
 
 export const EMERGENCY = {
-  notice: "La teleconsulta no es para emergencias.",
+  notice: "Si marcaste alguna de estas señales, no agendes una teleconsulta: la teleconsulta no es para emergencias.",
   action: "Acude a emergencias o llama al SAMU 106.",
   phone: "106",
 } as const;

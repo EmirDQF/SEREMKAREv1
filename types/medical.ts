@@ -305,7 +305,7 @@ export interface Complaint {
 }
 
 /** Señales de alarma: no son para teleconsulta (emergencias / SAMU 106). */
-export type RedFlagId = "fractura" | "pecho" | "aire" | "fiebre" | "debilidad";
+export type RedFlagId = "articulacion" | "fiebre" | "fractura" | "esfinteres" | "vision" | "debilidad" | "pecho" | "aire";
 
 export interface RedFlag {
   id: RedFlagId;

@@ -18,7 +18,7 @@ export type TriageEntry =
 export type DurationId = "lt6w" | "6w-3m" | "gt3m";
 export type StiffnessId = "none" | "lt30" | "gt30";
 export type QuestionId = "redFlags" | "entry" | "duration" | "swelling" | "stiffness" | "backPattern" | "boneRisks" | "priorExams";
-export type Orientation = "desgaste" | "inflamacion" | "salud-osea" | "general";
+export type Orientation = "desgaste" | "inflamacion" | "larga-evolucion" | "salud-osea" | "general";
 export type RecommendedService = "teleconsulta" | "presencial" | "densitometria";
 export type Urgency = "prioritaria" | "habitual";
 
@@ -75,13 +75,18 @@ const RHEUMATOLOGY = "nuestro especialista en reumatología";
 
 const MESSAGES: Readonly<Record<Orientation, string>> = {
   inflamacion: `Por lo que nos cuentas, sería útil evaluar posibles causas como una inflamación articular. Te recomendamos una teleconsulta con ${RHEUMATOLOGY}; conviene no postergarla.`,
-  desgaste: `Por lo que nos cuentas, sería útil evaluar posibles causas como el desgaste articular. Te recomendamos una teleconsulta con ${RHEUMATOLOGY}.`,
+  desgaste: `Por lo que nos cuentas, sería útil revisar cómo la artrosis está afectando tus articulaciones. Te recomendamos una teleconsulta con ${RHEUMATOLOGY}.`,
+  "larga-evolucion": `Por lo que nos cuentas, sería útil una evaluación con ${RHEUMATOLOGY} para conocer el origen de tu molestia de larga evolución.`,
   general: `Por lo que nos cuentas, sería útil una evaluación con ${RHEUMATOLOGY} para entender el origen de tu molestia.`,
   "salud-osea": `Por lo que nos cuentas, sería útil evaluar tu salud ósea con ${RHEUMATOLOGY}.`,
 };
 
 const DENSITOMETRY_MESSAGE =
-  "Por lo que nos cuentas, sería útil evaluar tu salud ósea. Para tu caso conviene una densitometría ósea (presencial, en una de nuestras sedes) y puedes conversar los resultados en una teleconsulta.";
+  "Por lo que nos cuentas, sería útil evaluar tu salud ósea: podría ser útil una densitometría ósea (presencial, en una de nuestras sedes) y conversar los resultados en una teleconsulta.";
+
+/** Hinchazón reciente: mejor que un médico examine la articulación en persona pronto. */
+const IN_PERSON_MESSAGE =
+  "Por lo que nos cuentas, conviene que un especialista te examine en persona pronto. Si la articulación empeora o aparece fiebre, acude a emergencias o llama al SAMU 106.";
 
 function isBonePath(entry: TriageEntry | null): boolean {
   return entry?.kind === "bone" || (entry?.kind === "condition" && entry.slug === "osteoporosis");
@@ -134,8 +139,9 @@ function hasBoneRisk(answers: TriageAnswers): boolean {
 function orientationFor(answers: TriageAnswers): Orientation {
   if (isBonePath(answers.entry)) return "salud-osea";
   if (hasInflammatorySigns(answers)) return "inflamacion";
-  const isWearCondition = answers.entry?.kind === "condition" && answers.entry.slug === "artrosis";
-  if (answers.duration === "gt3m" || isWearCondition) return "desgaste";
+  // «Desgaste» solo si el propio paciente eligió artrosis: no se etiqueta a nadie por el tiempo.
+  if (answers.entry?.kind === "condition" && answers.entry.slug === "artrosis") return "desgaste";
+  if (answers.duration === "gt3m") return "larga-evolucion";
   return "general";
 }
 
@@ -160,21 +166,33 @@ function suggestedDoctors(entry: TriageEntry | null): string[] {
   return (matching.length > 0 ? matching : doctors).map((doctor) => doctor.slug);
 }
 
+function recommendationFor(answers: TriageAnswers, orientation: Orientation) {
+  if (orientation === "salud-osea" && hasBoneRisk(answers)) {
+    return { recommendedService: "densitometria" as const, alsoTeleconsult: true, message: DENSITOMETRY_MESSAGE };
+  }
+  if (answers.swelling === true && answers.duration === "lt6w") {
+    // Una teleconsulta puede ayudar a organizar los pasos si no puede acudir pronto.
+    return { recommendedService: "presencial" as const, alsoTeleconsult: true, message: IN_PERSON_MESSAGE };
+  }
+  return { recommendedService: "teleconsulta" as const, alsoTeleconsult: false, message: MESSAGES[orientation] };
+}
+
+/**
+ * Orienta según las respuestas. Falla cerrado: sin el filtro de alarmas respondido o con
+ * preguntas pendientes, lanza un error en lugar de sugerir una teleconsulta.
+ */
 export function triage(answers: TriageAnswers): TriageResult {
   if (answers.redFlags.length > 0) return { kind: "emergency", flags: answers.redFlags };
+  if (!answers.redFlagsChecked || !isComplete(answers)) throw new Error("triage: respuestas incompletas");
 
   const orientation = orientationFor(answers);
-  const needsDensitometry = orientation === "salud-osea" && hasBoneRisk(answers);
-
   return {
     kind: "orientation",
     orientation,
     specialtySlug: entrySpecialty(answers.entry),
-    recommendedService: needsDensitometry ? "densitometria" : "teleconsulta",
-    alsoTeleconsult: needsDensitometry,
+    ...recommendationFor(answers, orientation),
     suggestedDoctorIds: suggestedDoctors(answers.entry),
     urgency: orientation === "inflamacion" ? "prioritaria" : "habitual",
     bringExams: answers.priorExams === true,
-    message: needsDensitometry ? DENSITOMETRY_MESSAGE : MESSAGES[orientation],
   };
 }

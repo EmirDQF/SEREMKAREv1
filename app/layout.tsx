@@ -1,11 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/layout/Providers";
-import { SiteHeader } from "@/components/layout/SiteHeader";
-import { Footer } from "@/components/layout/Footer";
-import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { CanvasHost } from "@/components/3d/CanvasHost";
-import { WhatsAppFloat } from "@/components/shared/WhatsAppFloat";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { site } from "@/data/site";
 import { DEFAULT_DESCRIPTION } from "@/lib/seo";
@@ -87,13 +83,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-dvh overflow-x-clip">
         <JsonLd data={organizationSchema()} />
         <Providers>
-          <SiteHeader />
-          <main id="contenido" tabIndex={-1} className="focus:outline-none">
-            {children}
-          </main>
-          <Footer />
-          <WhatsAppFloat />
-          <MobileActionBar />
+          {/* Cabecera y pie los pone cada grupo: (site) completo; (consultorio) mínimo. */}
+          {children}
           <CanvasHost />
         </Providers>
       </body>

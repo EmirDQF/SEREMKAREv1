@@ -14,8 +14,10 @@ export async function GET(request: NextRequest, ctx: RouteContext<"/api/booking/
 
   const provider = resolveProviderForUid(process.env, uid);
   const result = await provider.getBooking(uid);
-  if (!result.ok && result.error.code !== "not_found") {
-    logEvent("booking.get.error", { provider: provider.id, code: result.error.code });
+  if (!result.ok) {
+    logEvent(result.error.code === "not_found" ? "booking.get.not_found" : "booking.get.error", { provider: provider.id, code: result.error.code });
+    return respond(result);
   }
-  return respond(result);
+  // El enlace de Meet no se expone por uid: llega por correo y queda en el navegador de quien reservó.
+  return respond({ ok: true, data: { ...result.data, meetingUrl: null } });
 }

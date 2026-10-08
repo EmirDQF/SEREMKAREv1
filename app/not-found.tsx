@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import { JointMotif } from "@/components/shared/JointMotif";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
+    <SiteChrome>
     <section className="relative isolate overflow-hidden pb-24 pt-40 sm:pt-48">
       <div aria-hidden className="mesh-bg -z-10" />
       <div className="container-page max-w-2xl text-center">
@@ -40,5 +42,6 @@ export default function NotFound() {
         </a>
       </div>
     </section>
+    </SiteChrome>
   );
 }

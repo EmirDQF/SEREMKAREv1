@@ -19,7 +19,7 @@ const answered = (patch: Partial<TriageAnswers>): TriageAnswers => ({
 const KNEE: TriageAnswers["entry"] = { kind: "zone", zone: "rodillas" };
 const BACK: TriageAnswers["entry"] = { kind: "zone", zone: "espalda" };
 
-const FORBIDDEN = /diagn[oó]stic|\btienes\b|cura/i;
+const FORBIDDEN = /diagn[oó]stic|\btienes\b|\bpadeces\b|\bsufres\b|cura|desgaste articular/i;
 
 describe("questionFlow / nextQuestion", () => {
   it("always starts with the red-flag filter", () => {
@@ -64,17 +64,33 @@ describe("questionFlow / nextQuestion", () => {
 });
 
 describe("triage — red flags", () => {
-  it.each(["fiebre", "fractura", "debilidad", "pecho", "aire"] as const)("%s → emergency, never teleconsulta", (flag) => {
+  it.each(["articulacion", "fiebre", "fractura", "debilidad", "esfinteres", "vision", "pecho", "aire"] as const)("%s → emergency, never teleconsulta", (flag) => {
     const result = triage(answered({ redFlags: [flag], entry: KNEE, duration: "gt3m" }));
     expect(result.kind).toBe("emergency");
     if (result.kind === "emergency") expect(result.flags).toEqual([flag]);
   });
 });
 
+describe("triage — fails closed", () => {
+  it("refuses to orient if the red-flag filter was not answered", () => {
+    expect(() => triage({ ...EMPTY_ANSWERS, entry: KNEE, duration: "gt3m", swelling: false, stiffness: "none", priorExams: false })).toThrow();
+  });
+
+  it("refuses to orient with unanswered questions", () => {
+    expect(() => triage(answered({ entry: KNEE }))).toThrow();
+  });
+});
+
 describe("triage — orientation", () => {
-  it("swelling → inflammation, priority, teleconsulta", () => {
+  it("recent swelling (< 6 weeks) → in-person evaluation soon, priority", () => {
     const result = triage(answered({ entry: KNEE, duration: "lt6w", swelling: true, stiffness: "none", priorExams: false }));
-    expect(result).toMatchObject({ kind: "orientation", orientation: "inflamacion", urgency: "prioritaria", recommendedService: "teleconsulta" });
+    expect(result).toMatchObject({ kind: "orientation", orientation: "inflamacion", urgency: "prioritaria", recommendedService: "presencial" });
+    if (result.kind === "orientation") expect(result.message).toMatch(/SAMU 106/);
+  });
+
+  it("long-standing swelling → inflammation, priority, teleconsulta", () => {
+    const result = triage(answered({ entry: KNEE, duration: "gt3m", swelling: true, stiffness: "none", priorExams: false }));
+    expect(result).toMatchObject({ orientation: "inflamacion", urgency: "prioritaria", recommendedService: "teleconsulta" });
   });
 
   it("morning stiffness over 30 min → inflammation", () => {
@@ -87,9 +103,14 @@ describe("triage — orientation", () => {
     expect(result).toMatchObject({ orientation: "inflamacion" });
   });
 
-  it("long-standing pain without inflammatory signs → wear, routine", () => {
+  it("long-standing pain without inflammatory signs → long-standing evaluation (not labelled as wear)", () => {
     const result = triage(answered({ entry: KNEE, duration: "gt3m", swelling: false, stiffness: "lt30", priorExams: true }));
-    expect(result).toMatchObject({ orientation: "desgaste", urgency: "habitual", bringExams: true });
+    expect(result).toMatchObject({ orientation: "larga-evolucion", urgency: "habitual", bringExams: true });
+  });
+
+  it("only the artrosis entry speaks of wear", () => {
+    const result = triage(answered({ entry: { kind: "condition", slug: "artrosis" }, duration: "gt3m", swelling: false, stiffness: "none", priorExams: false }));
+    expect(result).toMatchObject({ orientation: "desgaste" });
   });
 
   it("recent pain without signs → general evaluation", () => {
@@ -132,6 +153,7 @@ describe("triage — clinical language", () => {
   const cases: TriageAnswers[] = [
     answered({ entry: KNEE, duration: "lt6w", swelling: true, stiffness: "none", priorExams: false }),
     answered({ entry: KNEE, duration: "gt3m", swelling: false, stiffness: "none", priorExams: false }),
+    answered({ entry: KNEE, duration: "gt3m", swelling: true, stiffness: "none", priorExams: false }),
     answered({ entry: KNEE, duration: "lt6w", swelling: false, stiffness: "none", priorExams: false }),
     answered({ entry: { kind: "bone" }, boneRisks: { corticoides: true }, priorExams: false }),
     answered({ entry: { kind: "unsure" }, duration: "6w-3m", swelling: false, stiffness: "none", priorExams: false }),

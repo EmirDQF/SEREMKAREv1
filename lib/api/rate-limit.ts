@@ -40,8 +40,24 @@ export function createRateLimiter({ limit, windowMs, now = Date.now, maxKeys = D
   };
 }
 
-/** Clave del cliente: primera IP de x-forwarded-for (proxy de Vercel) o x-real-ip. */
+/**
+ * Clave del cliente. Prioriza las cabeceras que el proxy de Vercel fija y el cliente no puede
+ * falsificar (x-vercel-forwarded-for, x-real-ip); x-forwarded-for queda como último recurso.
+ * Como defensa adicional, la creación de citas limita también por identidad del paciente.
+ */
 export function clientKey(headers: Headers): string {
-  const forwarded = headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || headers.get("x-real-ip")?.trim() || "anon";
+  const trusted = headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() || headers.get("x-real-ip")?.trim();
+  return trusted || headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anon";
+}
+
+/** Huella no reversible de un dato (para limitar por identidad sin guardar el dato). */
+export async function fingerprint(value: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value.trim().toLowerCase()));
+  return Buffer.from(digest).toString("hex");
+}
+
+/** true si la cabecera Content-Length declara más bytes que el máximo (se rechaza sin leer). */
+export function exceedsContentLength(headers: Headers, maxBytes: number): boolean {
+  const declared = Number(headers.get("content-length"));
+  return Number.isFinite(declared) && declared > maxBytes;
 }
