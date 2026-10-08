@@ -203,6 +203,8 @@ export interface Doctor {
   initials: string;
   /** Médico de muestra (ficticio): se oculta con visibility.sampleDoctors. */
   sample: boolean;
+  /** IDs de los tipos de evento de Cal.com por modalidad (null = sin configurar → modo demo). */
+  booking: { calEventTypeIds: { meet: number | null; presencial: number | null } };
   /** Molestias que atiende (filtra las tarjetas del agendador). */
   complaints: readonly ComplaintId[];
   schedule: readonly DoctorSchedule[];

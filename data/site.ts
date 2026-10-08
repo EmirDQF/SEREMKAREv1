@@ -36,6 +36,9 @@ const SAMPLE_SOCIALS: SiteConfig["socials"] = [
     { network: "youtube", label: "YouTube", href: "https://youtube.com/@sermekare" }, // PROVISIONAL
 ];
 
+/** CONFIRMAR: dominio real. Se define con NEXT_PUBLIC_SITE_URL al publicar (sin barra final). */
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://sermekare.com").replace(/\/$/, "");
+
 const DENSITOMETRY_SERVICE = "Densitometría ósea (DXA) de columna y caderas";
 
 type LocationInput = Omit<ClinicLocation, "mapsUrl" | "mapsEmbedUrl">;
@@ -123,8 +126,8 @@ export const site: SiteConfig = {
   taxId: undefined, // CONFIRMAR: RUC
   legalTagline: "Centro Especializado en Reumatología y Salud Articular",
   slogan: "Mejorar la vida de nuestros pacientes",
-  domain: "sermekare.com", // PROVISIONAL
-  url: "https://sermekare.com", // PROVISIONAL
+  domain: new URL(SITE_URL).host,
+  url: SITE_URL,
   serviceArea: "Perú",
   anchors: {
     // Texto real de la teleconsulta (index.html de SEREMKAREWEB)

@@ -4,6 +4,8 @@ import type { Doctor } from "@/types/medical";
 const unsplash = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=900&q=75`;
 const HOUR = 60;
 
+const NO_CALCOM_EVENTS: Doctor["booking"] = { calEventTypeIds: { meet: null, presencial: null } };
+
 export const REAL_DOCTOR_SLUG = "daniel-ccolcca";
 
 /**
@@ -30,6 +32,8 @@ export const allDoctors: readonly Doctor[] = [
     schedule: [{ days: [1, 2, 3, 4, 5], from: 9 * HOUR, to: 22 * HOUR, modalities: ["videollamada"] }],
     provisional: true,
     sample: false,
+    // CONFIRMAR: IDs de los tipos de evento de Cal.com (ver docs/CONFIGURAR-CITAS.md).
+    booking: { calEventTypeIds: { meet: null, presencial: null } },
   },
   {
     slug: "valeria-quintana",
@@ -53,6 +57,7 @@ export const allDoctors: readonly Doctor[] = [
     schedule: [{ days: [1, 3, 5], from: 19 * HOUR, to: 22 * HOUR, modalities: ["videollamada", "llamada"] }],
     provisional: true,
     sample: true,
+    booking: NO_CALCOM_EVENTS,
   },
   {
     slug: "martin-salazar",
@@ -76,6 +81,7 @@ export const allDoctors: readonly Doctor[] = [
     schedule: [{ days: [2, 4], from: 19 * HOUR, to: 22 * HOUR, modalities: ["videollamada"] }],
     provisional: true,
     sample: true,
+    booking: NO_CALCOM_EVENTS,
   },
   {
     slug: "carmen-ugarte",
@@ -99,6 +105,7 @@ export const allDoctors: readonly Doctor[] = [
     schedule: [{ days: [1, 2, 3, 4, 5], from: 19 * HOUR, to: 21 * HOUR, modalities: ["videollamada", "llamada"] }],
     provisional: true,
     sample: true,
+    booking: NO_CALCOM_EVENTS,
   },
   {
     slug: "diego-paredes",
@@ -122,6 +129,7 @@ export const allDoctors: readonly Doctor[] = [
     schedule: [{ days: [1, 2, 3, 4, 5], from: 20 * HOUR, to: 22 * HOUR, modalities: ["videollamada", "llamada"] }],
     provisional: true,
     sample: true,
+    booking: NO_CALCOM_EVENTS,
   },
 ];
 

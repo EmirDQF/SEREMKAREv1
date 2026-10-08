@@ -82,3 +82,23 @@ export function dayChipLabel(iso: string, todayIso: string): { title: string; su
     iso === todayIso ? "Hoy" : iso === addDaysISO(todayIso, 1) ? "Mañana" : weekday.charAt(0).toUpperCase() + weekday.slice(1);
   return { title, subtitle: `${date.getUTCDate()} ${SHORT_MONTHS[date.getUTCMonth()]}` };
 }
+
+/** Lima no tiene horario de verano: siempre UTC−5. */
+const LIMA_OFFSET_MINUTES = -5 * 60;
+const MS_PER_MINUTE = 60_000;
+const MINUTES_PER_DAY = 24 * 60;
+
+/** Turno en hora de Lima → instante ISO (UTC). ("2026-10-05", 570) → "2026-10-05T14:30:00.000Z" */
+export function limaSlotToISO(date: string, minutes: number): string {
+  const [year, month, day] = date.split("-").map(Number);
+  const utcMs = Date.UTC(year, month - 1, day) + (minutes - LIMA_OFFSET_MINUTES) * MS_PER_MINUTE;
+  return new Date(utcMs).toISOString();
+}
+
+/** Instante ISO → turno en hora de Lima (fecha AAAA-MM-DD y minuto del día). */
+export function isoToLimaSlot(iso: string): Slot {
+  const limaMs = Date.parse(iso) + LIMA_OFFSET_MINUTES * MS_PER_MINUTE;
+  const lima = new Date(limaMs);
+  const minutes = Math.floor((limaMs / MS_PER_MINUTE) % MINUTES_PER_DAY + MINUTES_PER_DAY) % MINUTES_PER_DAY;
+  return { date: lima.toISOString().slice(0, 10), minutes };
+}

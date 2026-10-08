@@ -46,6 +46,7 @@ function makeDoctor(slug: string, days: readonly Weekday[], modalities: readonly
     provisional: true,
     initials: "XX",
     sample: true,
+    booking: { calEventTypeIds: { meet: null, presencial: null } },
   };
 }
 
