@@ -10,6 +10,7 @@ import { doctors } from "@/data/doctors";
 import { LOCATIONS_PATH, legalLinks } from "@/data/navigation";
 import { servicePillars } from "@/data/services";
 import { site } from "@/data/site";
+import { treatments } from "@/data/treatments";
 import { DENSITOMETRY_PATH } from "@/data/densitometry";
 import { specialties } from "@/data/specialties";
 import { allWhatsAppLines, formatLocationAddress, locationNamesLabel, primaryLocation } from "@/lib/locations";
@@ -52,26 +53,30 @@ export function Footer() {
             {site.legalTagline} en {locationNamesLabel()}. {site.slogan}: diagnóstico oportuno, tratamiento
             moderno y un seguimiento cercano.
           </p>
-          <ul className="mt-6 flex gap-2" aria-label="Redes sociales">
-            {site.socials.map((social) => (
-              <li key={social.network}>
-                <a
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${site.name} en ${social.label}`}
-                  className="grid size-12 place-items-center rounded-full border border-white/15 text-white transition-colors hover:border-teal hover:text-teal"
-                >
-                  <SocialIcon network={social.network} className="size-5" />
-                </a>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-8 max-w-sm rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-            <p className="font-display text-lg font-bold text-white">Guía de salud articular</p>
-            <p className="mt-1 mb-4 text-sm">Consejos prácticos de nuestros especialistas, una vez al mes.</p>
-            <NewsletterForm />
-          </div>
+          {site.socials.length > 0 ? (
+            <ul className="mt-6 flex gap-2" aria-label="Redes sociales">
+              {site.socials.map((social) => (
+                <li key={social.network}>
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${site.name} en ${social.label}`}
+                    className="grid size-12 place-items-center rounded-full border border-white/15 text-white transition-colors hover:border-teal hover:text-teal"
+                  >
+                    <SocialIcon network={social.network} className="size-5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {site.email ? (
+            <div className="mt-8 max-w-sm rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+              <p className="font-display text-lg font-bold text-white">Guía de salud articular</p>
+              <p className="mt-1 mb-4 text-sm">Consejos prácticos de nuestros especialistas, una vez al mes.</p>
+              <NewsletterForm />
+            </div>
+          ) : null}
         </div>
 
         <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-4">
@@ -84,7 +89,7 @@ export function Footer() {
             links={[
               ...servicePillars.map((p) => ({ label: p.name, href: `/servicios/${p.slug}` })),
               { label: "Densitometría ósea", href: DENSITOMETRY_PATH },
-              { label: "Tratamientos", href: "/tratamientos" },
+              ...(treatments.length > 0 ? [{ label: "Tratamientos", href: "/tratamientos" }] : []),
             ]}
           />
           <FooterColumn
@@ -133,14 +138,16 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <ul className="mt-3">
-              <li className="flex gap-2.5">
-                <Mail aria-hidden strokeWidth={1.75} className="mt-1 size-5 shrink-0 text-teal" />
-                <a href={`mailto:${site.email}`} className="break-all hover:text-white">
-                  {site.email}
-                </a>
-              </li>
-            </ul>
+            {site.email ? (
+              <ul className="mt-3">
+                <li className="flex gap-2.5">
+                  <Mail aria-hidden strokeWidth={1.75} className="mt-1 size-5 shrink-0 text-teal" />
+                  <a href={`mailto:${site.email}`} className="break-all hover:text-white">
+                    {site.email}
+                  </a>
+                </li>
+              </ul>
+            ) : null}
           </div>
         </div>
       </div>

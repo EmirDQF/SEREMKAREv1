@@ -5,7 +5,6 @@ export interface NavLink {
 
 export const primaryLinks: readonly NavLink[] = [
   { label: "Staff médico", href: "/staff" },
-  { label: "Testimonios", href: "/testimonios" },
   { label: "Blog", href: "/blog" },
   { label: "Sedes", href: "/sedes" },
   { label: "Contacto", href: "/contacto" },

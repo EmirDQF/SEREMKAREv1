@@ -4,6 +4,7 @@ import { doctors } from "@/data/doctors";
 import { blogPosts } from "@/data/home";
 import { servicePillars } from "@/data/services";
 import { specialties } from "@/data/specialties";
+import { testimonials } from "@/data/testimonials";
 import { treatments } from "@/data/treatments";
 
 type ChangeFrequency = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
@@ -23,7 +24,7 @@ const ROUTES: readonly Route[] = [
   { path: "/densitometria-osea", priority: 0.9, changeFrequency: "monthly" },
   { path: "/servicios", priority: 0.8, changeFrequency: "monthly" },
   ...servicePillars.map((pillar) => ({ path: `/servicios/${pillar.slug}`, priority: 0.7, changeFrequency: "monthly" as const })),
-  { path: "/tratamientos", priority: 0.8, changeFrequency: "monthly" },
+  ...(treatments.length > 0 ? [{ path: "/tratamientos", priority: 0.8, changeFrequency: MONTHLY }] : []),
   ...treatments.map((treatment) => ({ path: `/tratamientos/${treatment.slug}`, priority: 0.7, changeFrequency: "monthly" as const })),
   { path: "/especialidades", priority: 0.8, changeFrequency: MONTHLY },
   ...specialties.map((specialty) => ({ path: `/especialidades/${specialty.slug}`, priority: 0.8, changeFrequency: MONTHLY })),
@@ -31,7 +32,7 @@ const ROUTES: readonly Route[] = [
   ...doctors.map((doctor) => ({ path: `/staff/${doctor.slug}`, priority: 0.6, changeFrequency: MONTHLY })),
   { path: "/blog", priority: 0.7, changeFrequency: "weekly" },
   ...blogPosts.map((post) => ({ path: `/blog/${post.slug}`, priority: 0.6, changeFrequency: MONTHLY })),
-  { path: "/testimonios", priority: 0.6, changeFrequency: MONTHLY },
+  ...(testimonials.length > 0 ? [{ path: "/testimonios", priority: 0.6, changeFrequency: MONTHLY }] : []),
   { path: "/preguntas-frecuentes", priority: 0.6, changeFrequency: MONTHLY },
   { path: "/sedes", priority: 0.8, changeFrequency: MONTHLY },
   ...site.locations.map((location) => ({ path: `/sedes/${location.id}`, priority: 0.8, changeFrequency: MONTHLY })),

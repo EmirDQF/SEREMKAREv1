@@ -1,6 +1,5 @@
-import { CalendarClock, MessageCircle, ScanLine, Users, Video } from "lucide-react";
+import { BadgeCheck, CalendarClock, HeartHandshake, MessageCircle, Stethoscope, Video } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { AnimatedCounter } from "@/components/shared/AnimatedCounter";
 import { RevealGroup, RevealItem } from "@/components/shared/Reveal";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { site } from "@/data/site";
@@ -15,36 +14,36 @@ interface Differentiator {
 
 const DIFFERENTIATORS: readonly Differentiator[] = [
   {
-    icon: ScanLine,
-    title: "Diagnóstico de precisión en consultorio",
-    text: "Ecografía musculoesquelética durante tu consulta: vemos la articulación en tiempo real, sin derivarte a otro lugar.",
-    className: "lg:col-span-2",
-  },
-  {
-    icon: Users,
-    title: "Equipo multidisciplinario",
-    text: "Reumatología, terapia física, nutrición y psicología trabajando sobre un mismo plan.",
-  },
-  {
     icon: Video,
-    title: "Teleconsulta",
-    text: "Controles desde tu casa u oficina, con receta digital.",
+    title: "Teleconsulta reumatológica",
+    text: "Atención sin traslados por videollamada: WhatsApp, Zoom o Google Meet, el que prefieras.",
+    className: "lg:col-span-2",
   },
   {
     icon: MessageCircle,
-    title: "Seguimiento cercano por WhatsApp",
-    text: "Resolvemos dudas entre consultas y te recordamos tus controles.",
-    className: "lg:col-span-2",
+    title: "Exámenes previos por WhatsApp",
+    text: "Envía tus análisis, densitometrías o ecografías (foto o PDF) al agendar, para que el doctor los revise antes.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Plan de tratamiento y seguimiento",
+    text: "Al terminar recibes tu plan en formato digital y, si el doctor lo indica, la receta y las órdenes de exámenes.",
   },
   {
     icon: CalendarClock,
-    title: "Atención con cita previa",
-    text: "Coordinas el día y la hora por WhatsApp, en la sede que te quede más cerca.",
+    title: "Densitometría con cita previa",
+    text: "Columna y caderas en 3 sedes de Lima Norte y Callao, frente a hospitales de referencia.",
     className: "lg:col-span-2",
   },
-];
+]
 
-const STATS = [site.stats.consultations, site.stats.rating, site.stats.years, site.stats.specialists] as const;
+/** Los 4 sellos textuales de la tarjeta de KARE SAC (sin cifras inventadas, D2). */
+const TRUST_SEALS: readonly { icon: LucideIcon; label: string }[] = [
+  { icon: BadgeCheck, label: "Resultados claros y confiables" },
+  { icon: CalendarClock, label: "Atención con cita previa" },
+  { icon: Stethoscope, label: "Apoyo al diagnóstico médico" },
+  { icon: HeartHandshake, label: "Servicio orientado a médicos y pacientes" },
+];
 
 export function WhyUs() {
   return (
@@ -54,30 +53,24 @@ export function WhyUs() {
           id="por-que-title"
           eyebrow={`Por qué ${site.name}`}
           title="Medicina especializada, cercana y sin vueltas"
-          description="Todo lo que necesitas para entender tu dolor y tratarlo, en una sola sede y con el mismo equipo."
+          description="Reumatología por videollamada y densitometría ósea con cita previa, con información clara en cada paso."
         />
 
         <RevealGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <RevealItem className="conic-border relative overflow-hidden rounded-[1.75rem] bg-navy p-7 text-white sm:col-span-2 lg:row-span-2 dark:bg-navy-3">
             <div aria-hidden className="absolute -right-16 -top-16 size-56 rounded-full bg-teal/25 blur-3xl" />
-            <p className="relative font-display text-lg font-semibold text-teal-200">Nuestros números</p>
-            <dl className="relative mt-6 grid grid-cols-2 gap-x-6 gap-y-8">
-              {STATS.map((stat) => (
-                <div key={stat.label}>
-                  <dt className="sr-only">{stat.label}</dt>
-                  <dd>
-                    <AnimatedCounter
-                      stat={stat}
-                      className="block font-display text-[clamp(2.4rem,5vw,3.5rem)] font-extrabold leading-none tracking-tight"
-                    />
-                    <span aria-hidden className="mt-2 block text-slate-300">
-                      {stat.label}
-                    </span>
-                  </dd>
-                </div>
+            <p className="relative font-display text-lg font-semibold text-teal-200">Nuestro compromiso</p>
+            <ul className="relative mt-6 grid gap-5 sm:grid-cols-2">
+              {TRUST_SEALS.map(({ icon: SealIcon, label }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-white/10 text-teal-200">
+                    <SealIcon aria-hidden strokeWidth={1.75} className="size-6" />
+                  </span>
+                  <span className="pt-2 font-display text-lg font-semibold leading-snug">{label}</span>
+                </li>
               ))}
-            </dl>
-            <p className="relative mt-8 text-sm text-slate-400">Cifras referenciales de la sede (provisionales).</p>
+            </ul>
+            <p className="relative mt-8 text-sm text-slate-300">Sellos de la tarjeta de presentación de KARE SAC — Servicios Médicos.</p>
           </RevealItem>
 
           {DIFFERENTIATORS.map(({ icon: ItemIcon, title, text, className }) => (

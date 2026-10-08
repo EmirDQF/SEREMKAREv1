@@ -60,11 +60,11 @@ export function organizationSchema(): JsonLdObject {
     logo: `${site.url}/icon.svg`,
     image: `${site.url}/opengraph-image`,
     telephone: `+${primaryWhatsAppLine().number}`,
-    email: site.email,
+    ...(site.email ? { email: site.email } : {}),
     slogan: site.slogan,
     medicalSpecialty: ["Rheumatologic", "PhysicalTherapy"],
     subOrganization: locationRefs(site.locations),
-    sameAs: site.socials.map((s) => s.href),
+    ...(site.socials.length > 0 ? { sameAs: site.socials.map((s) => s.href) } : {}),
   };
 }
 

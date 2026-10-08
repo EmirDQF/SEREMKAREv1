@@ -49,18 +49,20 @@ function ChannelCards() {
           </TiltCard>
         </RevealItem>
       ))}
-      <RevealItem as="li">
-        <TiltCard className="h-full rounded-[1.75rem]">
-          <a href={`mailto:${site.email}`} className={CARD}>
-            <span className={ICON_BADGE}>
-              <Mail aria-hidden />
-            </span>
-            <span className="mt-4 font-display font-semibold text-heading">Correo</span>
-            <span className="mt-1 break-words text-lg font-semibold text-primary">{site.email}</span>
-            <span className="mt-1 text-sm text-muted">Te respondemos en horario de atención.</span>
-          </a>
-        </TiltCard>
-      </RevealItem>
+      {site.email ? (
+        <RevealItem as="li">
+          <TiltCard className="h-full rounded-[1.75rem]">
+            <a href={`mailto:${site.email}`} className={CARD}>
+              <span className={ICON_BADGE}>
+                <Mail aria-hidden />
+              </span>
+              <span className="mt-4 font-display font-semibold text-heading">Correo</span>
+              <span className="mt-1 break-words text-lg font-semibold text-primary">{site.email}</span>
+              <span className="mt-1 text-sm text-muted">Te respondemos en horario de atención.</span>
+            </a>
+          </TiltCard>
+        </RevealItem>
+      ) : null}
     </RevealGroup>
   );
 }

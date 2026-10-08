@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { LegalDocument, type LegalSection } from "@/components/pages/LegalDocument";
 import { legal } from "@/data/legal";
 import { site } from "@/data/site";
+import { primaryWhatsAppLine } from "@/lib/locations";
 import { buildMetadata } from "@/lib/seo";
 
 const CRUMBS = [
@@ -62,7 +63,7 @@ const SECTIONS: readonly LegalSection[] = [
   {
     heading: "Tus derechos",
     paragraphs: [
-      `Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición (ARCO) escribiendo a ${site.email}. Si no estás conforme con la respuesta, puedes acudir a la Autoridad Nacional de Protección de Datos Personales.`,
+      `Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición (ARCO) escribiendo ${site.email ? `a ${site.email}` : `por WhatsApp a la línea principal (+${primaryWhatsAppLine().number})`}. Si no estás conforme con la respuesta, puedes acudir a la Autoridad Nacional de Protección de Datos Personales.`,
     ],
   },
   {

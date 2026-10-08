@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Star } from "lucide-react";
 import { CtaBand } from "@/components/pages/CtaBand";
@@ -25,6 +26,8 @@ export const metadata: Metadata = {
 };
 
 export default function TestimonialsPage() {
+  // Oculta mientras no haya contenido real (data/visibility.ts).
+  if (testimonials.length === 0) notFound();
   return (
     <>
       <JsonLd data={breadcrumbSchema(CRUMBS)} />

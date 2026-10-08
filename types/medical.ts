@@ -116,7 +116,8 @@ export interface SiteConfig {
   /** Las líneas de WhatsApp de la empresa; la primera es la principal. */
   whatsappLines: readonly WhatsAppLine[];
   defaultWhatsAppMessage: string;
-  email: string;
+  /** null = sin correo real confirmado (la tarjeta no trae correo): no se muestra. */
+  email: string | null;
   socials: readonly SocialLink[];
   stats: {
     consultations: TrustStat;

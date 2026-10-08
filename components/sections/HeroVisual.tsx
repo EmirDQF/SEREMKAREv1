@@ -3,12 +3,10 @@
 import { useMemo, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { BadgeCheck, Star, Users, Video } from "lucide-react";
+import { BadgeCheck, MapPin, ShieldCheck, Video } from "lucide-react";
 import { JointMotif } from "@/components/shared/JointMotif";
 import { Scene3DSlot } from "@/components/3d/Scene3DSlot";
 import { homeImages } from "@/data/home";
-import { site } from "@/data/site";
-import { formatStat } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface FloatingCardProps {
@@ -83,23 +81,21 @@ export function HeroVisual() {
 
       <FloatingCard y={ySlow} delay={0.5} className="left-0 top-[10%] sm:-left-6">
         <CardIcon>
-          <Users aria-hidden strokeWidth={1.75} />
+          <MapPin aria-hidden strokeWidth={1.75} />
         </CardIcon>
         <span>
-          <span className="block font-display text-lg font-extrabold leading-tight text-heading">
-            {formatStat(site.stats.consultations, site.stats.consultations.value)}
-          </span>
-          <span className="block text-sm text-muted">consultas realizadas</span>
+          <span className="block font-display text-lg font-extrabold leading-tight text-heading">Todo el Perú</span>
+          <span className="block text-sm text-muted">consulta virtual</span>
         </span>
       </FloatingCard>
 
       <FloatingCard y={yFast} delay={0.65} className="right-0 top-[4%] sm:-right-4">
-        <Star aria-hidden className="size-6 fill-rating text-rating" />
+        <CardIcon>
+          <ShieldCheck aria-hidden strokeWidth={1.75} />
+        </CardIcon>
         <span>
-          <span className="block font-display text-lg font-extrabold leading-tight text-heading">
-            {formatStat(site.stats.rating, site.stats.rating.value)}
-          </span>
-          <span className="block text-sm text-muted">calificación</span>
+          <span className="block font-display text-lg font-extrabold leading-tight text-heading">Ley 30421</span>
+          <span className="block text-sm text-muted">Marco de Telesalud</span>
         </span>
       </FloatingCard>
 
@@ -108,7 +104,7 @@ export function HeroVisual() {
           <Video aria-hidden strokeWidth={1.75} />
         </CardIcon>
         <span className="max-w-[9.5rem] text-sm font-semibold leading-snug text-heading">
-          Atención presencial y teleconsulta
+          Videollamada por WhatsApp, Zoom o Meet
         </span>
       </FloatingCard>
 
@@ -116,7 +112,7 @@ export function HeroVisual() {
         <CardIcon>
           <BadgeCheck aria-hidden strokeWidth={1.75} />
         </CardIcon>
-        <span className="text-sm font-semibold text-heading">Especialistas con RNE</span>
+        <span className="text-sm font-semibold text-heading">Receta digital si el doctor lo indica</span>
       </FloatingCard>
     </div>
   );

@@ -1,4 +1,5 @@
 import { buildMapsEmbedUrl, buildMapsSearchUrl, formatAddress } from "@/lib/maps";
+import { visibility } from "@/data/visibility";
 import type { ClinicLocation, OpeningHours, SiteConfig, WhatsAppLine } from "@/types/medical";
 
 const MINUTES_PER_HOUR = 60;
@@ -25,6 +26,15 @@ const PROVISIONAL_HOURS: OpeningHours = {
   closedLabel: "Escríbenos por WhatsApp para coordinar tu cita",
   confirmed: false,
 };
+
+/** PROVISIONAL: datos de prueba, ocultos hasta tener los reales. */
+const SAMPLE_EMAIL = "contacto@sermekare.com";
+const SAMPLE_SOCIALS: SiteConfig["socials"] = [
+    { network: "instagram", label: "Instagram", href: "https://instagram.com/sermekare" }, // PROVISIONAL
+    { network: "facebook", label: "Facebook", href: "https://facebook.com/sermekare" }, // PROVISIONAL
+    { network: "tiktok", label: "TikTok", href: "https://tiktok.com/@sermekare" }, // PROVISIONAL
+    { network: "youtube", label: "YouTube", href: "https://youtube.com/@sermekare" }, // PROVISIONAL
+];
 
 const DENSITOMETRY_SERVICE = "Densitometría ósea (DXA) de columna y caderas";
 
@@ -126,13 +136,10 @@ export const site: SiteConfig = {
   primaryLocationId: "los-olivos", // CONFIRMAR: sede principal
   whatsappLines: WHATSAPP_LINES,
   defaultWhatsAppMessage: "Hola SERMEKARE, quisiera agendar una consulta.",
-  email: "contacto@sermekare.com", // PROVISIONAL: la tarjeta no trae correo
-  socials: [
-    { network: "instagram", label: "Instagram", href: "https://instagram.com/sermekare" }, // PROVISIONAL
-    { network: "facebook", label: "Facebook", href: "https://facebook.com/sermekare" }, // PROVISIONAL
-    { network: "tiktok", label: "TikTok", href: "https://tiktok.com/@sermekare" }, // PROVISIONAL
-    { network: "youtube", label: "YouTube", href: "https://youtube.com/@sermekare" }, // PROVISIONAL
-  ],
+  // CONFIRMAR: la tarjeta no trae correo; se publica solo con visibility.email.
+  email: visibility.email ? SAMPLE_EMAIL : null,
+  // CONFIRMAR: redes reales; se publican solo con visibility.socials.
+  socials: visibility.socials ? SAMPLE_SOCIALS : [],
   stats: {
     consultations: { value: 15000, prefix: "+", label: "consultas realizadas" }, // PROVISIONAL: la tarjeta no lo respalda
     rating: { value: 4.9, decimals: 1, label: "calificación promedio" }, // PROVISIONAL: la tarjeta no lo respalda

@@ -28,7 +28,7 @@ export function NewsletterForm() {
     }
     setError(null);
     window.location.href = buildMailtoLink(
-      site.email,
+      site.email ?? "",
       "Suscripción: Guía de salud articular",
       `Hola ${site.name}, quiero recibir la Guía de salud articular en este correo: ${email.trim()}`,
     );

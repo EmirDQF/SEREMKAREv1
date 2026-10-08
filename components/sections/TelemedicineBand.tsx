@@ -20,7 +20,7 @@ const TELE_MESSAGE = `Hola ${site.name}, quisiera agendar una teleconsulta.`;
 
 /** "Consulta desde tu casa u oficina", con mockup de videollamada. */
 export function TelemedicineBand() {
-  const doctor = doctors[1];
+  const [doctor] = doctors;
   return (
     <section aria-labelledby="tele-title" className="section-y">
       <div className="container-page">

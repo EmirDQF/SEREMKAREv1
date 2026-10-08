@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/pages/CtaBand";
 import { PageHero } from "@/components/pages/PageHero";
@@ -24,6 +25,8 @@ export const metadata: Metadata = {
 };
 
 export default function TreatmentsPage() {
+  // Oculta mientras no haya contenido real (data/visibility.ts).
+  if (treatments.length === 0) notFound();
   return (
     <>
       <JsonLd data={breadcrumbSchema(CRUMBS)} />

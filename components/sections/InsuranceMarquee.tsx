@@ -17,8 +17,6 @@ function InsurerLogo({ insurer }: { insurer: Insurer }) {
 
 /** Marquee infinito (pausable) de aseguradoras, EPS y alianzas. Logos genéricos PROVISIONALES. */
 export function InsuranceMarquee() {
-  // Sin convenios confirmados no se muestra (D2).
-  if (insurers.length === 0) return null;
   const [paused, setPaused] = useState(false);
 
   return (

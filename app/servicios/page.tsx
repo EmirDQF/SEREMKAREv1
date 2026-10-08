@@ -11,6 +11,7 @@ import { IconBadge } from "@/components/shared/Icon";
 import { DENSITOMETRY_PATH } from "@/data/densitometry";
 import { servicePillars } from "@/data/services";
 import { site } from "@/data/site";
+import { treatments } from "@/data/treatments";
 import { breadcrumbSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -75,12 +76,14 @@ export default function ServicesPage() {
               </Reveal>
             ))}
           </ul>
-          <Link
-            href="/tratamientos"
-            className="mt-10 inline-flex min-h-12 items-center gap-2 font-display font-semibold text-primary hover:underline"
-          >
-            Ver todos los tratamientos <ArrowRight aria-hidden strokeWidth={1.75} className="size-5" />
-          </Link>
+          {treatments.length > 0 ? (
+            <Link
+              href="/tratamientos"
+              className="mt-10 inline-flex min-h-12 items-center gap-2 font-display font-semibold text-primary hover:underline"
+            >
+              Ver todos los tratamientos <ArrowRight aria-hidden strokeWidth={1.75} className="size-5" />
+            </Link>
+          ) : null}
         </div>
       </section>
 

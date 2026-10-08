@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { NavigationMenu } from "radix-ui";
 import { specialties } from "@/data/specialties";
+import { treatments } from "@/data/treatments";
 import { servicePillars } from "@/data/services";
 import { TRIAGE_HREF } from "@/data/navigation";
 import { DENSITOMETRY_PATH } from "@/data/densitometry";
@@ -91,11 +92,13 @@ export function ServicesMenu() {
               Ver todos los servicios <ArrowRight aria-hidden className="size-4" />
             </Link>
           </NavigationMenu.Link>
-          <NavigationMenu.Link asChild>
-            <Link href="/tratamientos" className={`${ITEM_LINK} flex items-center gap-2 font-display font-semibold text-primary`}>
-              Ver tratamientos <ArrowRight aria-hidden className="size-4" />
-            </Link>
-          </NavigationMenu.Link>
+          {treatments.length > 0 ? (
+            <NavigationMenu.Link asChild>
+              <Link href="/tratamientos" className={`${ITEM_LINK} flex items-center gap-2 font-display font-semibold text-primary`}>
+                Ver tratamientos <ArrowRight aria-hidden className="size-4" />
+              </Link>
+            </NavigationMenu.Link>
+          ) : null}
         </li>
       </ul>
     </NavigationMenu.Content>

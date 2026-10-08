@@ -31,7 +31,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <InsuranceMarquee />
+      {/* D2: sin convenios confirmados no se muestran aseguradoras. */}
+      {visibility.insurers ? <InsuranceMarquee /> : null}
       <PainPoints />
       <SymptomTriage />
       <WhyUs />

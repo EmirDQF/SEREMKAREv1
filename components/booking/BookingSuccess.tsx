@@ -25,9 +25,11 @@ export function BookingSuccess({ message, onReset }: BookingSuccessProps) {
         <a href={clinicWhatsApp(message)} target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "whatsapp" })}>
           <WhatsAppIcon /> Abrir WhatsApp de nuevo
         </a>
-        <a href={buildMailtoLink(site.email, "Solicitud de teleconsulta", message)} className={buttonVariants({ variant: "outline" })}>
-          <Mail aria-hidden strokeWidth={1.75} /> Enviar por correo
-        </a>
+        {site.email ? (
+          <a href={buildMailtoLink(site.email, "Solicitud de teleconsulta", message)} className={buttonVariants({ variant: "outline" })}>
+            <Mail aria-hidden strokeWidth={1.75} /> Enviar por correo
+          </a>
+        ) : null}
       </div>
       <button type="button" onClick={onReset} className="mt-5 min-h-12 font-semibold text-primary hover:underline">
         Agendar otra teleconsulta
