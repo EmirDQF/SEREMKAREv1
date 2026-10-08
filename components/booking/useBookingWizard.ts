@@ -17,7 +17,7 @@ import { clinicWhatsApp } from "@/lib/whatsapp";
 import type { FieldIds } from "@/components/booking/ui";
 
 const FIELD_ORDER: Readonly<Record<BookingStep, readonly BookingField[]>> = {
-  1: ["age", "complaint", "acknowledge"],
+  1: ["age", "complaint", "redFlags"],
   2: ["doctor", "slot"],
   3: ["fullName", "phone", "consent"],
 };

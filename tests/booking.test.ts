@@ -98,16 +98,15 @@ describe("validateStep1", () => {
     });
   });
 
-  it("red flags do not block, but require acknowledging it is not an emergency", () => {
+  it("red flags always block the teleconsulta and point to emergencies (D9)", () => {
     const flagged = { ...valid, redFlags: ["pecho"] as const };
     expect(hasRedFlags(flagged)).toBe(true);
-    expect(validateStep1(flagged).acknowledge).toMatch(/emergencia/i);
-    expect(validateStep1({ ...flagged, acknowledgedNotEmergency: true })).toEqual({});
+    expect(validateStep1(flagged).redFlags).toMatch(/emergencias|SAMU 106/i);
   });
 
-  it("the acknowledgement is irrelevant without red flags", () => {
+  it("without red flags step 1 passes", () => {
     expect(hasRedFlags(valid)).toBe(false);
-    expect(validateStep1({ ...valid, acknowledgedNotEmergency: false })).toEqual({});
+    expect(validateStep1(valid)).toEqual({});
   });
 });
 
@@ -201,7 +200,7 @@ describe("buildTeleconsultMessage", () => {
   });
 
   it("never includes red flags or medication requests", () => {
-    const msg = buildTeleconsultMessage({ ...valid, redFlags: ["fiebre"], acknowledgedNotEmergency: true }, "Dra. Ana");
+    const msg = buildTeleconsultMessage({ ...valid, redFlags: ["fiebre"] }, "Dra. Ana");
     expect(msg).not.toMatch(/fiebre|medicamento|receta/i);
   });
 });

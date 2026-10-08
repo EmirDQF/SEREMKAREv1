@@ -51,11 +51,11 @@ export const ENABLED_MODALITIES: readonly Modality[] = visibility.phoneCallModal
 
 /** Señales de alarma: si alguna aplica, la teleconsulta no es el canal adecuado. */
 export const RED_FLAGS: readonly RedFlag[] = [
-  { id: "fractura", label: "Golpe fuerte o posible fractura reciente" },
+  { id: "fractura", label: "Golpe fuerte con deformidad o posible fractura reciente" },
   { id: "pecho", label: "Dolor de pecho" },
   { id: "aire", label: "Falta de aire" },
-  { id: "fiebre", label: "Fiebre alta con una articulación caliente e hinchada" },
-  { id: "debilidad", label: "Debilidad súbita (cara, brazo o pierna)" },
+  { id: "fiebre", label: "Fiebre con una articulación muy hinchada y caliente" },
+  { id: "debilidad", label: "Pérdida súbita de fuerza o de sensibilidad (cara, brazo o pierna)" },
 ];
 
 export const SINCE_OPTIONS: readonly { id: SinceId; label: string }[] = [
@@ -69,5 +69,4 @@ export const EMERGENCY = {
   notice: "La teleconsulta no es para emergencias.",
   action: "Acude a emergencias o llama al SAMU 106.",
   phone: "106",
-  acknowledge: "Entiendo que no es una emergencia y quiero agendar igual",
 } as const;

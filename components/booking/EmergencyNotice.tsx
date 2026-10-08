@@ -1,18 +1,24 @@
 import { Phone, Siren } from "lucide-react";
 import { EMERGENCY } from "@/data/teleconsult";
+import { cn } from "@/lib/utils";
 
 interface EmergencyNoticeProps {
-  acknowledged: boolean;
-  onAcknowledge: (value: boolean) => void;
-  checkboxId: string;
-  errorId: string;
-  error?: string;
+  /** Id enfocable (el asistente lo enfoca al intentar continuar). */
+  id?: string;
+  className?: string;
 }
 
-/** Aviso que aparece al marcar una señal de alarma. No bloquea: pide confirmar que no es una emergencia. */
-export function EmergencyNotice({ acknowledged, onAcknowledge, checkboxId, errorId, error }: EmergencyNoticeProps) {
+/**
+ * Aviso de señales de alarma (D9): bloquea la teleconsulta. No hay opción de «agendar igual»:
+ * el paciente debe acudir a emergencias o llamar al SAMU 106.
+ */
+export function EmergencyNotice({ id, className }: EmergencyNoticeProps) {
   return (
-    <div className="rounded-2xl border border-alert bg-alert-tint p-4 text-alert-strong">
+    <div
+      id={id}
+      tabIndex={-1}
+      className={cn("rounded-2xl border border-alert bg-alert-tint p-4 text-alert-strong focus:outline-none focus-visible:outline-3", className)}
+    >
       <p role="alert" className="flex items-start gap-2 font-display font-semibold">
         <Siren aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0 text-alert" />
         <span>
@@ -21,27 +27,10 @@ export function EmergencyNotice({ acknowledged, onAcknowledge, checkboxId, error
       </p>
       <a
         href={`tel:${EMERGENCY.phone}`}
-        className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full border border-alert px-4 font-semibold hover:bg-alert-tint"
+        className="mt-3 inline-flex min-h-12 items-center gap-2 rounded-full border border-alert px-5 font-semibold hover:bg-alert-tint"
       >
         <Phone aria-hidden strokeWidth={1.75} className="size-4" /> Llamar al SAMU {EMERGENCY.phone}
       </a>
-      <label className="mt-4 flex min-h-11 items-start gap-3 text-[0.95rem] text-fg">
-        <input
-          id={checkboxId}
-          type="checkbox"
-          checked={acknowledged}
-          onChange={(e) => onAcknowledge(e.target.checked)}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? errorId : undefined}
-          className="mt-0.5 size-5 shrink-0 accent-[var(--alert)]"
-        />
-        <span>{EMERGENCY.acknowledge}</span>
-      </label>
-      {error ? (
-        <p id={errorId} className="mt-1.5 text-sm font-medium">
-          {error}
-        </p>
-      ) : null}
     </div>
   );
 }

@@ -31,7 +31,6 @@ export const EMPTY_DRAFT: BookingDraft = {
   intensity: null,
   since: null,
   redFlags: [],
-  acknowledgedNotEmergency: false,
   modality: "videollamada",
   doctorSlug: null,
   slot: null,
@@ -84,9 +83,8 @@ export function validateStep1(draft: BookingDraft): BookingErrors {
   const errors: BookingErrors = {};
   if (parseAge(draft.age) === null) errors.age = `Escribe una edad entre ${AGE_LIMITS.min} y ${AGE_LIMITS.max} años.`;
   if (!draft.complaint) errors.complaint = "Elige qué te molesta para asignarte el doctor adecuado.";
-  if (hasRedFlags(draft) && !draft.acknowledgedNotEmergency) {
-    errors.acknowledge = `${EMERGENCY.notice} Si aun así quieres agendar, marca la casilla.`;
-  }
+  // D9: con una señal de alarma no se ofrece teleconsulta (sin excepción).
+  if (hasRedFlags(draft)) errors.redFlags = `${EMERGENCY.notice} ${EMERGENCY.action}`;
   return errors;
 }
 

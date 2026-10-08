@@ -152,7 +152,7 @@ function RedFlags({ draft, errors, ids, onChange }: StepProps) {
               checked={draft.redFlags.includes(flag.id)}
               onChange={(e) => {
                 const redFlags = toggleFlag(draft.redFlags, flag.id, e.target.checked);
-                onChange({ ...draft, redFlags, acknowledgedNotEmergency: redFlags.length > 0 && draft.acknowledgedNotEmergency });
+                onChange({ ...draft, redFlags });
               }}
               className="size-5 shrink-0 accent-[var(--alert)]"
             />
@@ -161,13 +161,7 @@ function RedFlags({ draft, errors, ids, onChange }: StepProps) {
         ))}
       </div>
       {hasRedFlags(draft) ? (
-        <EmergencyNotice
-          acknowledged={draft.acknowledgedNotEmergency}
-          onAcknowledge={(acknowledgedNotEmergency) => onChange({ ...draft, acknowledgedNotEmergency })}
-          checkboxId={ids.field("acknowledge")}
-          errorId={ids.error("acknowledge")}
-          error={errors.acknowledge}
-        />
+        <EmergencyNotice id={ids.field("redFlags")} />
       ) : null}
     </fieldset>
   );

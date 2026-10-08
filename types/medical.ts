@@ -323,7 +323,6 @@ export interface BookingDraft {
   since: SinceId | null;
   redFlags: readonly RedFlagId[];
   /** "Entiendo que no es una emergencia y quiero agendar igual". */
-  acknowledgedNotEmergency: boolean;
   modality: Modality;
   doctorSlug: string | null;
   slot: Slot | null;
@@ -342,7 +341,7 @@ export type BookingStep = 1 | 2 | 3;
 export type BookingField =
   | "age"
   | "complaint"
-  | "acknowledge"
+  | "redFlags"
   | "doctor"
   | "slot"
   | "fullName"
