@@ -139,7 +139,7 @@ function toggleFlag(flags: readonly RedFlagId[], id: RedFlagId, on: boolean): Re
   return on ? [...flags.filter((f) => f !== id), id] : flags.filter((f) => f !== id);
 }
 
-function RedFlags({ draft, errors, ids, onChange }: StepProps) {
+function RedFlags({ draft, ids, onChange }: StepProps) {
   return (
     <fieldset className="space-y-3">
       <legend className={LEGEND}>¿Tienes alguna de estas señales ahora?</legend>
