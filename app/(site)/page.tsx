@@ -1,52 +1,57 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
+import { TrustStrip } from "@/components/sections/TrustStrip";
 import { InsuranceMarquee } from "@/components/sections/InsuranceMarquee";
 import { PainPoints } from "@/components/sections/PainPoints";
 import { SymptomTriage } from "@/components/sections/SymptomTriage";
+import { ConsultaSteps } from "@/components/sections/ConsultaSteps";
+import { DoctorsSection } from "@/components/sections/DoctorsSection";
+import { BoneDensitySection } from "@/components/sections/BoneDensitySection";
 import { WhyUs } from "@/components/sections/WhyUs";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
-import { TreatmentsGrid } from "@/components/sections/TreatmentsGrid";
-import { BoneDensitySection } from "@/components/sections/BoneDensitySection";
-import { CareJourney } from "@/components/sections/CareJourney";
-import { DoctorsSection } from "@/components/sections/DoctorsSection";
+import { PricingPreview } from "@/components/sections/PricingPreview";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { VideoSection } from "@/components/sections/VideoSection";
-import { TelemedicineBand } from "@/components/sections/TelemedicineBand";
-import { AppointmentForm } from "@/components/sections/AppointmentForm";
-import { BlogPreview } from "@/components/sections/BlogPreview";
 import { FAQ } from "@/components/sections/FAQ";
 import { LocationCTA } from "@/components/sections/LocationCTA";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
 import { site } from "@/data/site";
 import { visibility } from "@/data/visibility";
-import { DEFAULT_DESCRIPTION, buildMetadata } from "@/lib/seo";
+import { physicianSchema, teleconsultServiceSchema } from "@/lib/schema";
+import { buildMetadata } from "@/lib/seo";
 
-const HOME_TITLE = `Reumatólogo en Lima Norte y Callao | ${site.name}`;
+const HOME_TITLE = `Reumatólogo online: teleconsulta por videollamada en todo el Perú | ${site.name}`;
+const HOME_DESCRIPTION =
+  "Consulta con un reumatólogo sin salir de casa: evaluación rápida, reserva en línea y videollamada por WhatsApp, Zoom o Google Meet. Densitometría ósea en Lima Norte y Callao.";
 
 export const metadata: Metadata = {
-  ...buildMetadata({ title: HOME_TITLE, description: DEFAULT_DESCRIPTION, path: "/" }),
+  ...buildMetadata({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" }),
   title: { absolute: HOME_TITLE },
 };
 
+/**
+ * Home transaccional del consultorio virtual. Secciones sin datos reales (aseguradoras,
+ * testimonios, video de muestra, tratamientos, comparador de infiltraciones) siguen en el código
+ * y se reactivan desde data/visibility.ts.
+ */
 export default function Home() {
+  const doctor = getDoctor(REAL_DOCTOR_SLUG);
   return (
     <>
+      <JsonLd data={teleconsultServiceSchema("/teleconsulta")} />
+      <JsonLd data={physicianSchema({ name: doctor.name, path: `/staff/${doctor.slug}`, specialty: doctor.specialty, image: doctor.photo, knowsAbout: doctor.focus })} />
       <Hero />
-      {/* D2: sin convenios confirmados no se muestran aseguradoras. */}
+      <TrustStrip />
       {visibility.insurers ? <InsuranceMarquee /> : null}
       <PainPoints />
       <SymptomTriage />
+      <ConsultaSteps />
+      <DoctorsSection />
+      <BoneDensitySection />
       <WhyUs />
       <ServicesGrid />
-      <TreatmentsGrid />
-      {/* D3: las infiltraciones ecoguiadas no están respaldadas por el material real. */}
-      <BoneDensitySection />
-      <CareJourney />
-      <DoctorsSection />
+      <PricingPreview />
       <Testimonials />
-      {visibility.sampleVideo ? <VideoSection /> : null}
-      <TelemedicineBand />
-      <AppointmentForm />
-      <BlogPreview />
       <FAQ />
       <LocationCTA />
     </>

@@ -11,6 +11,7 @@ import { Scene3DSlot } from "@/components/3d/Scene3DSlot";
 import { ConditionShowcase } from "@/components/sections/ConditionShowcase";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { MedicalDisclaimer } from "@/components/shared/MedicalDisclaimer";
+import { CONSULTA_PATH, prefillConsulta } from "@/components/consulta/handoff";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { buttonVariants } from "@/components/ui/button";
@@ -24,6 +25,10 @@ import { cn } from "@/lib/utils";
 
 type TriageMode = "zona" | "condicion";
 
+/** D3: solo lo respaldado (teleconsulta reumatológica); sin procedimientos no confirmados. */
+const CONSULT_APPROACH =
+  "Te orientamos en una teleconsulta con nuestro especialista en reumatología: revisamos tus exámenes y armamos tu plan de tratamiento.";
+
 /** Pestañas sobre el fondo navy: activa en teal (contraste AA con texto navy). */
 const IMMERSIVE_TRIGGER =
   "text-slate-300 hover:text-white data-[state=active]:bg-teal data-[state=active]:text-navy dark:data-[state=active]:bg-teal";
@@ -34,6 +39,7 @@ interface TriageResult {
   description: string;
   alertSigns: readonly string[];
   approach: string;
+  target: TriageTarget;
   specialtyName: string;
   specialtySlug: SpecialtySlug;
   doctor: Doctor;
@@ -52,6 +58,7 @@ function resultForTarget(target: TriageTarget): TriageResult {
       description: `Puede deberse a: ${zone.possibleCauses}`,
       alertSigns: zone.alertSigns,
       approach: zone.approach,
+      target,
       specialtyName: specialty.shortName,
       specialtySlug: specialty.slug,
       doctor: getDoctor(zone.doctorSlug),
@@ -65,6 +72,7 @@ function resultForTarget(target: TriageTarget): TriageResult {
     description: specialty.summary,
     alertSigns: specialty.alertSigns,
     approach: specialty.approach,
+    target,
     specialtyName: specialty.shortName,
     specialtySlug: specialty.slug,
     doctor: getDoctor(specialty.doctorSlug),
@@ -106,7 +114,7 @@ function ResultCard({ result }: { result: TriageResult }) {
             <Stethoscope aria-hidden strokeWidth={1.75} className="size-5 text-primary" />
             Cómo te ayudamos
           </p>
-          <p className="mt-2 text-[0.95rem] text-fg">{result.approach}</p>
+          <p className="mt-2 text-[0.95rem] text-fg">{CONSULT_APPROACH}</p>
         </div>
       </div>
 
@@ -134,14 +142,21 @@ function ResultCard({ result }: { result: TriageResult }) {
         </Link>
       ) : null}
 
+      <Link
+        href={CONSULTA_PATH}
+        onClick={() => prefillConsulta(result.target.kind === "zone" ? { kind: "zone", zone: result.target.zone } : { kind: "condition", slug: result.target.slug })}
+        className={cn(buttonVariants({ variant: "primary", size: "lg" }), "mt-6 w-full")}
+      >
+        Continuar en el consultorio virtual
+      </Link>
       <a
         href={clinicWhatsApp(messageAbout(result.topic, result.doctor.name))}
         target="_blank"
         rel="noopener noreferrer"
-        className={cn(buttonVariants({ variant: "whatsapp", size: "lg" }), "mt-6 w-full")}
+        className={cn(buttonVariants({ variant: "outline" }), "mt-3 w-full")}
       >
         <WhatsAppIcon />
-        Agendar con el especialista
+        Prefiero escribir por WhatsApp<span className="sr-only"> (se abre en otra pestaña)</span>
       </a>
     </motion.article>
   );

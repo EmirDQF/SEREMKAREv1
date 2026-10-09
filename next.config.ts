@@ -41,6 +41,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com", pathname: "/photo-*" }],
   },
   poweredByHeader: false,
+  async redirects() {
+    // Ambas URLs funcionan: «Especialistas» es el nombre del menú; el directorio vive en /staff.
+    return [{ source: "/especialistas", destination: "/staff", permanent: true }];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: SECURITY_HEADERS },

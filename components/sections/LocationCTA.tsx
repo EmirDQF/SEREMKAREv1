@@ -1,3 +1,4 @@
+import { BOOKING_HREF } from "@/data/navigation";
 import { Phone } from "lucide-react";
 import { JointMotif } from "@/components/shared/JointMotif";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
@@ -40,7 +41,7 @@ export function LocationCTA() {
             Da el primer paso hoy. Te orientamos y agendamos tu consulta con el especialista adecuado.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href="#agendar" className={buttonVariants({ variant: "light", size: "lg" })}>
+            <a href={BOOKING_HREF} className={buttonVariants({ variant: "light", size: "lg" })}>
               Agendar consulta
             </a>
             <a

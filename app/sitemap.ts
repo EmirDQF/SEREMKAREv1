@@ -21,6 +21,8 @@ const YEARLY = "yearly" as const;
 /** Todas las rutas publicadas (las dinámicas se generan desde data/*). */
 const ROUTES: readonly Route[] = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
+  { path: "/teleconsulta", priority: 0.95, changeFrequency: MONTHLY },
+  { path: "/tarifas", priority: 0.8, changeFrequency: MONTHLY },
   { path: "/densitometria-osea", priority: 0.9, changeFrequency: "monthly" },
   { path: "/servicios", priority: 0.8, changeFrequency: "monthly" },
   ...servicePillars.map((pillar) => ({ path: `/servicios/${pillar.slug}`, priority: 0.7, changeFrequency: "monthly" as const })),

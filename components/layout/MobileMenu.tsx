@@ -7,17 +7,12 @@ import { motion, type Variants } from "motion/react";
 import { Logo } from "@/components/layout/Logo";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
-import { BOOKING_HREF, TRIAGE_HREF, primaryLinks } from "@/data/navigation";
+import { BOOKING_HREF, moreLinks, primaryLinks } from "@/data/navigation";
 import { locationNamesLabel, primaryLocation, primaryWhatsAppLine } from "@/lib/locations";
 import { clinicWhatsApp } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
-const MENU_LINKS = [
-  { label: "Especialidades", href: "/especialidades" },
-  { label: "Servicios", href: "/servicios" },
-  { label: "¿Dónde te duele?", href: TRIAGE_HREF },
-  ...primaryLinks,
-] as const;
+const MENU_LINKS = [...primaryLinks, ...moreLinks] as const;
 
 const listVariants: Variants = {
   hidden: {},

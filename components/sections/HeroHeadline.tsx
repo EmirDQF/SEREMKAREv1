@@ -2,8 +2,8 @@
 
 import { motion, type Variants } from "motion/react";
 
-const LEAD_WORDS = ["Recupera", "tu", "movilidad", "y"] as const;
-const ACCENT_WORDS = ["vive", "sin", "dolor", "articular"] as const;
+const LEAD_WORDS = ["Consulta", "con", "un", "reumatólogo", "especialista"] as const;
+const ACCENT_WORDS = ["sin", "salir", "de", "casa"] as const;
 
 const container: Variants = {
   hidden: {},
@@ -29,7 +29,7 @@ export function HeroHeadline({ id }: HeroHeadlineProps) {
       variants={container}
       initial="hidden"
       animate="visible"
-      aria-label="Recupera tu movilidad y vive sin dolor articular"
+      aria-label="Consulta con un reumatólogo especialista sin salir de casa"
     >
       {LEAD_WORDS.map((w) => (
         <motion.span key={w} variants={word} aria-hidden className="mr-[0.24em] inline-block">

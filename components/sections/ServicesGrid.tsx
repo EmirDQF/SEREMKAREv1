@@ -16,8 +16,8 @@ export function ServicesGrid() {
             id="servicios-title"
             align="left"
             eyebrow="Servicios"
-            title="Cinco pilares para cuidar tus articulaciones"
-            description="Del diagnóstico al tratamiento y el seguimiento, sin que tengas que ir de un lugar a otro."
+            title="Teleconsulta y diagnóstico, sin vueltas"
+            description="Reumatología por videollamada para todo el Perú y densitometría ósea con cita previa en nuestras sedes."
           />
           <Link
             href="/servicios"

@@ -10,12 +10,12 @@ import { site } from "@/data/site";
 import { breadcrumbSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 
-const TITLE = `Staff médico: reumatólogos en Lima Norte y Callao | ${site.name}`;
+const TITLE = `Especialistas: reumatólogo por teleconsulta | ${site.name}`;
 const DESCRIPTION =
-  "Conoce a nuestros reumatólogos y especialistas en salud articular: formación, enfoque clínico, horarios y cómo agendar con cada uno.";
+  "Conoce al Dr. Daniel Ccolcca, médico reumatólogo: enfoque clínico, motivos de consulta y cómo agendar tu teleconsulta.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
-  { label: "Staff médico", href: "/staff" },
+  { label: "Especialistas", href: "/staff" },
 ] as const;
 
 export const metadata: Metadata = {
@@ -30,14 +30,14 @@ export default function StaffPage() {
       <PageHero
         id="staff-title"
         crumbs={CRUMBS}
-        eyebrow="Staff médico"
-        title="Especialistas que te escuchan y te explican"
+        eyebrow="Especialistas"
+        title="Un especialista que te escucha y te explica"
         accent="te escuchan"
-        lead="Médicos con colegiatura (CMP) y registro de especialidad (RNE) vigentes, dedicados a la salud articular."
+        lead="Reumatología por videollamada para todo el Perú. Revisamos tus exámenes y te acompañamos en tu tratamiento."
       />
       <section aria-label="Médicos" className="pb-16">
         <div className="container-page">
-          <RevealGroup as="ul" className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <RevealGroup as="ul" className="mx-auto grid max-w-sm gap-5">
             {doctors.map((doctor) => (
               <RevealItem as="li" key={doctor.slug}>
                 <TiltCard className="h-full rounded-[1.75rem]">

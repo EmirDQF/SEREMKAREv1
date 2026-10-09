@@ -1,7 +1,11 @@
+import { teleconsultFaq } from "@/data/teleconsult-content";
 import type { FAQItem } from "@/types/medical";
 
-// PROVISIONAL: confirmar convenios, precios y tiempos con la administración.
-export const homeFaq: readonly FAQItem[] = [
+/**
+ * PROVISIONAL (oculto, D2): FAQ de muestra con afirmaciones no respaldadas por el material real
+ * (seguros/EPS, duración, infiltraciones, laboratorio). Se conserva para reactivarla con datos reales.
+ */
+export const sampleFaq: readonly FAQItem[] = [
   {
     id: "seguros",
     question: "¿Atienden con seguros y EPS?",
@@ -43,3 +47,6 @@ export const homeFaq: readonly FAQItem[] = [
     answer: "La mayoría de resultados están listos entre 24 y 72 horas. Los perfiles inmunológicos especiales pueden tardar algunos días más; te avisamos por WhatsApp.",
   },
 ];
+
+/** FAQ publicada: la del material real de la teleconsulta (index.html de SEREMKAREWEB). */
+export const homeFaq: readonly FAQItem[] = teleconsultFaq;

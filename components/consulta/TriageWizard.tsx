@@ -155,9 +155,9 @@ function QuestionBody({ question, answers, set }: BodyProps) {
 
 function Choices<T extends string>({ options, onSelect }: { options: readonly (readonly [T, string])[]; onSelect: (value: T) => void }) {
   return (
-    <div role="radiogroup" className="grid gap-3">
+    <div role="group" aria-labelledby="pregunta-titulo" className="grid gap-3">
       {options.map(([value, label]) => (
-        <OptionButton key={value} selected={false} onSelect={() => onSelect(value)} title={label} />
+        <OptionButton key={value} onSelect={() => onSelect(value)} title={label} />
       ))}
     </div>
   );
@@ -165,9 +165,9 @@ function Choices<T extends string>({ options, onSelect }: { options: readonly (r
 
 function YesNo({ onSelect, yesHint }: { onSelect: (value: boolean) => void; yesHint?: string }) {
   return (
-    <div role="radiogroup" className="grid gap-3 sm:grid-cols-2">
-      <OptionButton selected={false} onSelect={() => onSelect(true)} title="Sí" hint={yesHint} />
-      <OptionButton selected={false} onSelect={() => onSelect(false)} title="No" />
+    <div role="group" aria-labelledby="pregunta-titulo" className="grid gap-3 sm:grid-cols-2">
+      <OptionButton onSelect={() => onSelect(true)} title="Sí" hint={yesHint} />
+      <OptionButton onSelect={() => onSelect(false)} title="No" />
     </div>
   );
 }
@@ -181,7 +181,7 @@ function RedFlagsQuestion({ onDone }: { onDone: (flags: RedFlagId[]) => void }) 
         {RED_FLAGS.map((flag) => (
           <OptionButton
             key={flag.id}
-            role="checkbox"
+            mode="checkbox"
             tone="alert"
             selected={selected.includes(flag.id)}
             onSelect={() => toggle(flag.id)}
@@ -227,13 +227,12 @@ function EntryQuestion({ onSelect }: { onSelect: (entry: TriageEntry) => void })
           fallback={<BodyMap zones={bodyZones} selected={zone} onSelect={setZone} />}
         />
         {/* Alternativa accesible siempre visible (el 3D no es operable con teclado ni lector). */}
-        <div role="radiogroup" aria-label="Zona del cuerpo" className="mt-4 flex flex-wrap justify-center gap-2">
+        <div role="group" aria-label="Zona del cuerpo" className="mt-4 flex flex-wrap justify-center gap-2">
           {bodyZones.map((bodyZone) => (
             <button
               key={bodyZone.id}
               type="button"
-              role="radio"
-              aria-checked={zone === bodyZone.id}
+              aria-pressed={zone === bodyZone.id}
               onClick={() => setZone(bodyZone.id)}
               className={cn(
                 "min-h-11 rounded-full border px-3.5 text-sm font-semibold transition-colors focus-visible:outline-3 focus-visible:outline-ring",
@@ -254,18 +253,17 @@ function EntryQuestion({ onSelect }: { onSelect: (entry: TriageEntry) => void })
           </button>
         ) : null}
       </div>
-      <div role="radiogroup" aria-labelledby="preocupa-titulo" className="grid content-start gap-3">
+      <div role="group" aria-labelledby="preocupa-titulo" className="grid content-start gap-3">
         <p id="preocupa-titulo" className="font-semibold text-heading">O elige lo que te preocupa:</p>
         {conditions.map((specialty) => (
           <OptionButton
             key={specialty.slug}
-            selected={false}
             onSelect={() => onSelect({ kind: "condition", slug: specialty.slug })}
             title={specialty.name}
           />
         ))}
-        <OptionButton selected={false} onSelect={() => onSelect({ kind: "bone" })} icon={<Bone />} title="Salud ósea / densitometría" hint="Osteoporosis, riesgo de fracturas" />
-        <OptionButton selected={false} onSelect={() => onSelect({ kind: "unsure" })} icon={<CircleHelp />} title="No estoy seguro" />
+        <OptionButton onSelect={() => onSelect({ kind: "bone" })} icon={<Bone />} title="Salud ósea / densitometría" hint="Osteoporosis, riesgo de fracturas" />
+        <OptionButton onSelect={() => onSelect({ kind: "unsure" })} icon={<CircleHelp />} title="No estoy seguro" />
       </div>
     </div>
   );
@@ -279,7 +277,7 @@ function BoneRisksQuestion({ onDone, initial }: { onDone: (risks: Record<string,
         {densitometry.checklist.map((item) => (
           <OptionButton
             key={item.id}
-            role="checkbox"
+            mode="checkbox"
             selected={Boolean(risks[item.id])}
             onSelect={() => setRisks((current) => ({ ...current, [item.id]: !current[item.id] }))}
             title={item.question}

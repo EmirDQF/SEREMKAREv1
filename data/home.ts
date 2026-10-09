@@ -5,14 +5,21 @@ const unsplash = (id: string, w = 800) => `https://images.unsplash.com/photo-${i
 
 /** Fotos de la Home. PROVISIONAL: ver public/images/README.md */
 export const homeImages = {
-  hero: unsplash("1594824476967-48c8b964273f", 1000),
-  heroAlt: "Reumatóloga de SERMEKARE sonriendo con uniforme clínico",
+  // Fotos ilustrativas de videoconsulta (Unsplash, licencia libre). No son personal de SERMEKARE.
+  hero: unsplash("1758691463620-188ca7c1a04f", 1000),
+  heroAlt: "Médico en una videoconsulta con su paciente desde la laptop (foto ilustrativa)",
   careJourney: unsplash("1758691462858-f1286e5daf40", 900),
   careJourneyAlt: "Médica conversando con un paciente adulto mayor en el consultorio",
   guided: unsplash("1666214280557-f1b5022eb634", 1000),
   guidedAlt: "Especialista revisando imágenes de ecografía en un monitor",
-  telemedicine: unsplash("1551836022-d5d88e9218df", 900),
-  telemedicineAlt: "Profesional en una videollamada desde su laptop",
+  telemedicine: unsplash("1758691461932-d0aa0ebf6b31", 900),
+  telemedicineAlt: "Médico conversando con una paciente por videollamada (foto ilustrativa)",
+  stepBook: unsplash("1758691462749-a95ce1bd7f96", 700),
+  stepBookAlt: "Médica conectada a una videoconsulta desde su escritorio (foto ilustrativa)",
+  stepLink: unsplash("1758691462743-f9fc9e430d39", 700),
+  stepLinkAlt: "Videollamada médica en curso en una laptop (foto ilustrativa)",
+  stepReview: unsplash("1758691463606-1493d79cc577", 700),
+  stepReviewAlt: "Especialista revisando el caso de su paciente durante la videoconsulta (foto ilustrativa)",
   video: unsplash("1649751361457-01d3a696c7e6", 1200),
   videoAlt: "Especialista examinando la rodilla de un paciente en la camilla",
 } as const;

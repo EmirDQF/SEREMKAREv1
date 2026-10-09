@@ -18,8 +18,8 @@ export function FAQ() {
             id="faq-title"
             align="left"
             eyebrow="Preguntas frecuentes"
-            title="Resolvemos tus dudas antes de tu cita"
-            description="Si no encuentras tu respuesta, escríbenos: te contestamos en horario de atención."
+            title="Preguntas frecuentes sobre la teleconsulta"
+            description="Si no encuentras tu respuesta, escríbenos por WhatsApp."
           />
           <div className="mt-8 flex flex-col items-start gap-2">
             <a

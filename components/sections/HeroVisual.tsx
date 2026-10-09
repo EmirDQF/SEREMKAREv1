@@ -3,9 +3,11 @@
 import { useMemo, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { BadgeCheck, MapPin, ShieldCheck, Video } from "lucide-react";
+import { MapPin, ShieldCheck, Video } from "lucide-react";
+import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import { JointMotif } from "@/components/shared/JointMotif";
 import { Scene3DSlot } from "@/components/3d/Scene3DSlot";
+import { REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
 import { homeImages } from "@/data/home";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +44,8 @@ function CardIcon({ children }: { children: ReactNode }) {
  * Foto del médico en forma orgánica + rodilla 3D (JointViewer3D; el JointMotif 2D queda como fallback)
  * + tarjetas glass con parallax suave.
  */
+const doctor = getDoctor(REAL_DOCTOR_SLUG);
+
 export function HeroVisual() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -109,10 +113,11 @@ export function HeroVisual() {
       </FloatingCard>
 
       <FloatingCard y={yFast} delay={0.95} className="bottom-[4%] right-0 sm:right-[12%]">
-        <CardIcon>
-          <BadgeCheck aria-hidden strokeWidth={1.75} />
-        </CardIcon>
-        <span className="text-sm font-semibold text-heading">Receta digital si el doctor lo indica</span>
+        <DoctorPortrait doctor={doctor} size={44} alt="" className="size-11 rounded-xl" />
+        <span>
+          <span className="block text-sm font-bold text-heading">{doctor.name}</span>
+          <span className="block text-xs text-muted">{doctor.title}</span>
+        </span>
       </FloatingCard>
     </div>
   );

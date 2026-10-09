@@ -14,18 +14,18 @@ export function DoctorsSection() {
           <SectionHeading
             id="staff-title"
             align="left"
-            eyebrow="Staff médico"
-            title="Especialistas que te escuchan y te explican"
-            description="Médicos con colegiatura (CMP) y registro de especialidad (RNE) vigentes, dedicados a la salud articular."
+            eyebrow="Tu especialista"
+            title="Un reumatólogo que te escucha y te explica"
+            description="Te atiende el Dr. Daniel Ccolcca, médico reumatólogo, por videollamada desde cualquier lugar del Perú."
           />
           <Link
             href="/staff"
             className="inline-flex min-h-12 shrink-0 items-center gap-2 font-display font-semibold text-primary hover:underline"
           >
-            Conoce a todo el equipo <ArrowRight aria-hidden strokeWidth={1.75} className="size-5" />
+            Ver perfil y disponibilidad <ArrowRight aria-hidden strokeWidth={1.75} className="size-5" />
           </Link>
         </div>
-        <RevealGroup as="ul" className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <RevealGroup as="ul" className={doctors.length > 1 ? "mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4" : "mx-auto mt-12 grid max-w-sm gap-5"}>
           {doctors.map((doctor) => (
             <RevealItem as="li" key={doctor.slug}>
               <TiltCard className="h-full rounded-[1.75rem]">

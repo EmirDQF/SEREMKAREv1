@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight, Award, CalendarClock, GraduationCap, ShieldCh
 import { CtaBand } from "@/components/pages/CtaBand";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { DoctorAvailabilityDialog } from "@/components/shared/DoctorAvailabilityDialog";
+import { DoctorHours } from "@/components/shared/DoctorHours";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { KineticText } from "@/components/shared/KineticText";
@@ -14,7 +15,6 @@ import { doctors } from "@/data/doctors";
 import { blogPosts } from "@/data/home";
 import { site } from "@/data/site";
 import { specialties } from "@/data/specialties";
-import { describeBlock } from "@/lib/booking";
 import { findDoctor } from "@/lib/catalog";
 import { credentialsLabel, experienceLabel, hasVerifiableCmp } from "@/lib/doctor";
 import { breadcrumbSchema, physicianSchema } from "@/lib/schema";
@@ -47,7 +47,7 @@ export default async function DoctorPage({ params }: PageProps<"/staff/[slug]">)
   const path = `/staff/${slug}`;
   const crumbs = [
     { label: "Inicio", href: "/" },
-    { label: "Staff médico", href: "/staff" },
+    { label: "Especialistas", href: "/staff" },
     { label: doctor.name, href: path },
   ];
   const conditions = specialties.filter((specialty) => specialty.doctorSlug === slug);
@@ -129,15 +129,7 @@ export default async function DoctorPage({ params }: PageProps<"/staff/[slug]">)
                 <h2 className="flex items-center gap-2 font-display font-semibold text-heading">
                   <CalendarClock aria-hidden strokeWidth={1.75} className="size-5 text-primary" /> Horarios
                 </h2>
-                <ul className="mt-3 space-y-2 text-[0.95rem] text-fg">
-                  {doctor.schedule.map(describeBlock).map((block) => (
-                    <li key={block.key}>
-                      <span className="font-semibold text-heading">{block.days}</span>
-                      <br />
-                      {block.hours} · {block.modalities}
-                    </li>
-                  ))}
-                </ul>
+                <DoctorHours doctor={doctor} className="mt-3" />
               </div>
             </div>
 

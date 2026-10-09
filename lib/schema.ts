@@ -264,3 +264,24 @@ export function blogPostingSchema(info: ArticleInfo): JsonLdObject {
     publisher: ORGANIZATION_REF,
   };
 }
+
+/** Servicio de teleconsulta reumatológica (datos reales del material de la clínica). */
+export function teleconsultServiceSchema(path: string): JsonLdObject {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${site.url}${path}#teleconsulta`,
+    name: "Teleconsulta reumatológica",
+    serviceType: "Teleconsulta reumatológica",
+    description:
+      "Consulta reumatológica virtual por videollamada para pacientes de todo el Perú: revisión de exámenes previos, plan de tratamiento, receta digital y órdenes de exámenes si el doctor lo indica, y seguimiento.",
+    url: `${site.url}${path}`,
+    provider: ORGANIZATION_REF,
+    areaServed: { "@type": "Country", name: site.serviceArea },
+    availableChannel: [
+      { "@type": "ServiceChannel", name: "WhatsApp Videollamada" },
+      { "@type": "ServiceChannel", name: "Zoom" },
+      { "@type": "ServiceChannel", name: "Google Meet" },
+    ],
+  };
+}

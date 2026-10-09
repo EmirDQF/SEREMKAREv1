@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarClock, Phone, Video } from "lucide-react";
+import { CalendarClock } from "lucide-react";
 import type { Doctor } from "@/types/medical";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { buttonVariants, type ButtonVariant } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
-import { describeBlock } from "@/lib/booking";
+import { DoctorHours } from "@/components/shared/DoctorHours";
+import { BOOKING_HREF } from "@/data/navigation";
 import { clinicWhatsApp, messageForDoctor } from "@/lib/whatsapp";
 import { credentialsLabel } from "@/lib/doctor";
 import { cn } from "@/lib/utils";
@@ -37,31 +38,13 @@ export function DoctorAvailabilityDialog({ doctor, triggerClassName, triggerVari
           {doctor.title} · {credentialsLabel(doctor)}
         </DialogDescription>
 
-        <ul className="mt-6 space-y-3">
-          {doctor.schedule.map((block) => {
-            const text = describeBlock(block);
-            return (
-              <li key={text.key} className="rounded-2xl border border-line bg-bg p-4">
-                <p className="font-display font-semibold text-heading">{text.days}</p>
-                <p className="text-muted">{text.hours}</p>
-                <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-teal-tint px-3 py-1 text-sm font-medium text-primary">
-                  {block.modalities.includes("videollamada") ? (
-                    <Video aria-hidden strokeWidth={1.75} className="size-4" />
-                  ) : (
-                    <Phone aria-hidden strokeWidth={1.75} className="size-4" />
-                  )}
-                  {text.modalities}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
-
-        <p className="mt-5 text-[0.95rem] text-muted">
-          Te confirmamos el horario exacto por WhatsApp. Atendemos con cita previa.
-        </p>
+        <DoctorHours doctor={doctor} className="mt-6" />
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <Link href={BOOKING_HREF} className={cn(buttonVariants({ variant: "primary" }), "flex-1")}>
+            <CalendarClock aria-hidden strokeWidth={1.75} />
+            Reservar con {shortName(doctor.name)}
+          </Link>
           <a
             href={clinicWhatsApp(messageForDoctor(doctor.name))}
             target="_blank"
@@ -69,12 +52,12 @@ export function DoctorAvailabilityDialog({ doctor, triggerClassName, triggerVari
             className={cn(buttonVariants({ variant: "whatsapp" }), "flex-1")}
           >
             <WhatsAppIcon />
-            Agendar con {shortName(doctor.name)}
+            WhatsApp<span className="sr-only"> (se abre en otra pestaña)</span>
           </a>
-          <Link href={`/staff/${doctor.slug}`} className={cn(buttonVariants({ variant: "outline" }), "flex-1")}>
-            Ver perfil
-          </Link>
         </div>
+        <Link href={`/staff/${doctor.slug}`} className="mt-3 inline-flex min-h-12 items-center font-semibold text-primary hover:underline">
+          Ver perfil completo
+        </Link>
       </DialogContent>
     </Dialog>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CalendarPlus, CheckCircle2, Download, FileText, Lightbulb, MessageCircle, RotateCcw, Video, Wifi, XCircle } from "lucide-react";
 import { DemoBadge, PANEL } from "@/components/consulta/ui";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
@@ -236,10 +236,12 @@ function ReliefCheck() {
 }
 
 function MissingBooking() {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => headingRef.current?.focus(), []);
   return (
     <section className={cn(PANEL, "text-center")} aria-labelledby="sin-cita-titulo">
       <CheckCircle2 aria-hidden className="mx-auto size-12 text-muted" />
-      <h1 id="sin-cita-titulo" className="mt-3 text-h2 text-heading">
+      <h1 id="sin-cita-titulo" ref={headingRef} tabIndex={-1} className="mt-3 text-h2 text-heading focus:outline-none">
         No encontramos esta cita en este navegador
       </h1>
       <p className="mx-auto mt-2 max-w-md text-muted">

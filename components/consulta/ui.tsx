@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const PANEL = "glass rounded-[1.75rem] p-5 shadow-soft sm:p-8";
@@ -6,29 +7,30 @@ export const LEGEND = "font-display text-h3 text-heading";
 export const HINT = "mt-1 text-[0.95rem] text-muted";
 
 interface OptionProps {
-  selected: boolean;
+  selected?: boolean;
   onSelect: () => void;
   title: string;
   hint?: string;
   icon?: ReactNode;
-  /** checkbox (varias) o radio (una). */
-  role?: "radio" | "checkbox";
+  /**
+   * action: respuesta de un toque que avanza (botón nativo).
+   * checkbox: opción que se marca y desmarca dentro de una lista (role="checkbox").
+   */
+  mode?: "action" | "checkbox";
   tone?: "default" | "alert";
 }
 
-/**
- * Opción grande táctil (mín. 56 px), accesible por teclado: botón con aria-checked.
- * Usada en cada pregunta del asistente.
- */
-export function OptionButton({ selected, onSelect, title, hint, icon, role = "radio", tone = "default" }: OptionProps) {
+/** Opción grande táctil (mín. 56 px), accesible por teclado (Tab + Enter/Espacio). */
+export function OptionButton({ selected = false, onSelect, title, hint, icon, mode = "action", tone = "default" }: OptionProps) {
+  const isCheckbox = mode === "checkbox";
   return (
     <button
       type="button"
-      role={role}
-      aria-checked={selected}
+      role={isCheckbox ? "checkbox" : undefined}
+      aria-checked={isCheckbox ? selected : undefined}
       onClick={onSelect}
       className={cn(
-        "flex min-h-14 w-full items-center gap-3 rounded-2xl border bg-card-solid px-4 py-3 text-left transition-[border-color,background-color,transform] duration-200 active:scale-[0.99]",
+        "group flex min-h-14 w-full items-center gap-3 rounded-2xl border bg-card-solid px-4 py-3 text-left transition-[border-color,background-color,transform] duration-200 active:scale-[0.99]",
         "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ring",
         selected
           ? tone === "alert"
@@ -42,16 +44,19 @@ export function OptionButton({ selected, onSelect, title, hint, icon, role = "ra
         <span className="block font-semibold text-heading">{title}</span>
         {hint ? <span className="block text-sm text-muted">{hint}</span> : null}
       </span>
-      <span
-        aria-hidden
-        className={cn(
-          "grid size-6 shrink-0 place-items-center border-2",
-          role === "radio" ? "rounded-full" : "rounded-md",
-          selected ? (tone === "alert" ? "border-alert bg-alert" : "border-primary bg-primary") : "border-line-strong",
-        )}
-      >
-        {selected ? <span className={cn("size-2 bg-white", role === "radio" ? "rounded-full" : "rounded-sm")} /> : null}
-      </span>
+      {isCheckbox ? (
+        <span
+          aria-hidden
+          className={cn(
+            "grid size-6 shrink-0 place-items-center rounded-md border-2",
+            selected ? (tone === "alert" ? "border-alert bg-alert" : "border-primary bg-primary") : "border-line-strong",
+          )}
+        >
+          {selected ? <span className="size-2 rounded-sm bg-white" /> : null}
+        </span>
+      ) : (
+        <ChevronRight aria-hidden className="size-5 shrink-0 text-muted transition-transform group-hover:translate-x-0.5" />
+      )}
     </button>
   );
 }

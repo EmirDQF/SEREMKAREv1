@@ -4,11 +4,10 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { NavigationMenu } from "radix-ui";
 import { Logo } from "@/components/layout/Logo";
-import { ServicesMenu, SpecialtiesMenu } from "@/components/layout/MegaMenu";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { buttonVariants } from "@/components/ui/button";
-import { BOOKING_HREF, primaryLinks } from "@/data/navigation";
+import { BOOKING_HREF, moreLinks, primaryLinks } from "@/data/navigation";
 import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
 
@@ -32,34 +31,15 @@ export function Navbar({ compact }: NavbarProps) {
             : "min-h-[4.5rem] border-transparent bg-transparent",
         )}
       >
-        <Link href="/" aria-label={`${site.name}, ir al inicio`} className="shrink-0 rounded-full">
+        <Link href="/" aria-label={`${site.name}, ir al inicio`} className="flex shrink-0 items-center gap-2 rounded-full">
           <Logo />
+          <span className="hidden rounded-full bg-teal-tint px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary xl:inline">
+            Telemedicina
+          </span>
         </Link>
 
         <NavigationMenu.Root className="hidden lg:block" delayDuration={120}>
           <NavigationMenu.List className="relative flex items-center gap-0.5">
-            <NavigationMenu.Item>
-              <NavigationMenu.Trigger className={cn(NAV_ITEM, "group")}>
-                Especialidades
-                <ChevronDown
-                  aria-hidden
-                  strokeWidth={1.75}
-                  className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180"
-                />
-              </NavigationMenu.Trigger>
-              <SpecialtiesMenu />
-            </NavigationMenu.Item>
-            <NavigationMenu.Item>
-              <NavigationMenu.Trigger className={cn(NAV_ITEM, "group")}>
-                Servicios
-                <ChevronDown
-                  aria-hidden
-                  strokeWidth={1.75}
-                  className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180"
-                />
-              </NavigationMenu.Trigger>
-              <ServicesMenu />
-            </NavigationMenu.Item>
             {primaryLinks.map((link) => (
               <NavigationMenu.Item key={link.href}>
                 <NavigationMenu.Link asChild>
@@ -69,6 +49,29 @@ export function Navbar({ compact }: NavbarProps) {
                 </NavigationMenu.Link>
               </NavigationMenu.Item>
             ))}
+            <NavigationMenu.Item className="relative">
+              <NavigationMenu.Trigger className={cn(NAV_ITEM, "group")}>
+                Más
+                <ChevronDown
+                  aria-hidden
+                  strokeWidth={1.75}
+                  className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180"
+                />
+              </NavigationMenu.Trigger>
+              <NavigationMenu.Content className="glass absolute right-0 top-full mt-2 w-72 rounded-3xl p-2 shadow-lift">
+                <ul className="grid">
+                  {moreLinks.map((link) => (
+                    <li key={link.href}>
+                      <NavigationMenu.Link asChild>
+                        <Link href={link.href} className="flex min-h-12 items-center rounded-2xl px-4 font-medium text-heading hover:bg-teal-tint">
+                          {link.label}
+                        </Link>
+                      </NavigationMenu.Link>
+                    </li>
+                  ))}
+                </ul>
+              </NavigationMenu.Content>
+            </NavigationMenu.Item>
           </NavigationMenu.List>
         </NavigationMenu.Root>
 

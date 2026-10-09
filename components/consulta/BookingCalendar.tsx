@@ -98,7 +98,7 @@ export function BookingCalendar({ doctorId, selected, onSelect, onBack, onContin
 
 function DayStrip({ days, current, onPick }: { days: readonly SlotDay[]; current: string | null; onPick: (date: string) => void }) {
   return (
-    <div role="radiogroup" aria-label="Días con horarios" className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2">
+    <div role="group" aria-label="Días con horarios" className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2">
       {days.map((day) => {
         const [weekday, ...rest] = formatLimaDay(day.date).split(", ");
         const active = day.date === current;
@@ -106,8 +106,7 @@ function DayStrip({ days, current, onPick }: { days: readonly SlotDay[]; current
           <button
             key={day.date}
             type="button"
-            role="radio"
-            aria-checked={active}
+            aria-pressed={active}
             onClick={() => onPick(day.date)}
             className={cn(
               "min-h-16 min-w-24 shrink-0 snap-start rounded-2xl border px-3 py-2 text-left transition-colors",
