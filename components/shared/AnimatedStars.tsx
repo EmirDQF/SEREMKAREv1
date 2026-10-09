@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { type Variants } from "motion/react";
+import * as m from "motion/react-m";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +22,7 @@ interface AnimatedStarsProps {
 export function AnimatedStars({ rating, className }: AnimatedStarsProps) {
   const filled = Math.round(rating);
   return (
-    <motion.span
+    <m.span
       role="img"
       aria-label={`${rating} de ${MAX_STARS} estrellas`}
       className={cn("inline-flex gap-0.5", className)}
@@ -31,14 +32,14 @@ export function AnimatedStars({ rating, className }: AnimatedStarsProps) {
       viewport={{ once: true, amount: 0.8 }}
     >
       {Array.from({ length: MAX_STARS }, (_, index) => (
-        <motion.span key={index} variants={index < filled ? star : undefined} className="inline-flex">
+        <m.span key={index} variants={index < filled ? star : undefined} className="inline-flex">
           <Star
             aria-hidden
             strokeWidth={1.5}
             className={cn("size-4", index < filled ? "fill-rating text-rating" : "text-line-strong")}
           />
-        </motion.span>
+        </m.span>
       ))}
-    </motion.span>
+    </m.span>
   );
 }

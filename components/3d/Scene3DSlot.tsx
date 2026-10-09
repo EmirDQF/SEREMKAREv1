@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
-import { useCanvasStatus, usePageIdle, useSceneInView, useWebGLSupport } from "@/components/3d/hooks";
+import { useCanvasStatus, useDeviceTier, usePageIdle, useSceneInView, useWebGLSupport } from "@/components/3d/hooks";
 import type { SceneViewProps } from "@/components/3d/SceneView";
 import type { SceneId, SceneProps } from "@/components/3d/scene-types";
 import { sceneRegistry } from "@/lib/scene-registry";
@@ -48,7 +48,10 @@ export function Scene3DSlot<K extends SceneId>({
   const [rendered, setRendered] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  const mounted = webgl === true && idle && entered && !failed && status !== "failed";
+  const tier = useDeviceTier();
+  // Gama baja / ahorro de datos / red lenta / reducir animaciones: solo el fallback (sin three.js).
+  const capable = tier !== null && tier !== "low";
+  const mounted = capable && webgl === true && idle && entered && !failed && status !== "failed";
   const showing3D = mounted && status === "ready" && rendered;
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
+import dynamic from "next/dynamic";
 import { BookingCalendar } from "@/components/consulta/BookingCalendar";
-import { BookingForm } from "@/components/consulta/BookingForm";
 import { StepBar } from "@/components/consulta/StepBar";
 import { TriageResult } from "@/components/consulta/TriageResult";
 import { TriageWizard } from "@/components/consulta/TriageWizard";
@@ -12,6 +12,11 @@ import { doctors } from "@/data/doctors";
 import { getSpecialty } from "@/data/specialties";
 import { triageNotes, type ConsultaService, type ConsultaState } from "@/lib/consulta/state";
 import { EMPTY_ANSWERS, isComplete, triage, type TriageAnswers, type TriageEntry, type TriageResult as Result } from "@/lib/triage/engine";
+
+/** El formulario (con zod para validar) se descarga solo al llegar al paso de datos. */
+const BookingForm = dynamic(() => import("@/components/consulta/BookingForm").then((mod) => mod.BookingForm), {
+  loading: () => <div aria-hidden className="h-[36rem] animate-pulse rounded-[1.75rem] bg-bg-alt" />,
+});
 
 interface ConsultaAppProps {
   /** Servicio preseleccionado desde un CTA (?servicio=…). No es un dato personal. */
@@ -39,6 +44,7 @@ function initialFor(service: ConsultaService | null): Partial<ConsultaState> {
 }
 
 export function ConsultaApp({ initialService }: ConsultaAppProps) {
+  // Sin skeleton: el primer paso (filtro de alarmas) se pinta desde el servidor → CLS 0.
   const { state, hydrated, update, reset } = useConsultaState(initialFor(initialService));
   const result = useMemo(() => safeTriage(state.answers), [state.answers]);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -66,10 +72,6 @@ export function ConsultaApp({ initialService }: ConsultaAppProps) {
 
   function book(doctorId: string) {
     update({ doctorId, step: "horario", slotStart: null, reason: state.reason || defaultReason(state.answers.entry) });
-  }
-
-  if (!hydrated) {
-    return <div aria-hidden className="h-[28rem] animate-pulse rounded-[1.75rem] bg-bg-alt" />;
   }
 
   return (

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { ArrowRight, Menu, Phone, X } from "lucide-react";
 import { Dialog as DialogPrimitive } from "radix-ui";
-import { motion, type Variants } from "motion/react";
+import { type Variants } from "motion/react";
+import * as m from "motion/react-m";
 import { Logo } from "@/components/layout/Logo";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
@@ -54,9 +55,9 @@ export function MobileMenu() {
           </DialogPrimitive.Description>
 
           <nav aria-label="Menú móvil" className="container-page flex flex-1 flex-col pb-8 pt-6">
-            <motion.ul variants={listVariants} initial="hidden" animate="visible" className="space-y-1">
+            <m.ul variants={listVariants} initial="hidden" animate="visible" className="space-y-1">
               {MENU_LINKS.map((link) => (
-                <motion.li key={link.href} variants={itemVariants}>
+                <m.li key={link.href} variants={itemVariants}>
                   <DialogPrimitive.Close asChild>
                     <Link
                       href={link.href}
@@ -66,9 +67,9 @@ export function MobileMenu() {
                       <ArrowRight aria-hidden strokeWidth={1.75} className="size-5 text-primary" />
                     </Link>
                   </DialogPrimitive.Close>
-                </motion.li>
+                </m.li>
               ))}
-            </motion.ul>
+            </m.ul>
 
             <div className="mt-auto space-y-3 pt-8">
               <DialogPrimitive.Close asChild>

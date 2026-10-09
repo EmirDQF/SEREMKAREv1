@@ -2,7 +2,8 @@
 
 import { useRef, type PointerEvent } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
+import { useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
+import * as m from "motion/react-m";
 import { Play } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { SectionHeading } from "@/components/shared/SectionHeading";
@@ -53,7 +54,7 @@ export function VideoSection() {
                 onPointerLeave={handleLeave}
                 className="group relative block aspect-video w-full overflow-hidden rounded-[2rem] shadow-lift"
               >
-                <motion.div style={{ y: imageY }} className="absolute -inset-y-[7%] inset-x-0">
+                <m.div style={{ y: imageY }} className="absolute -inset-y-[7%] inset-x-0">
                   <Image
                     src={homeImages.video}
                     alt={homeImages.videoAlt}
@@ -61,13 +62,13 @@ export function VideoSection() {
                     sizes="(min-width: 1024px) 1024px, 92vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   />
-                </motion.div>
+                </m.div>
                 <span
                   aria-hidden
                   className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent"
                 />
                 <span className="absolute inset-0 grid place-items-center">
-                  <motion.span
+                  <m.span
                     style={{ x: magnetX, y: magnetY }}
                     className="relative grid size-20 place-items-center rounded-full bg-white text-navy shadow-lift transition-transform duration-300 group-hover:scale-110 sm:size-24"
                   >
@@ -81,12 +82,12 @@ export function VideoSection() {
                       className="absolute inset-0 animate-pulse-ring rounded-full border border-white/70 [animation-delay:1.6s]"
                     />
                     <Play aria-hidden className="relative ml-1 size-8 fill-current" />
-                  </motion.span>
+                  </m.span>
                 </span>
-                <motion.span style={{ y: captionY }} className="absolute inset-x-0 bottom-0 p-5 text-left sm:p-8">
+                <m.span style={{ y: captionY }} className="absolute inset-x-0 bottom-0 p-5 text-left sm:p-8">
                   <span className="block font-display text-lg font-bold text-white sm:text-2xl">{VIDEO_TITLE}</span>
                   <span className="mt-1 block text-sm text-slate-200">Reproducir video · 3 min</span>
-                </motion.span>
+                </m.span>
               </DialogTrigger>
               <DialogContent bare className="max-w-5xl">
                 <DialogTitle className="sr-only">{VIDEO_TITLE}</DialogTitle>

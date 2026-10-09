@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, type PointerEvent, type ReactNode } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { useMotionValue, useSpring } from "motion/react";
+import * as m from "motion/react-m";
 import { useReducedMotionPreference } from "@/lib/motion-preference";
 import { cn } from "@/lib/utils";
 
@@ -49,7 +50,7 @@ export function TiltCard({ children, className, maxTilt = 6, sheen = true }: Til
   }
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       data-micro-host
       onPointerMove={handleMove}
@@ -64,6 +65,6 @@ export function TiltCard({ children, className, maxTilt = 6, sheen = true }: Til
           className="pointer-events-none absolute inset-0 z-20 rounded-[inherit] opacity-0 mix-blend-soft-light transition-opacity duration-300 group-hover/tilt:opacity-100 bg-[radial-gradient(380px_circle_at_var(--sheen-x,50%)_var(--sheen-y,50%),rgb(255_255_255/0.55),rgb(125_211_252/0.25)_35%,transparent_65%)]"
         />
       ) : null}
-    </motion.div>
+    </m.div>
   );
 }

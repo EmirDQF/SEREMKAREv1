@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { MedicalDisclaimer } from "@/components/shared/MedicalDisclaimer";
 import { clinicWhatsApp } from "@/lib/whatsapp";
@@ -21,6 +22,7 @@ export default function ConsultorioLayout({ children }: LayoutProps<"/">) {
             <Logo />
           </Link>
           <div className="flex items-center gap-1 sm:gap-2">
+            <ThemeToggle />
             <a
               href={clinicWhatsApp(WHATSAPP_MESSAGE)}
               target="_blank"

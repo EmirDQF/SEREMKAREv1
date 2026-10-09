@@ -48,7 +48,7 @@ export function Logo({ className, tone = "default", showTagline = false }: LogoP
             inverted ? "text-white" : "text-heading",
           )}
         >
-          SERME<span className="text-teal">KARE</span>
+          SERME<span className={inverted ? "text-teal" : "text-primary"}>KARE</span>
         </span>
         {showTagline ? (
           <span className={cn("mt-1 block text-[0.7rem] font-medium", inverted ? "text-slate-300" : "text-muted")}>

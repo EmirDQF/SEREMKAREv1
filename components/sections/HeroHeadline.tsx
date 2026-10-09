@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { type Variants } from "motion/react";
+import * as m from "motion/react-m";
 
 const LEAD_WORDS = ["Consulta", "con", "un", "reumatólogo", "especialista"] as const;
 const ACCENT_WORDS = ["sin", "salir", "de", "casa"] as const;
@@ -23,7 +24,7 @@ interface HeroHeadlineProps {
 /** Titular con revelado palabra a palabra (el texto completo queda en el HTML para SEO y lectores de pantalla). */
 export function HeroHeadline({ id }: HeroHeadlineProps) {
   return (
-    <motion.h1
+    <m.h1
       id={id}
       className="text-display text-heading"
       variants={container}
@@ -32,20 +33,20 @@ export function HeroHeadline({ id }: HeroHeadlineProps) {
       aria-label="Consulta con un reumatólogo especialista sin salir de casa"
     >
       {LEAD_WORDS.map((w) => (
-        <motion.span key={w} variants={word} aria-hidden className="mr-[0.24em] inline-block">
+        <m.span key={w} variants={word} aria-hidden className="mr-[0.24em] inline-block">
           {w}
-        </motion.span>
+        </m.span>
       ))}
       {ACCENT_WORDS.map((w) => (
-        <motion.span
+        <m.span
           key={w}
           variants={word}
           aria-hidden
           className="mr-[0.24em] inline-block bg-gradient-to-r from-primary to-video bg-clip-text text-transparent last:mr-0 dark:from-teal"
         >
           {w}
-        </motion.span>
+        </m.span>
       ))}
-    </motion.h1>
+    </m.h1>
   );
 }

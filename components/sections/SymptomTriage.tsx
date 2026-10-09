@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { AlertTriangle, ArrowUpRight, PersonStanding, Stethoscope, Tags } from "lucide-react";
 import type { BodyZoneId, Doctor, SpecialtySlug } from "@/types/medical";
 import { BodyMap } from "@/components/sections/BodyMap";
@@ -82,7 +83,7 @@ function resultForTarget(target: TriageTarget): TriageResult {
 
 function ResultCard({ result }: { result: TriageResult }) {
   return (
-    <motion.article
+    <m.article
       key={result.key}
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
@@ -158,7 +159,7 @@ function ResultCard({ result }: { result: TriageResult }) {
         <WhatsAppIcon />
         Prefiero escribir por WhatsApp<span className="sr-only"> (se abre en otra pestaña)</span>
       </a>
-    </motion.article>
+    </m.article>
   );
 }
 

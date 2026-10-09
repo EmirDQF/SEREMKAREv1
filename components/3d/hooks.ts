@@ -1,5 +1,7 @@
 "use client";
 
+import { pickDeviceTier, readTierSignals, type DeviceTier } from "@/lib/device-tier";
+
 import { useEffect, useState, useSyncExternalStore, type RefObject } from "react";
 import { sceneRegistry, type SceneRegistryState } from "@/lib/scene-registry";
 import { isWebGLAvailable } from "@/lib/webgl";
@@ -89,4 +91,17 @@ export function usePageIdle(): boolean {
   }, []);
 
   return idle;
+}
+
+/**
+ * Nivel del dispositivo (lib/device-tier). null en el servidor y hasta hidratar; en «low» el 3D
+ * nunca se monta y three.js no se descarga.
+ */
+export function useDeviceTier(): DeviceTier | null {
+  const [tier, setTier] = useState<DeviceTier | null>(null);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- lectura única de las señales del navegador
+    setTier(pickDeviceTier(readTierSignals()));
+  }, []);
+  return tier;
 }

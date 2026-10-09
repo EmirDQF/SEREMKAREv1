@@ -1,7 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, type Transition, type Variants } from "motion/react";
+import { type Transition, type Variants } from "motion/react";
+import * as m from "motion/react-m";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const RISE_PX = 24;
@@ -33,7 +34,7 @@ interface RevealProps {
 
 /** Entrada suave (opacidad + desplazamiento) al entrar en pantalla. Sin JS se ve igual (noscript en layout). */
 export function Reveal({ children, className, delay = 0, as = "div" }: RevealProps) {
-  const Component = motion[as];
+  const Component = m[as];
   return (
     <Component
       data-reveal
@@ -66,7 +67,7 @@ interface RevealGroupProps {
 
 /** Contenedor que escalona la entrada de sus `RevealItem`. */
 export function RevealGroup({ children, className, as = "div" }: RevealGroupProps) {
-  const Component = motion[as];
+  const Component = m[as];
   return (
     <Component className={className} variants={groupVariants} initial="hidden" whileInView="visible" viewport={VIEWPORT}>
       {children}
@@ -89,7 +90,7 @@ interface RevealItemProps {
 }
 
 export function RevealItem({ children, className, as = "div", depth = false }: RevealItemProps) {
-  const Component = motion[as];
+  const Component = m[as];
   return (
     <Component data-reveal className={className} variants={depth ? depthItemVariants : itemVariants}>
       {children}

@@ -7,6 +7,7 @@ import { SceneEnvContext, type SceneEnv } from "@/components/3d/scene-context";
 import { SceneErrorBoundary } from "@/components/3d/SceneErrorBoundary";
 import { useCanvasStatus, useReducedMotion } from "@/components/3d/hooks";
 import { sceneRegistry } from "@/lib/scene-registry";
+import { pickDeviceTier, readTierSignals } from "@/lib/device-tier";
 import { QUALITY_SETTINGS, downgradeTier, pickQualityTier, readDeviceSignals, type QualityTier } from "@/lib/quality";
 import { useTheme } from "@/lib/theme";
 
@@ -72,7 +73,10 @@ export default function CanvasRoot() {
   const { activeSlots } = useCanvasStatus();
   const reducedMotion = useReducedMotion();
   const theme = useTheme() ?? "light";
-  const [tier, setTier] = useState<QualityTier>(() => pickQualityTier(readDeviceSignals()));
+  // Gama media (lib/device-tier): 3D simplificado desde el inicio (DPR bajo, sin postprocesado).
+  const [tier, setTier] = useState<QualityTier>(() =>
+    pickDeviceTier(readTierSignals()) === "mid" ? "mobile" : pickQualityTier(readDeviceSignals()),
+  );
   const [finePointer] = useState(() => window.matchMedia("(pointer: fine)").matches);
 
   const active = activeSlots.length > 0;

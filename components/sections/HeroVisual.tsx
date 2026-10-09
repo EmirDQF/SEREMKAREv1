@@ -2,7 +2,8 @@
 
 import { useMemo, useRef, type ReactNode } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useScroll, useTransform, type MotionValue } from "motion/react";
+import * as m from "motion/react-m";
 import { MapPin, ShieldCheck, Video } from "lucide-react";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import { JointMotif } from "@/components/shared/JointMotif";
@@ -20,7 +21,7 @@ interface FloatingCardProps {
 
 function FloatingCard({ children, className, y, delay }: FloatingCardProps) {
   return (
-    <motion.div
+    <m.div
       style={{ y }}
       initial={{ opacity: 0, scale: 0.94 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -28,7 +29,7 @@ function FloatingCard({ children, className, y, delay }: FloatingCardProps) {
       className={cn("glass absolute z-[45] flex items-center gap-3 rounded-2xl px-4 py-3 shadow-lift", className)}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -62,14 +63,14 @@ export function HeroVisual() {
           src={homeImages.hero}
           alt={homeImages.heroAlt}
           fill
-          preload
-          fetchPriority="high"
-          sizes="(min-width: 1024px) 520px, 90vw"
+          loading="eager"
+          // Sin preload de prioridad alta: el LCP es el texto del hero; la foto no compite con fuentes y CSS.
+          sizes="(min-width: 1024px) 470px, 80vw"
           className="object-cover object-top"
         />
       </div>
 
-      <motion.div style={{ y: yJoint }} className="absolute -bottom-[6%] -left-[3%] aspect-[5/6] w-[56%] sm:-left-[12%]">
+      <m.div style={{ y: yJoint }} className="absolute -bottom-[6%] -left-[3%] aspect-[5/6] w-[56%] sm:-left-[12%]">
         <div aria-hidden className="absolute inset-[18%] rounded-full bg-teal/20 blur-3xl dark:bg-teal/15" />
         <Scene3DSlot
           scene="joint"
@@ -81,7 +82,7 @@ export function HeroVisual() {
             </div>
           }
         />
-      </motion.div>
+      </m.div>
 
       <FloatingCard y={ySlow} delay={0.5} className="left-0 top-[10%] sm:-left-6">
         <CardIcon>

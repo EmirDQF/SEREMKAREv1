@@ -1,4 +1,3 @@
-import { z } from "zod";
 import type { BookingConfirmation } from "@/lib/booking-provider/types";
 import { EMPTY_ANSWERS, type TriageAnswers, type TriageResult } from "@/lib/triage/engine";
 
@@ -41,39 +40,76 @@ export const INITIAL_STATE: ConsultaState = {
 };
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const UID = /^[A-Za-z0-9_-]{6,80}$/;
+const REASON_MAX = 500;
 
-const entrySchema = z.union([
-  z.object({ kind: z.literal("zone"), zone: z.enum(["cuello", "hombros", "manos", "espalda", "cadera", "rodillas", "pies"]) }),
-  z.object({
-    kind: z.literal("condition"),
-    slug: z.enum(["artrosis", "artritis-reumatoide", "gota", "lupus", "fibromialgia", "osteoporosis", "espondiloartritis"]),
-  }),
-  z.object({ kind: z.literal("bone") }),
-  z.object({ kind: z.literal("unsure") }),
-]);
+/*
+ * Validación manual (sin zod) para no sumar ~90 KB al JS inicial: estos datos vienen de
+ * sessionStorage del propio navegador, pero igual se validan antes de usarlos.
+ */
+const ZONES = new Set(["cuello", "hombros", "manos", "espalda", "cadera", "rodillas", "pies"]);
+const CONDITIONS = new Set(["artrosis", "artritis-reumatoide", "gota", "lupus", "fibromialgia", "osteoporosis", "espondiloartritis"]);
+const RED_FLAG_IDS = new Set(["articulacion", "fiebre", "fractura", "esfinteres", "vision", "debilidad", "pecho", "aire"]);
+const STEPS = new Set<string>(STEP_ORDER);
 
-const answersSchema = z.object({
-  redFlagsChecked: z.boolean(),
-  redFlags: z.array(z.enum(["articulacion", "fiebre", "fractura", "esfinteres", "vision", "debilidad", "pecho", "aire"])),
-  entry: entrySchema.nullable(),
-  duration: z.enum(["lt6w", "6w-3m", "gt3m"]).nullable(),
-  swelling: z.boolean().nullable(),
-  stiffness: z.enum(["none", "lt30", "gt30"]).nullable(),
-  backPattern: z.boolean().nullable(),
-  boneRisks: z.record(z.string().max(40), z.boolean()).nullable(),
-  priorExams: z.boolean().nullable(),
-});
+type Unknown = Record<string, unknown>;
+const isObject = (value: unknown): value is Unknown => typeof value === "object" && value !== null && !Array.isArray(value);
+const isNullableBool = (value: unknown) => value === null || typeof value === "boolean";
+const isOneOf = (value: unknown, options: readonly string[]) => value === null || (typeof value === "string" && options.includes(value));
+const isIsoDate = (value: unknown): value is string => typeof value === "string" && !Number.isNaN(Date.parse(value)) && /^\d{4}-\d{2}-\d{2}T/.test(value);
+const isHttpsOrNull = (value: unknown) => value === null || (typeof value === "string" && /^https:\/\/[^\s]+$/.test(value));
 
-const stateSchema = z.object({
-  version: z.literal(1),
-  step: z.enum(["evaluacion", "orientacion", "horario", "datos"]),
-  answers: answersSchema,
-  skipped: z.boolean(),
-  service: z.enum(["teleconsulta", "densitometria"]).nullable(),
-  doctorId: z.string().regex(SLUG).max(60).nullable(),
-  slotStart: z.iso.datetime({ offset: true }).nullable(),
-  reason: z.string().max(500),
-});
+function isEntry(value: unknown): boolean {
+  if (value === null) return true;
+  if (!isObject(value)) return false;
+  switch (value.kind) {
+    case "zone":
+      return typeof value.zone === "string" && ZONES.has(value.zone);
+    case "condition":
+      return typeof value.slug === "string" && CONDITIONS.has(value.slug);
+    case "bone":
+    case "unsure":
+      return true;
+    default:
+      return false;
+  }
+}
+
+function isBoneRisks(value: unknown): boolean {
+  return value === null || (isObject(value) && Object.entries(value).every(([key, flag]) => key.length <= 40 && typeof flag === "boolean"));
+}
+
+function isAnswers(value: unknown): value is TriageAnswers {
+  return (
+    isObject(value) &&
+    typeof value.redFlagsChecked === "boolean" &&
+    Array.isArray(value.redFlags) &&
+    value.redFlags.every((flag) => typeof flag === "string" && RED_FLAG_IDS.has(flag)) &&
+    isEntry(value.entry) &&
+    isOneOf(value.duration, ["lt6w", "6w-3m", "gt3m"]) &&
+    isNullableBool(value.swelling) &&
+    isOneOf(value.stiffness, ["none", "lt30", "gt30"]) &&
+    isNullableBool(value.backPattern) &&
+    isBoneRisks(value.boneRisks) &&
+    isNullableBool(value.priorExams)
+  );
+}
+
+function isState(value: unknown): value is ConsultaState {
+  return (
+    isObject(value) &&
+    value.version === 1 &&
+    typeof value.step === "string" &&
+    STEPS.has(value.step) &&
+    isAnswers(value.answers) &&
+    typeof value.skipped === "boolean" &&
+    isOneOf(value.service, ["teleconsulta", "densitometria"]) &&
+    (value.doctorId === null || (typeof value.doctorId === "string" && value.doctorId.length <= 60 && SLUG.test(value.doctorId))) &&
+    (value.slotStart === null || isIsoDate(value.slotStart)) &&
+    typeof value.reason === "string" &&
+    value.reason.length <= REASON_MAX
+  );
+}
 
 function safeJson(raw: string | null): unknown {
   if (!raw) return null;
@@ -85,8 +121,8 @@ function safeJson(raw: string | null): unknown {
 }
 
 export function parseState(raw: string | null): ConsultaState {
-  const parsed = stateSchema.safeParse(safeJson(raw));
-  return parsed.success ? (parsed.data as ConsultaState) : INITIAL_STATE;
+  const value = safeJson(raw);
+  return isState(value) ? value : INITIAL_STATE;
 }
 
 export function serializeState(state: ConsultaState): string {
@@ -132,21 +168,26 @@ export function triageNotes(result: TriageResult | null): string | null {
 
 export const confirmationKey = (uid: string) => `${CONFIRMATION_PREFIX}${uid}`;
 
-const confirmationSchema = z.object({
-  uid: z.string().regex(/^[A-Za-z0-9_-]{6,80}$/),
-  doctorId: z.string().max(60),
-  modality: z.enum(["meet", "presencial"]),
-  start: z.iso.datetime({ offset: true }),
-  end: z.iso.datetime({ offset: true }),
-  status: z.enum(["accepted", "pending", "cancelled"]),
-  meetingUrl: z.url({ protocol: /^https$/ }).nullable(),
-  rescheduleUrl: z.url({ protocol: /^https$/ }).nullable(),
-  cancelUrl: z.url({ protocol: /^https$/ }).nullable(),
-  isDemo: z.boolean(),
-});
+function isConfirmation(value: unknown): value is BookingConfirmation {
+  return (
+    isObject(value) &&
+    typeof value.uid === "string" &&
+    UID.test(value.uid) &&
+    typeof value.doctorId === "string" &&
+    value.doctorId.length <= 60 &&
+    (value.modality === "meet" || value.modality === "presencial") &&
+    isIsoDate(value.start) &&
+    isIsoDate(value.end) &&
+    (value.status === "accepted" || value.status === "pending" || value.status === "cancelled") &&
+    isHttpsOrNull(value.meetingUrl) &&
+    isHttpsOrNull(value.rescheduleUrl) &&
+    isHttpsOrNull(value.cancelUrl) &&
+    typeof value.isDemo === "boolean"
+  );
+}
 
 /** Confirmación guardada en este navegador (validada: nada de enlaces que no sean https). */
 export function parseConfirmation(raw: string | null): BookingConfirmation | null {
-  const parsed = confirmationSchema.safeParse(safeJson(raw));
-  return parsed.success ? parsed.data : null;
+  const value = safeJson(raw);
+  return isConfirmation(value) ? value : null;
 }

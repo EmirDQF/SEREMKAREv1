@@ -10,7 +10,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "test:coverage": "vitest run --coverage",
-    "check:links": "node scripts/check-links.mjs"
+    "check:links": "node scripts/check-links.mjs",
+    "measure:js": "node scripts/measure-js.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

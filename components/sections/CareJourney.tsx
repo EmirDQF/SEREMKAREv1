@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
+import { useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
+import * as m from "motion/react-m";
 import { CalendarCheck, ClipboardList, HeartHandshake, ScanSearch } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { SectionHeading } from "@/components/shared/SectionHeading";
@@ -63,15 +64,15 @@ function StepNode({ icon: StepIcon, index, progress }: StepNodeProps) {
   const lit = useTransform(progress, [threshold - 0.04, threshold + 0.04], [0, 1]);
   return (
     <span className="absolute -left-16 top-0 grid size-12 place-items-center rounded-2xl border border-line bg-card-solid text-primary shadow-soft">
-      <motion.span
+      <m.span
         aria-hidden
         style={{ opacity: lit }}
         className="absolute inset-0 rounded-2xl bg-gradient-to-br from-teal to-[#0284c7] shadow-[0_0_28px_rgb(0_168_150/0.55)]"
       />
       <StepIcon aria-hidden strokeWidth={1.75} className="relative size-6" />
-      <motion.span aria-hidden style={{ opacity: lit }} className="absolute inset-0 grid place-items-center text-white">
+      <m.span aria-hidden style={{ opacity: lit }} className="absolute inset-0 grid place-items-center text-white">
         <StepIcon strokeWidth={1.75} className="size-6" />
-      </motion.span>
+      </m.span>
     </span>
   );
 }
@@ -81,7 +82,7 @@ function DrawnCheck({ delay }: { delay: number }) {
   return (
     <span aria-hidden className="mt-1 grid size-5 shrink-0 place-items-center rounded-md border-2 border-teal">
       <svg viewBox="0 0 16 16" className="size-3.5 text-primary">
-        <motion.path
+        <m.path
           d="M3 8.5 6.5 12 13 4.5"
           fill="none"
           stroke="currentColor"
@@ -120,7 +121,7 @@ export function CareJourney() {
           />
           <ol ref={ref} className="relative mt-10 space-y-8 pl-16">
             <span aria-hidden className="absolute bottom-6 left-6 top-6 w-0.5 -translate-x-1/2 rounded-full bg-line-strong" />
-            <motion.span
+            <m.span
               aria-hidden
               style={{ scaleY: progress }}
               className="absolute bottom-6 left-6 top-6 w-0.5 origin-top -translate-x-1/2 rounded-full bg-gradient-to-b from-teal to-[#0284c7]"
@@ -141,7 +142,7 @@ export function CareJourney() {
         <Reveal className="lg:sticky lg:top-28 lg:self-start lg:pt-16">
           <div className="overflow-hidden rounded-[2rem] border border-line bg-card-solid shadow-lift">
             <div ref={imageRef} className="relative aspect-[16/10] overflow-hidden">
-              <motion.div style={{ scale: imageScale }} className="absolute inset-0">
+              <m.div style={{ scale: imageScale }} className="absolute inset-0">
                 <Image
                   src={homeImages.careJourney}
                   alt={homeImages.careJourneyAlt}
@@ -149,7 +150,7 @@ export function CareJourney() {
                   sizes="(min-width: 1024px) 480px, 92vw"
                   className="object-cover"
                 />
-              </motion.div>
+              </m.div>
             </div>
             <div className="p-6 sm:p-8">
               <h3 className="text-h3">Tu primera consulta: qué llevar</h3>

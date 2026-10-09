@@ -1,7 +1,8 @@
 "use client";
 
 import { Fragment } from "react";
-import { motion, type Variants } from "motion/react";
+import { type Variants } from "motion/react";
+import * as m from "motion/react-m";
 import { splitKineticWords } from "@/lib/kinetic";
 import { cn } from "@/lib/utils";
 
@@ -48,7 +49,7 @@ export function KineticText({ text, accent, tone = "default", className, priorit
   const accentClass = tone === "inverted" ? "text-gradient-teal-light" : "text-gradient-teal";
 
   return (
-    <motion.span
+    <m.span
       data-kinetic
       className={className}
       variants={container}
@@ -57,12 +58,12 @@ export function KineticText({ text, accent, tone = "default", className, priorit
     >
       {words.map((item, index) => (
         <Fragment key={`${item.word}-${index}`}>
-          <motion.span variants={priority ? priorityWord : word} className={cn("inline-block", item.accent && accentClass)}>
+          <m.span variants={priority ? priorityWord : word} className={cn("inline-block", item.accent && accentClass)}>
             {item.word}
-          </motion.span>
+          </m.span>
           {index < words.length - 1 ? " " : null}
         </Fragment>
       ))}
-    </motion.span>
+    </m.span>
   );
 }

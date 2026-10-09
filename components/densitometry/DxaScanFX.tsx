@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
-import { animate, motion, useInView, useMotionValue, useTransform } from "motion/react";
+import { animate, useInView, useMotionValue, useTransform } from "motion/react";
+import * as m from "motion/react-m";
 import { densitometry } from "@/data/densitometry";
 import { useReducedMotionPreference } from "@/lib/motion-preference";
 import { cn } from "@/lib/utils";
@@ -54,7 +55,7 @@ export function DxaScanFX({ className }: DxaScanFXProps) {
       >
         <defs>
           <clipPath id={`reveal-${uid}`}>
-            <motion.rect x={BODY_LEFT} y="100" height="90" width={revealWidth} />
+            <m.rect x={BODY_LEFT} y="100" height="90" width={revealWidth} />
           </clipPath>
           <linearGradient id={`beam-${uid}`} x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stopColor="#2dd4bf" stopOpacity="0.55" />
@@ -95,13 +96,13 @@ export function DxaScanFX({ className }: DxaScanFXProps) {
         </g>
 
         {/* Brazo del densitómetro con la línea láser */}
-        <motion.g style={{ x: armX }}>
+        <m.g style={{ x: armX }}>
           <rect x="-3" y="34" width="6" height="74" rx="3" fill="#7dd3fc" fillOpacity="0.5" />
           <rect x="-22" y="104" width="44" height="14" rx="5" fill="#e6edf5" />
           <polygon points="-16,118 16,118 7,170 -7,170" fill={`url(#beam-${uid})`} />
           <line x1="0" y1="118" x2="0" y2="172" stroke="#2dd4bf" strokeWidth="2" />
           <circle cx="0" cy="111" r="2.5" fill="#00a896" />
-        </motion.g>
+        </m.g>
       </svg>
       <ul aria-label="Datos del estudio" className="relative mt-3 flex flex-wrap justify-center gap-2 font-mono text-xs text-teal-200">
         {densitometry.hud.map((item) => (

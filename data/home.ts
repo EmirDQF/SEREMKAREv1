@@ -9,7 +9,7 @@ export const homeImages = {
   hero: unsplash("1758691463620-188ca7c1a04f", 1000),
   heroAlt: "Médico en una videoconsulta con su paciente desde la laptop (foto ilustrativa)",
   careJourney: unsplash("1758691462858-f1286e5daf40", 900),
-  careJourneyAlt: "Médica conversando con un paciente adulto mayor en el consultorio",
+  careJourneyAlt: "Médica en una videoconsulta desde su escritorio (foto ilustrativa)",
   guided: unsplash("1666214280557-f1b5022eb634", 1000),
   guidedAlt: "Especialista revisando imágenes de ecografía en un monitor",
   telemedicine: unsplash("1758691461932-d0aa0ebf6b31", 900),

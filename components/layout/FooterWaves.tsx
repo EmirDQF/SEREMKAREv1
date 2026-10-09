@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "motion/react";
+import { useMotionValue, useSpring, useTransform, type MotionValue } from "motion/react";
+import * as m from "motion/react-m";
 
 const WAVES = 6;
 const WIDTH = 1440;
@@ -28,7 +29,7 @@ interface WaveProps {
 
 function Wave({ index, phase, lift }: WaveProps) {
   const d = useTransform([phase, lift], ([p, l]) => wavePath(index, p as number, l as number));
-  return <motion.path d={d} fill="none" stroke="#2dd4bf" strokeOpacity={0.12 + index * 0.025} strokeWidth="1.2" />;
+  return <m.path d={d} fill="none" stroke="#2dd4bf" strokeOpacity={0.12 + index * 0.025} strokeWidth="1.2" />;
 }
 
 /**

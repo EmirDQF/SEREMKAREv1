@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { CheckCircle2, MessageCircleQuestion, RotateCcw } from "lucide-react";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
@@ -85,7 +86,7 @@ export function DensitometryChecklist() {
       <div className="lg:sticky lg:top-28">
         <AnimatePresence mode="wait">
           {outcome === "pending" ? (
-            <motion.div
+            <m.div
               key="pending"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -98,9 +99,9 @@ export function DensitometryChecklist() {
               <p className="mt-1 text-muted">
                 {answered} de {total} respondidas. Te diremos si vale la pena conversarlo con un especialista.
               </p>
-            </motion.div>
+            </m.div>
           ) : (
-            <motion.div
+            <m.div
               key={outcome}
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -125,7 +126,7 @@ export function DensitometryChecklist() {
                 {densitometry.cta.label}
               </a>
               <p className="mt-3 text-sm text-muted">{densitometry.disclaimer}</p>
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
         {answered > 0 ? (
