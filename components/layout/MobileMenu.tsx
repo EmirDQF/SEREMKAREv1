@@ -74,7 +74,7 @@ export function MobileMenu() {
             <div className="mt-auto space-y-3 pt-8">
               <DialogPrimitive.Close asChild>
                 <Link href={BOOKING_HREF} className={cn(buttonVariants({ variant: "primary", size: "lg" }), "w-full")}>
-                  Agendar consulta
+                  Agendar teleconsulta
                 </Link>
               </DialogPrimitive.Close>
               <div className="grid grid-cols-2 gap-3">

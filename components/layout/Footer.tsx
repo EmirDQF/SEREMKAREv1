@@ -44,7 +44,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative isolate overflow-hidden bg-navy pb-24 text-slate-300 md:pb-0 dark:bg-[#071222]">
+    <footer className="relative isolate overflow-hidden bg-navy pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-slate-300 md:pb-0 dark:bg-[#071222]">
       <FooterWaves />
       <div className="container-page grid gap-12 pt-16 lg:grid-cols-[1.2fr_2fr] lg:pt-20">
         <div>

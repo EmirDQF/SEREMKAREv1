@@ -1,9 +1,34 @@
 import { site } from "@/data/site";
 import { primaryWhatsAppLine } from "@/lib/locations";
-import type { ClinicLocation } from "@/types/medical";
+import type { ClinicLocation, WhatsAppLine } from "@/types/medical";
+
+/** Número internacional sin «+» ni ceros iniciales (E.164: 8 a 15 dígitos). */
+const INTERNATIONAL_NUMBER = /^[1-9]\d{7,14}$/;
+
+/** Mensaje prellenado de «Hablar con el doctor». Solo texto fijo: ningún dato del visitante viaja en la URL. */
+export const DOCTOR_INFO_MESSAGE = "Hola Doctor, deseo más información para una teleconsulta médica";
 
 export function buildWhatsAppLink(number: string, message: string): string {
   return `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
+}
+
+export interface DoctorContact {
+  whatsappHref: string;
+  telHref: string;
+  /** "+51 994 931 540" */
+  display: string;
+}
+
+/** Enlaces de WhatsApp y llamada para una línea; null si falta o no es válida (nunca enlaces rotos). */
+export function buildDoctorContact(line: WhatsAppLine | null, message: string = DOCTOR_INFO_MESSAGE): DoctorContact | null {
+  const digits = line?.number.replace(/\D/g, "") ?? "";
+  if (!line || !INTERNATIONAL_NUMBER.test(digits)) return null;
+  return { whatsappHref: buildWhatsAppLink(digits, message), telHref: `tel:+${digits}`, display: line.display };
+}
+
+/** Contacto directo con el doctor desde la línea centralizada en data/site.ts (`doctorLine`). */
+export function doctorContact(message: string = DOCTOR_INFO_MESSAGE): DoctorContact | null {
+  return buildDoctorContact(site.doctorLine, message);
 }
 
 /** Enlace a la línea principal de WhatsApp con un mensaje (por defecto, el saludo base). */

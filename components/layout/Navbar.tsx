@@ -85,7 +85,7 @@ export function Navbar({ compact }: NavbarProps) {
               "shadow-[0_0_0_0_rgb(0_168_150/0.4),0_10px_28px_-10px_rgb(0_118_106/0.7)] hover:shadow-[0_0_0_6px_rgb(0_168_150/0.15),0_14px_36px_-8px_rgb(0_168_150/0.65)]",
             )}
           >
-            Agendar consulta
+            Agendar teleconsulta
           </Link>
           <MobileMenu />
         </div>

@@ -3,8 +3,9 @@ export interface NavLink {
   href: string;
 }
 
-/** Cabecera minimalista tipo producto digital (consultorio virtual). */
+/** Cabecera minimalista tipo producto digital (consultorio virtual). La teleconsulta va primero. */
 export const primaryLinks: readonly NavLink[] = [
+  { label: "Teleconsulta", href: "/teleconsulta" },
   { label: "Evaluación rápida", href: "/consulta-virtual" },
   { label: "Especialistas", href: "/staff" },
   { label: "Tarifas", href: "/tarifas" },
@@ -13,7 +14,6 @@ export const primaryLinks: readonly NavLink[] = [
 
 /** Menú «Más» (y pie de página). */
 export const moreLinks: readonly NavLink[] = [
-  { label: "Cómo funciona la teleconsulta", href: "/teleconsulta" },
   { label: "Especialidades", href: "/especialidades" },
   { label: "Servicios", href: "/servicios" },
   { label: "Sedes", href: "/sedes" },

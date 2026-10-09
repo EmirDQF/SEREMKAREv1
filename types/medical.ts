@@ -115,6 +115,8 @@ export interface SiteConfig {
   primaryLocationId: LocationId;
   /** Las líneas de WhatsApp de la empresa; la primera es la principal. */
   whatsappLines: readonly WhatsAppLine[];
+  /** Contacto directo con el doctor (WhatsApp y llamada). null = se ocultan esos botones. */
+  doctorLine: WhatsAppLine | null;
   defaultWhatsAppMessage: string;
   /** null = sin correo real confirmado (la tarjeta no trae correo): no se muestra. */
   email: string | null;

@@ -14,6 +14,13 @@ const WHATSAPP_LINES: readonly WhatsAppLine[] = [
 const [PRIMARY_LINE] = WHATSAPP_LINES;
 
 /**
+ * Única fuente del contacto directo con el doctor («Hablar con el doctor», WhatsApp y llamada).
+ * CONFIRMAR: cuál es el número directo del doctor; mientras tanto se usa la línea principal.
+ * Con null se ocultan esos botones en todo el sitio (nunca se generan enlaces vacíos).
+ */
+const DOCTOR_LINE: WhatsAppLine | null = PRIMARY_LINE;
+
+/**
  * PROVISIONAL: la tarjeta solo dice «Atención con cita previa». Los días y horas no se muestran
  * ni se publican en el JSON-LD mientras `confirmed` sea false.
  */
@@ -138,6 +145,7 @@ export const site: SiteConfig = {
   locations: LOCATIONS,
   primaryLocationId: "los-olivos", // CONFIRMAR: sede principal
   whatsappLines: WHATSAPP_LINES,
+  doctorLine: DOCTOR_LINE,
   defaultWhatsAppMessage: "Hola SERMEKARE, quisiera agendar una consulta.",
   // CONFIRMAR: la tarjeta no trae correo; se publica solo con visibility.email.
   email: visibility.email ? SAMPLE_EMAIL : null,

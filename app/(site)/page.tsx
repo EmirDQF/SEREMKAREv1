@@ -40,20 +40,21 @@ export default function Home() {
     <>
       <JsonLd data={teleconsultServiceSchema("/teleconsulta")} />
       <JsonLd data={physicianSchema({ name: doctor.name, path: `/staff/${doctor.slug}`, specialty: doctor.specialty, image: doctor.photo, knowsAbout: doctor.focus })} />
+      {/* Orden móvil: hero → teleconsulta (3 pasos) → el doctor → servicios → sedes → preguntas → contacto. */}
       <Hero />
-      <TrustStrip />
-      {visibility.insurers ? <InsuranceMarquee /> : null}
-      <PainPoints />
-      <SymptomTriage />
       <ConsultaSteps />
       <DoctorsSection />
-      <BoneDensitySection />
-      <WhyUs />
+      <TrustStrip />
+      {visibility.insurers ? <InsuranceMarquee /> : null}
       <ServicesGrid />
+      <BoneDensitySection />
       <PricingPreview />
+      <PainPoints />
+      <SymptomTriage />
+      <WhyUs />
       <Testimonials />
-      <FAQ />
       <LocationCTA />
+      <FAQ />
     </>
   );
 }
