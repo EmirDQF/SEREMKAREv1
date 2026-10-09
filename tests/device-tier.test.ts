@@ -22,6 +22,7 @@ describe("pickDeviceTier", () => {
     ["reduced motion", { reducedMotion: true }],
     ["2 GB of RAM", { memoryGb: 2 }],
     ["2 cores", { cores: 2 }],
+    ["a phone (touch, small screen), even a powerful one", { phone: true }],
   ] as const)("%s → low (three.js is never downloaded)", (_label, patch) => {
     expect(pickDeviceTier({ ...base, ...patch })).toBe("low");
   });

@@ -8,12 +8,11 @@ import { KineticText } from "@/components/shared/KineticText";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { AudienceCards } from "@/components/densitometry/AudienceCards";
-import { BoneDensityExplorer } from "@/components/densitometry/BoneDensityExplorer";
+import { BoneDensityExplorerLazy, TScoreGaugeLazy } from "@/components/densitometry/DensitometryLazy";
 import { BookDensitometryButton } from "@/components/densitometry/BookDensitometryButton";
 import { DensitometryChecklist } from "@/components/densitometry/DensitometryChecklist";
 import { DensitometrySteps } from "@/components/densitometry/DensitometrySteps";
 import { DxaScanFX } from "@/components/densitometry/DxaScanFX";
-import { TScoreGauge } from "@/components/densitometry/TScoreGauge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DENSITOMETRY_PATH, densitometry } from "@/data/densitometry";
 import { site } from "@/data/site";
@@ -105,10 +104,10 @@ export default function DensitometryPage() {
           />
           <div className="mt-12 grid items-start gap-8 lg:grid-cols-2">
             <Reveal>
-              <BoneDensityExplorer />
+              <BoneDensityExplorerLazy />
             </Reveal>
             <div className="space-y-4">
-              <TScoreGauge />
+              <TScoreGaugeLazy />
               <div className="rounded-[1.75rem] border border-line bg-card-solid p-5">
                 <p className="font-display font-semibold text-heading">Z-score</p>
                 <p className="mt-1 text-fg">

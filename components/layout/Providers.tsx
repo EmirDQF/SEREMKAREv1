@@ -1,14 +1,11 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
-import { LazyMotion, MotionConfig } from "motion/react";
+import { usePathname } from "next/navigation";
 import { pickDeviceTier, readTierSignals } from "@/lib/device-tier";
 import { useReducedMotionPreference } from "@/lib/motion-preference";
 
 const HEADER_OFFSET_PX = -96;
-
-/** El motor de animación viaja en un chunk diferido: no suma al JS inicial. */
-const loadMotionFeatures = () => import("@/components/layout/motion-features").then((mod) => mod.default);
 
 interface ProvidersProps {
   children: ReactNode;
@@ -21,11 +18,46 @@ function wantsSmoothScroll(): boolean {
 }
 
 /**
- * Smooth scroll (Lenis, cargado bajo demanda) y preferencias de movimiento para toda la app.
- * Respeta prefers-reduced-motion y el interruptor "Reducir animaciones" del footer.
+ * Desplegables nativos (<details data-dropdown>: menú «Más», selector de sedes): se cierran con
+ * Escape, al hacer clic fuera, al elegir una opción y al navegar. Una sola escucha para todo el sitio.
+ */
+function useDropdownDismiss(): void {
+  const pathname = usePathname();
+  useEffect(() => {
+    const openMenus = () => document.querySelectorAll<HTMLDetailsElement>("details[data-dropdown][open]");
+    openMenus().forEach((menu) => (menu.open = false));
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target instanceof Element ? event.target : null;
+      openMenus().forEach((menu) => {
+        const inside = target !== null && menu.contains(target);
+        const pickedOption = inside && target.closest("a") !== null;
+        if (!inside || pickedOption) menu.open = false;
+      });
+    };
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      openMenus().forEach((menu) => {
+        menu.open = false;
+        menu.querySelector("summary")?.focus();
+      });
+    };
+    document.addEventListener("click", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [pathname]);
+}
+
+/**
+ * Smooth scroll (Lenis, cargado bajo demanda solo en escritorio). Respeta prefers-reduced-motion y
+ * el interruptor «Reducir animaciones». motion ya no se monta aquí: cada isla animada trae su
+ * MotionScope, así motion no entra en el JS inicial de todas las páginas.
  */
 export function Providers({ children }: ProvidersProps) {
   const reduceMotion = useReducedMotionPreference();
+  useDropdownDismiss();
 
   useEffect(() => {
     if (reduceMotion !== false || !wantsSmoothScroll()) return;
@@ -47,9 +79,5 @@ export function Providers({ children }: ProvidersProps) {
     };
   }, [reduceMotion]);
 
-  return (
-    <LazyMotion features={loadMotionFeatures} strict>
-      <MotionConfig reducedMotion={reduceMotion ? "always" : "user"}>{children}</MotionConfig>
-    </LazyMotion>
-  );
+  return children;
 }

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "@/components/layout/Providers";
-import { CanvasHost } from "@/components/3d/CanvasHost";
+import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { site } from "@/data/site";
 import { DEFAULT_DESCRIPTION, SHARE_IMAGE } from "@/lib/seo";
@@ -14,11 +14,17 @@ const inter = Inter({
   display: "swap",
 });
 
+/**
+ * Títulos y botones: un solo archivo variable (600–800 en uso). Sin preload y con display «optional»:
+ * si no llega en ~100 ms se queda la fuente de respaldo ajustada, sin cambio a mitad de carga (el
+ * cambio movía el h1 y daba CLS 0,19 en /teleconsulta); en las visitas siguientes sale de la caché.
+ * Solo se precarga Inter, la del texto (el elemento LCP es un párrafo).
+ */
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  display: "swap",
+  display: "optional",
+  preload: false,
 });
 
 const DEFAULT_TITLE = `Reumatólogo en Lima Norte y Callao | ${site.name}`;
@@ -86,7 +92,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Providers>
           {/* Cabecera y pie los pone cada grupo: (site) completo; (consultorio) mínimo. */}
           {children}
-          <CanvasHost />
+          <CanvasHostLoader />
         </Providers>
       </body>
     </html>

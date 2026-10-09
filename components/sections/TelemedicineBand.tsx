@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
-import { Check, Mic, PhoneOff, Video } from "lucide-react";
+import { Check, Mic, Phone, PhoneOff, Video } from "lucide-react";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { Reveal } from "@/components/shared/Reveal";
 import { TiltCard } from "@/components/shared/TiltCard";
@@ -8,7 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { doctors } from "@/data/doctors";
 import { homeImages } from "@/data/home";
 import { site } from "@/data/site";
-import { clinicWhatsApp } from "@/lib/whatsapp";
+import { clinicWhatsApp, doctorContact } from "@/lib/whatsapp";
 
 const TELE_POINTS = [
   "Controles y lectura de resultados sin moverte",
@@ -16,11 +16,14 @@ const TELE_POINTS = [
   "Atención híbrida: combinamos teleconsulta y presencial",
 ] as const;
 
-const TELE_MESSAGE = `Hola ${site.name}, quisiera agendar una teleconsulta.`;
+const TELE_MESSAGE = `Hola Doctor, quisiera agendar una teleconsulta con ${site.name}.`;
 
 /** "Consulta desde tu casa u oficina", con mockup de videollamada. */
 export function TelemedicineBand() {
   const [doctor] = doctors;
+  // WhatsApp directo con el doctor (wa.me + mensaje); si la línea no es válida, la línea principal.
+  const contact = doctorContact(TELE_MESSAGE);
+  const whatsappHref = contact?.whatsappHref ?? clinicWhatsApp(TELE_MESSAGE);
   return (
     <section aria-labelledby="tele-title" className="section-y">
       <div className="container-page">
@@ -45,15 +48,27 @@ export function TelemedicineBand() {
                 </li>
               ))}
             </ul>
-            <a
-              href={clinicWhatsApp(TELE_MESSAGE)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${buttonVariants({ variant: "light", size: "lg" })} mt-8`}
-            >
-              <WhatsAppIcon className="text-whatsapp-strong" />
-              Agendar teleconsulta
-            </a>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonVariants({ variant: "light", size: "lg" })}
+              >
+                <WhatsAppIcon className="text-whatsapp-strong" />
+                Agendar teleconsulta
+                <span className="sr-only"> por WhatsApp (se abre en otra pestaña)</span>
+              </a>
+              {contact ? (
+                <a
+                  href={contact.telHref}
+                  className="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/30 px-5 font-semibold text-white transition-colors hover:bg-white/10"
+                >
+                  <Phone aria-hidden strokeWidth={1.75} className="size-5" />
+                  Llamar al {contact.display}
+                </a>
+              ) : null}
+            </div>
           </div>
 
           <Reveal className="relative">

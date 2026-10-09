@@ -1,8 +1,30 @@
 "use client";
 
-import { useId, useRef } from "react";
-import { useInView } from "motion/react";
-import { cn } from "@/lib/utils";
+import { useEffect, useId, useRef, useState, type RefObject } from "react";
+import { cx } from "@/lib/cx";
+
+/** Parte visible necesaria para considerar que el motivo «entró en pantalla». */
+const IN_VIEW_THRESHOLD = 0.6;
+
+/** true la primera vez que el elemento entra en pantalla (IntersectionObserver nativo, sin motion). */
+function useSeenOnce(ref: RefObject<Element | null>, enabled: boolean): boolean {
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const element = ref.current;
+    if (!enabled || seen || !element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setSeen(true);
+        observer.disconnect();
+      },
+      { threshold: IN_VIEW_THRESHOLD },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref, enabled, seen]);
+  return seen;
+}
 
 type JointMotifMode = "inview" | "hover" | "loop";
 
@@ -29,17 +51,17 @@ const TRANSITION = "transition-opacity duration-[1400ms] ease-[cubic-bezier(0.22
 /** Firma visual "del dolor al alivio": una rodilla estilizada que pasa de coral a teal. */
 export function JointMotif({ mode = "inview", className, label }: JointMotifProps) {
   const ref = useRef<SVGSVGElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const inView = useSeenOnce(ref, mode === "inview");
   const uid = useId().replace(/:/g, "");
   const relieved = mode === "inview" && inView;
 
-  const painClass = cn(
+  const painClass = cx(
     TRANSITION,
     mode === "inview" && (relieved ? "opacity-0 delay-500" : "opacity-100"),
     mode === "hover" && "opacity-100 group-hover:opacity-0 group-focus-visible:opacity-0",
     mode === "loop" && "joint-swap",
   );
-  const reliefClass = cn(
+  const reliefClass = cx(
     TRANSITION,
     mode === "inview" && (relieved ? "opacity-100 delay-500" : "opacity-0"),
     mode === "hover" && "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100",
@@ -50,7 +72,7 @@ export function JointMotif({ mode = "inview", className, label }: JointMotifProp
     <svg
       ref={ref}
       viewBox="0 0 200 240"
-      className={cn("overflow-visible", className)}
+      className={cx("overflow-visible", className)}
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}

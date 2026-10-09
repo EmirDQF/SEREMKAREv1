@@ -193,8 +193,8 @@
     to { opacity: 1; }
   }
   @keyframes dialog-in {
-    from { opacity: 0; transform: translate(-50%, -48%) scale(0.97); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    from { opacity: 0; transform: translateY(8px) scale(0.97); }
+    to { opacity: 1; transform: none; }
   }
   @keyframes joint-pulse {
     0%, 100% { transform: scale(0.92); opacity: 0.55; }
@@ -250,7 +250,10 @@
     text-wrap: balance;
   }
 
-  p { text-wrap: pretty; }
+  /* «pretty» reequilibra cada párrafo en el layout: caro en CPU de gama baja, solo desde tablet. */
+  @media (min-width: 768px) {
+    p { text-wrap: pretty; }
+  }
 
   :focus-visible {
     outline: 3px solid var(--ring);
@@ -263,7 +266,10 @@
     color: var(--heading);
   }
 
-  /* Grano sutil para dar profundidad */
+  /* Grano sutil para dar profundidad (solo tablet/escritorio: en móvil es una capa fija más que pintar) */
+  @media (max-width: 767px) {
+    body::before { display: none; }
+  }
   body::before {
     content: "";
     position: fixed;
@@ -322,8 +328,14 @@
  */
 @utility glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(1.4);
   border: 1px solid var(--glass-border);
+  /* Móvil: fondo casi opaco y sin desenfoque (un blur de 24 px se repinta en cada scroll). */
+  @media (max-width: 767px) {
+    background: color-mix(in srgb, var(--card-solid) 94%, transparent);
+  }
+  @media (min-width: 768px) {
+    backdrop-filter: blur(24px) saturate(1.4);
+  }
 }
 
 /* Retrato provisional del médico (sin foto real): navy → teal de marca, con brillo sutil.
@@ -443,13 +455,16 @@
 /* Fondo mesh animado muy suave */
 @utility mesh-bg {
   position: absolute;
-  inset: -20%;
+  /* Desborde fijo en rem: con un % el borde superior dependía del alto de la sección y se movía (CLS). */
+  inset: -6rem;
   pointer-events: none;
   background:
     radial-gradient(40% 35% at 20% 25%, rgb(0 168 150 / 0.16), transparent 70%),
     radial-gradient(35% 30% at 80% 20%, rgb(2 132 199 / 0.12), transparent 70%),
     radial-gradient(45% 40% at 70% 85%, rgb(30 62 98 / 0.1), transparent 70%);
-  animation: var(--animate-mesh);
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    animation: var(--animate-mesh);
+  }
 }
 
 /* Palabra clave de los titulares: gradiente teal que se desplaza lentamente */
@@ -458,7 +473,6 @@
   background-size: 200% 100%;
   background-clip: text;
   color: transparent;
-  animation: gradient-pan 8s ease-in-out infinite alternate;
 }
 
 @utility text-gradient-teal-light {
@@ -466,12 +480,6 @@
   background-size: 200% 100%;
   background-clip: text;
   color: transparent;
-  animation: gradient-pan 8s ease-in-out infinite alternate;
-}
-
-@keyframes gradient-pan {
-  from { background-position: 0% 50%; }
-  to { background-position: 100% 50%; }
 }
 
 /* Borde de gradiente cónico que gira lento (bento de "Por qué SERMEKARE") */
@@ -493,13 +501,8 @@
     padding: 1.5px;
     background: conic-gradient(from var(--conic-angle), transparent 0deg, rgb(0 168 150 / 0.7) 70deg, rgb(2 132 199 / 0.45) 140deg, transparent 220deg);
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-    animation: conic-spin 9s linear infinite;
     pointer-events: none;
   }
-}
-
-@keyframes conic-spin {
-  to { --conic-angle: 360deg; }
 }
 
 /* Borde que se ilumina siguiendo al cursor (SpotlightCard): --spot-x / --spot-y */
@@ -525,18 +528,6 @@
   100% { text-shadow: 0 0 0 transparent; }
 }
 
-/* Acordeón: altura con un pequeño rebote (resorte) */
-@keyframes accordion-down {
-  0% { height: 0; opacity: 0; }
-  70% { height: calc(var(--radix-accordion-content-height) * 1.02); opacity: 1; }
-  100% { height: var(--radix-accordion-content-height); }
-}
-@keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); opacity: 1; }
-  to { height: 0; opacity: 0; }
-}
-.accordion-content[data-state="open"] { animation: accordion-down 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
-.accordion-content[data-state="closed"] { animation: accordion-up 0.25s ease-out; }
 
 @keyframes shimmer-sweep {
   0%, 84% { transform: translateX(-120%); }
@@ -634,3 +625,44 @@ html.lenis, html.lenis body { height: auto; }
   scroll-behavior: auto !important;
 }
 [data-reduce-motion="true"] .marquee-track { animation: none; }
+
+/* ==========================================================================
+   Rendimiento móvil (fase 4): efectos sin JavaScript
+   ========================================================================== */
+
+/* Entrada al aparecer en pantalla (Reveal): animación ligada al scroll, solo transform + opacity,
+   sin JS y solo en tablet/escritorio. En móvil, sin soporte o con movimiento reducido: contenido fijo. */
+@keyframes reveal-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@supports (animation-timeline: view()) {
+  @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+    :root:not([data-reduce-motion="true"]) [data-reveal] {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+/* Barra de progreso de lectura: escala ligada al scroll del documento, sin JS. */
+@keyframes scroll-progress-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.scroll-progress { transform: scaleX(0); transform-origin: left; }
+@supports (animation-timeline: scroll()) {
+  .scroll-progress { animation: scroll-progress-grow linear both; animation-timeline: scroll(root); }
+}
+
+/* Secciones largas bajo el pliegue: el navegador no las pinta hasta acercarse (alto reservado). */
+@utility cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* Diálogo nativo (<dialog> con showModal): fondo, bloqueo del scroll y entrada. */
+dialog::backdrop { background: rgb(11 25 44 / 0.7); }
+html:has(dialog[open]) { overflow: hidden; }
+dialog[open] { animation: var(--animate-dialog-in); }

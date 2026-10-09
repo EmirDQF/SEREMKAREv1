@@ -1,34 +1,37 @@
-"use client";
-
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { NavigationMenu } from "radix-ui";
 import { Logo } from "@/components/layout/Logo";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { buttonVariants } from "@/components/ui/button";
 import { BOOKING_HREF, moreLinks, primaryLinks } from "@/data/navigation";
 import { site } from "@/data/site";
+import { locationNamesLabel, primaryLocation } from "@/lib/locations";
 import { cn } from "@/lib/utils";
+import { doctorContact } from "@/lib/whatsapp";
+
+/** Clases del menú móvil, resueltas aquí para no enviar tailwind-merge al navegador. */
+const MOBILE_MENU_BUTTONS = {
+  booking: cn(buttonVariants({ variant: "primary", size: "lg" }), "w-full"),
+  whatsapp: buttonVariants({ variant: "whatsapp" }),
+  call: buttonVariants({ variant: "outline" }),
+};
 
 const NAV_ITEM =
-  "inline-flex min-h-12 items-center gap-1 rounded-full px-3.5 font-display text-[0.95rem] font-semibold text-heading transition-colors hover:bg-teal-tint data-[state=open]:bg-teal-tint";
+  "inline-flex min-h-12 items-center gap-1 rounded-full px-3.5 font-display text-[0.95rem] font-semibold text-heading transition-colors hover:bg-teal-tint";
 
-interface NavbarProps {
-  /** Al hacer scroll: cápsula flotante más compacta, con blur. */
-  compact: boolean;
-}
-
-export function Navbar({ compact }: NavbarProps) {
+/**
+ * Barra principal. Componente de servidor: el «Más» es un <details> nativo (sin Radix) y el estilo
+ * compacto al hacer scroll sale de `data-scrolled` del <header> (group/header).
+ */
+export function Navbar() {
   return (
-    <div className={cn("container-page transition-[padding] duration-300", compact ? "pt-2" : "pt-3")}>
+    <div className="container-page pt-3 transition-[padding] duration-300 group-data-[scrolled=true]/header:pt-2">
       <nav
         aria-label="Principal"
         className={cn(
-          "flex items-center justify-between gap-3 rounded-full border px-3 transition-[background-color,box-shadow,border-color,min-height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-4",
-          compact
-            ? "glass min-h-16 border-line shadow-soft"
-            : "min-h-[4.5rem] border-transparent bg-transparent",
+          "flex min-h-[4.5rem] items-center justify-between gap-3 rounded-full border border-transparent bg-transparent px-3 transition-[background-color,box-shadow,border-color,min-height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-4",
+          "group-data-[scrolled=true]/header:glass group-data-[scrolled=true]/header:min-h-16 group-data-[scrolled=true]/header:border-line group-data-[scrolled=true]/header:shadow-soft",
         )}
       >
         <Link href="/" aria-label={`${site.name}, ir al inicio`} className="flex shrink-0 items-center gap-2 rounded-full">
@@ -38,42 +41,32 @@ export function Navbar({ compact }: NavbarProps) {
           </span>
         </Link>
 
-        <NavigationMenu.Root className="hidden lg:block" delayDuration={120}>
-          <NavigationMenu.List className="relative flex items-center gap-0.5">
-            {primaryLinks.map((link) => (
-              <NavigationMenu.Item key={link.href}>
-                <NavigationMenu.Link asChild>
-                  <Link href={link.href} className={NAV_ITEM}>
-                    {link.label}
-                  </Link>
-                </NavigationMenu.Link>
-              </NavigationMenu.Item>
-            ))}
-            <NavigationMenu.Item className="relative">
-              <NavigationMenu.Trigger className={cn(NAV_ITEM, "group")}>
+        <ul className="hidden items-center gap-0.5 lg:flex">
+          {primaryLinks.map((link) => (
+            <li key={link.href}>
+              <Link href={link.href} className={NAV_ITEM}>
+                {link.label}
+              </Link>
+            </li>
+          ))}
+          <li>
+            <details data-dropdown className="group/more relative">
+              <summary className={cn(NAV_ITEM, "cursor-pointer list-none group-open/more:bg-teal-tint [&::-webkit-details-marker]:hidden")}>
                 Más
-                <ChevronDown
-                  aria-hidden
-                  strokeWidth={1.75}
-                  className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180"
-                />
-              </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="glass absolute right-0 top-full mt-2 w-72 rounded-3xl p-2 shadow-lift">
-                <ul className="grid">
-                  {moreLinks.map((link) => (
-                    <li key={link.href}>
-                      <NavigationMenu.Link asChild>
-                        <Link href={link.href} className="flex min-h-12 items-center rounded-2xl px-4 font-medium text-heading hover:bg-teal-tint">
-                          {link.label}
-                        </Link>
-                      </NavigationMenu.Link>
-                    </li>
-                  ))}
-                </ul>
-              </NavigationMenu.Content>
-            </NavigationMenu.Item>
-          </NavigationMenu.List>
-        </NavigationMenu.Root>
+                <ChevronDown aria-hidden strokeWidth={1.75} className="size-4 transition-transform duration-200 group-open/more:rotate-180" />
+              </summary>
+              <ul className="glass absolute right-0 top-full mt-2 grid w-72 rounded-3xl p-2 shadow-lift">
+                {moreLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="flex min-h-12 items-center rounded-2xl px-4 font-medium text-heading hover:bg-teal-tint">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </li>
+        </ul>
 
         <div className="flex items-center gap-1">
           <ThemeToggle />
@@ -87,7 +80,12 @@ export function Navbar({ compact }: NavbarProps) {
           >
             Agendar teleconsulta
           </Link>
-          <MobileMenu />
+          <MobileMenu
+            logo={<Logo />}
+            contact={doctorContact()}
+            footnote={`${primaryLocation().hours.label} · ${locationNamesLabel()}`}
+            buttonClasses={MOBILE_MENU_BUTTONS}
+          />
         </div>
       </nav>
     </div>

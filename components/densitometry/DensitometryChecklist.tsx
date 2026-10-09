@@ -1,5 +1,7 @@
 "use client";
 
+import { MotionScope } from "@/components/layout/MotionScope";
+
 import { useState } from "react";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
@@ -28,7 +30,7 @@ const OUTCOME_COPY = {
 } as const;
 
 /** "¿Debería hacerme una densitometría?": orienta según la lista de "¿Para quién es?". Nunca diagnostica. */
-export function DensitometryChecklist() {
+function DensitometryChecklistContent() {
   const [answers, setAnswers] = useState<Readonly<Record<string, boolean>>>({});
   const total = densitometry.checklist.length;
   const answered = Object.keys(answers).length;
@@ -140,5 +142,14 @@ export function DensitometryChecklist() {
         ) : null}
       </div>
     </div>
+  );
+}
+
+/** Con su propio MotionScope: motion solo se carga donde se usa (no en el layout raíz). */
+export function DensitometryChecklist() {
+  return (
+    <MotionScope>
+      <DensitometryChecklistContent />
+    </MotionScope>
   );
 }

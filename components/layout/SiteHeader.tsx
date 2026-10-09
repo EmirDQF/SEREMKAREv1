@@ -1,32 +1,24 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { TopBar } from "@/components/layout/TopBar";
+import { HeaderScrollState } from "@/components/layout/HeaderScrollState";
 import { Navbar } from "@/components/layout/Navbar";
-import { ScrollProgress } from "@/components/layout/ScrollProgress";
-import { cn } from "@/lib/utils";
+import { TopBar } from "@/components/layout/TopBar";
 
-const SCROLL_THRESHOLD_PX = 24;
+const HEADER_ID = "site-header";
 
-/** TopBar + Navbar. Al hacer scroll, la TopBar se oculta y la Navbar se compacta en una cápsula con blur. */
+/**
+ * TopBar + Navbar. Componente de servidor: al hacer scroll, HeaderScrollState marca
+ * data-scrolled y el CSS oculta la TopBar y compacta la barra (sin re-render de React).
+ */
 export function SiteHeader() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const update = () => setScrolled(window.scrollY > SCROLL_THRESHOLD_PX);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
-
   return (
     <>
-      <ScrollProgress />
+      <div
+        aria-hidden
+        className="scroll-progress pointer-events-none fixed inset-x-0 top-0 z-[65] h-[3px] bg-gradient-to-r from-teal via-teal to-video-glow"
+      />
       <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-[60] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          scrolled && "-translate-y-10",
-        )}
+        id={HEADER_ID}
+        data-scrolled="false"
+        className="group/header fixed inset-x-0 top-0 z-[60] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] data-[scrolled=true]:-translate-y-10"
       >
         <a
           href="#contenido"
@@ -35,8 +27,9 @@ export function SiteHeader() {
           Saltar al contenido
         </a>
         <TopBar />
-        <Navbar compact={scrolled} />
+        <Navbar />
       </header>
+      <HeaderScrollState headerId={HEADER_ID} />
     </>
   );
 }

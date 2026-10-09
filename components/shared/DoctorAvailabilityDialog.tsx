@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { CalendarClock } from "lucide-react";
 import type { Doctor } from "@/types/medical";
@@ -24,6 +22,7 @@ function shortName(name: string): string {
   return name.split(" ").slice(0, 2).join(" ");
 }
 
+/** Componente de servidor: el contenido (horario, enlaces) se arma aquí; el diálogo nativo es la única pieza cliente. */
 export function DoctorAvailabilityDialog({ doctor, triggerClassName, triggerVariant = "primary" }: DoctorAvailabilityDialogProps) {
   return (
     <Dialog>

@@ -1,5 +1,7 @@
 "use client";
 
+import { MotionScope } from "@/components/layout/MotionScope";
+
 import * as m from "motion/react-m";
 import { CheckCircle2 } from "lucide-react";
 
@@ -7,7 +9,7 @@ const PARTICLES = 10;
 const RINGS = [0, 0.18, 0.36] as const;
 
 /** Micro-celebración teal al enviar: check con resorte, anillos que se expanden y chispas. */
-export function SuccessBurst() {
+function SuccessBurstContent() {
   return (
     <span aria-hidden className="relative mx-auto grid size-24 place-items-center">
       {RINGS.map((delay) => (
@@ -40,5 +42,14 @@ export function SuccessBurst() {
         <CheckCircle2 strokeWidth={1.5} className="size-16 text-primary" />
       </m.span>
     </span>
+  );
+}
+
+/** Con su propio MotionScope: motion solo se carga donde se usa (no en el layout raíz). */
+export function SuccessBurst() {
+  return (
+    <MotionScope>
+      <SuccessBurstContent />
+    </MotionScope>
   );
 }

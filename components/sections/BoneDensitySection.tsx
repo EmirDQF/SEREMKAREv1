@@ -3,9 +3,8 @@ import { ArrowRight } from "lucide-react";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Reveal } from "@/components/shared/Reveal";
 import { AudienceCards } from "@/components/densitometry/AudienceCards";
-import { BoneDensityExplorer } from "@/components/densitometry/BoneDensityExplorer";
+import { BoneDensityExplorerLazy, TScoreGaugeLazy } from "@/components/densitometry/DensitometryLazy";
 import { BookDensitometryButton } from "@/components/densitometry/BookDensitometryButton";
-import { TScoreGauge } from "@/components/densitometry/TScoreGauge";
 import { DENSITOMETRY_PATH, densitometry } from "@/data/densitometry";
 
 const HOME_AUDIENCE_LIMIT = 4;
@@ -29,11 +28,11 @@ export function BoneDensitySection() {
 
         <div className="mt-12 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <Reveal>
-            <BoneDensityExplorer />
+            <BoneDensityExplorerLazy />
           </Reveal>
           <div className="space-y-6">
             <AudienceCards limit={HOME_AUDIENCE_LIMIT} className="md:grid-cols-1 xl:grid-cols-2" />
-            <TScoreGauge compact />
+            <TScoreGaugeLazy compact />
           </div>
         </div>
 

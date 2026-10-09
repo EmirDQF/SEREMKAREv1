@@ -1,7 +1,7 @@
 "use client";
 
 import { setMotionPreference, useMotionPreferenceValue, useReducedMotionPreference } from "@/lib/motion-preference";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/cx";
 
 /**
  * Interruptor "Reducir animaciones" (se guarda en localStorage). Tiene el mismo efecto que
@@ -23,13 +23,13 @@ export function MotionToggle() {
     >
       <span
         aria-hidden
-        className={cn(
+        className={cx(
           "relative h-6 w-11 shrink-0 rounded-full border transition-colors duration-200",
           reduced ? "border-teal bg-teal" : "border-white/25 bg-white/10",
         )}
       >
         <span
-          className={cn(
+          className={cx(
             "absolute left-0.5 top-0.5 size-[1.125rem] rounded-full bg-white shadow-soft transition-transform duration-200",
             reduced && "translate-x-5",
           )}

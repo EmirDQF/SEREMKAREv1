@@ -1,52 +1,39 @@
 "use client";
 
-import { useEffect, useMemo, useRef, type ReactNode } from "react";
-import { useMotionValue } from "motion/react";
-import { Scene3DSlot } from "@/components/3d/Scene3DSlot";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+import { pickDeviceTier, readTierSignals } from "@/lib/device-tier";
 import type { MicroVariant } from "@/lib/micro-variants";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/cx";
+
+/** motion + la escena 3D viajan en otro chunk: en teléfonos y gama baja nunca se descargan. */
+const MicroIcon3D = lazy(() => import("@/components/3d/MicroIcon3D").then((mod) => ({ default: mod.MicroIcon3D })));
 
 interface MicroIconProps {
   variant: MicroVariant;
-  /** Icono plano actual: se ve sin WebGL y mientras carga el 3D. */
+  /** Icono plano: es lo que se ve en móvil, sin WebGL y mientras carga el 3D. */
   fallback: ReactNode;
   className?: string;
 }
 
 /**
- * Icono 3D de cristal (Nivel 2) para tarjetas. Se "enciende" con el hover o el foco del
- * contenedor más cercano marcado con `data-micro-host` (toda la tarjeta, no solo el icono).
+ * Icono de las tarjetas (servicios, especialidades, tratamientos). Muestra el icono plano y, solo en
+ * equipos capaces (no teléfonos ni gama baja), carga su versión 3D de cristal.
  */
 export function MicroIcon({ variant, fallback, className }: MicroIconProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const energy = useMotionValue(0);
-  const sceneProps = useMemo(() => ({ variant, energy }), [variant, energy]);
-
+  const [capable, setCapable] = useState(false);
   useEffect(() => {
-    const host = ref.current?.closest<HTMLElement>("[data-micro-host]") ?? ref.current;
-    if (!host) return;
-    const activate = () => energy.set(1);
-    const rest = () => energy.set(0);
-    host.addEventListener("pointerenter", activate);
-    host.addEventListener("pointerleave", rest);
-    host.addEventListener("focusin", activate);
-    host.addEventListener("focusout", rest);
-    return () => {
-      host.removeEventListener("pointerenter", activate);
-      host.removeEventListener("pointerleave", rest);
-      host.removeEventListener("focusin", activate);
-      host.removeEventListener("focusout", rest);
-    };
-  }, [energy]);
-
-  return (
-    <div ref={ref} className={cn("shrink-0", className)}>
-      <Scene3DSlot
-        scene="micro"
-        sceneProps={sceneProps}
-        className="size-full"
-        fallback={<div className="grid size-full place-items-center">{fallback}</div>}
-      />
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- lectura única de las señales del navegador
+    setCapable(pickDeviceTier(readTierSignals()) !== "low");
+  }, []);
+  const flat = (
+    <div className={cx("shrink-0", className)}>
+      <div className="grid size-full place-items-center">{fallback}</div>
     </div>
+  );
+  if (!capable) return flat;
+  return (
+    <Suspense fallback={flat}>
+      <MicroIcon3D variant={variant} fallback={fallback} className={className} />
+    </Suspense>
   );
 }

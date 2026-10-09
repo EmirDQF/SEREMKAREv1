@@ -1,5 +1,8 @@
 "use client";
 
+import type { ComponentProps } from "react";
+import { MotionScope } from "@/components/layout/MotionScope";
+
 import { useEffect, useId, useRef } from "react";
 import { animate, useInView, useMotionValue, useTransform } from "motion/react";
 import * as m from "motion/react-m";
@@ -22,7 +25,7 @@ interface DxaScanFXProps {
  * Ilustración del estudio: persona recostada en la camilla y el brazo del densitómetro
  * barriendo con una línea láser; a su paso se revela (estilo rayos X) la columna lumbar y la cadera.
  */
-export function DxaScanFX({ className }: DxaScanFXProps) {
+function DxaScanFXContent({ className }: DxaScanFXProps) {
   const uid = useId().replace(/:/g, "");
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.3 });
@@ -112,5 +115,14 @@ export function DxaScanFX({ className }: DxaScanFXProps) {
         ))}
       </ul>
     </div>
+  );
+}
+
+/** Con su propio MotionScope: motion solo se carga donde se usa (no en el layout raíz). */
+export function DxaScanFX(props: ComponentProps<typeof DxaScanFXContent>) {
+  return (
+    <MotionScope>
+      <DxaScanFXContent {...props} />
+    </MotionScope>
   );
 }

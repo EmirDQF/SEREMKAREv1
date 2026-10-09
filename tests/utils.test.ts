@@ -11,3 +11,11 @@ describe("cn", () => {
     expect(cn("text-h2", "text-h3")).toBe("text-h3");
   });
 });
+
+describe("cx", () => {
+  it("joins truthy classes without merging Tailwind conflicts", async () => {
+    const { cx } = await import("@/lib/cx");
+    expect(cx("a", false, null, undefined, "b")).toBe("a b");
+    expect(cx("px-2", "px-4")).toBe("px-2 px-4");
+  });
+});

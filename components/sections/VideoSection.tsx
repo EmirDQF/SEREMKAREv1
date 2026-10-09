@@ -1,5 +1,7 @@
 "use client";
 
+import { MotionScope } from "@/components/layout/MotionScope";
+
 import { useRef, type PointerEvent } from "react";
 import Image from "next/image";
 import { useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
@@ -16,7 +18,7 @@ const MAGNET_PX = 14;
 const MAGNET_SPRING = { stiffness: 180, damping: 16 };
 
 /** Miniatura propia + modal de YouTube que solo se carga al abrirlo (youtube-nocookie). */
-export function VideoSection() {
+function VideoSectionContent() {
   const frameRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: frameRef, offset: ["start end", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
@@ -89,7 +91,7 @@ export function VideoSection() {
                   <span className="mt-1 block text-sm text-slate-200">Reproducir video · 3 min</span>
                 </m.span>
               </DialogTrigger>
-              <DialogContent bare className="max-w-5xl">
+              <DialogContent bare wide>
                 <DialogTitle className="sr-only">{VIDEO_TITLE}</DialogTitle>
                 <DialogDescription className="sr-only">Video informativo de {site.name}.</DialogDescription>
                 <div className="aspect-video w-full overflow-hidden rounded-[1.75rem] bg-black">
@@ -107,5 +109,14 @@ export function VideoSection() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+/** Con su propio MotionScope: motion solo se carga donde se usa (no en el layout raíz). */
+export function VideoSection() {
+  return (
+    <MotionScope>
+      <VideoSectionContent />
+    </MotionScope>
   );
 }

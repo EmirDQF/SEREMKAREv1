@@ -4,59 +4,9 @@ import type { Doctor } from "@/types/medical";
 import { DoctorAvailabilityDialog } from "@/components/shared/DoctorAvailabilityDialog";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import { credentialsLabel, experienceLabel } from "@/lib/doctor";
-import { cn } from "@/lib/utils";
 
 interface DoctorCardProps {
   doctor: Doctor;
-}
-
-interface DoctorCardOptionProps {
-  doctor: Doctor;
-  name: string;
-  checked: boolean;
-  onSelect: () => void;
-  /** Resumen del horario ("Lunes, miércoles y viernes · 7:00 p.m. – 10:00 p.m."). */
-  scheduleText: string;
-  id?: string;
-  describedBy?: string;
-}
-
-/** Variante compacta y seleccionable (radio) para el agendador; conserva el diálogo de disponibilidad. */
-export function DoctorCardOption({ doctor, name, checked, onSelect, scheduleText, id, describedBy }: DoctorCardOptionProps) {
-  return (
-    <article
-      className={cn(
-        "rounded-[1.5rem] border bg-card-solid p-4 shadow-soft transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-ring",
-        checked ? "border-video bg-video-tint" : "border-line hover:border-video",
-      )}
-    >
-      <label className="flex cursor-pointer items-start gap-4">
-        <input id={id} type="radio" name={name} checked={checked} onChange={onSelect} aria-describedby={describedBy} className="sr-only" />
-        <DoctorPortrait doctor={doctor} alt="" size={64} className="size-16 rounded-2xl" />
-        <span className="min-w-0 flex-1">
-          <span className="block font-display font-semibold text-heading">{doctor.name}</span>
-          <span className="block text-sm font-medium text-primary">{doctor.specialty}</span>
-          <span className="mt-1 block text-sm text-muted">{scheduleText}</span>
-        </span>
-        <span
-          aria-hidden
-          className={cn(
-            "mt-1 grid size-6 shrink-0 place-items-center rounded-full border-2",
-            checked ? "border-video bg-video-strong" : "border-line-strong",
-          )}
-        >
-          {checked ? <span className="size-2 rounded-full bg-on-video" /> : null}
-        </span>
-      </label>
-      <div className="mt-3 flex flex-wrap items-center gap-2 sm:pl-20">
-        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted">
-          <ShieldCheck aria-hidden strokeWidth={1.75} className="size-4 text-primary" />
-          {credentialsLabel(doctor)}
-        </span>
-        <DoctorAvailabilityDialog doctor={doctor} triggerVariant="ghost" triggerClassName="min-h-11 px-3 text-sm" />
-      </div>
-    </article>
-  );
 }
 
 export function DoctorCard({ doctor }: DoctorCardProps) {

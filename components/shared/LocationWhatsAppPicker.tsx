@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { HelpCircle, MapPin } from "lucide-react";
 import { site } from "@/data/site";
 import { primaryWhatsAppLine } from "@/lib/locations";
@@ -20,26 +18,14 @@ interface LocationWhatsAppPickerProps {
   panelClassName?: string;
 }
 
-const LINK_SELECTOR = "a[href]";
 const NEW_TAB_NOTICE = " (abre WhatsApp en otra pestaña)";
+const OPTION = "flex gap-3 rounded-2xl p-3 transition-colors hover:bg-teal-tint focus-visible:bg-teal-tint";
 
-/** Mueve el foco entre los enlaces del panel con las flechas, Inicio y Fin. */
-function moveFocus(panel: HTMLElement, key: string): boolean {
-  const links = Array.from(panel.querySelectorAll<HTMLAnchorElement>(LINK_SELECTOR));
-  const current = links.indexOf(document.activeElement as HTMLAnchorElement);
-  const last = links.length - 1;
-  const next =
-    key === "ArrowDown" ? (current >= last ? 0 : current + 1)
-    : key === "ArrowUp" ? (current <= 0 ? last : current - 1)
-    : key === "Home" ? 0
-    : key === "End" ? last
-    : null;
-  if (next === null) return false;
-  links[next]?.focus();
-  return true;
-}
-
-/** Botón que despliega las sedes y abre el WhatsApp de la sede elegida. */
+/**
+ * Botón que despliega las sedes y abre el WhatsApp de la sede elegida. <details>/<summary> nativos:
+ * sin JS propio. `data-dropdown` hace que se cierre con Escape, al hacer clic fuera o al elegir una
+ * sede (components/layout/HeaderScrollState.tsx).
+ */
 export function LocationWhatsAppPicker({
   message = site.defaultWhatsAppMessage,
   children,
@@ -48,60 +34,12 @@ export function LocationWhatsAppPicker({
   triggerClassName,
   panelClassName = "top-full left-0 mt-2",
 }: LocationWhatsAppPickerProps) {
-  const [open, setOpen] = useState(false);
-  const panelId = useId();
-  const rootRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    panelRef.current?.querySelector<HTMLElement>(LINK_SELECTOR)?.focus();
-    const closeOnOutside = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    document.addEventListener("pointerdown", closeOnOutside);
-    return () => document.removeEventListener("pointerdown", closeOnOutside);
-  }, [open]);
-
-  function close(returnFocus: boolean) {
-    setOpen(false);
-    if (returnFocus) triggerRef.current?.focus();
-  }
-
-  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key === "Escape") {
-      event.stopPropagation();
-      close(true);
-      return;
-    }
-    if (panelRef.current && moveFocus(panelRef.current, event.key)) event.preventDefault();
-  }
-
   return (
-    <div
-      ref={rootRef}
-      className={cn("relative", className)}
-      onKeyDown={open ? handleKeyDown : undefined}
-      onBlur={(event) => {
-        if (open && !rootRef.current?.contains(event.relatedTarget as Node | null)) setOpen(false);
-      }}
-    >
-      <button
-        ref={triggerRef}
-        type="button"
-        aria-expanded={open}
-        aria-controls={panelId}
-        aria-label={triggerLabel}
-        onClick={() => setOpen((value) => !value)}
-        className={triggerClassName}
-      >
+    <details data-dropdown className={cn("group/picker relative", className)}>
+      <summary aria-label={triggerLabel} className={cn("cursor-pointer list-none [&::-webkit-details-marker]:hidden", triggerClassName)}>
         {children}
-      </button>
+      </summary>
       <div
-        ref={panelRef}
-        id={panelId}
-        hidden={!open}
         className={cn(
           "absolute z-50 w-[min(22rem,calc(100vw-2rem))] rounded-3xl border border-line bg-card-solid p-3 text-left shadow-lift",
           panelClassName,
@@ -111,13 +49,7 @@ export function LocationWhatsAppPicker({
         <ul className="space-y-1">
           {site.locations.map((location) => (
             <li key={location.id}>
-              <a
-                href={locationWhatsApp(location, withLocation(message, location))}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => close(false)}
-                className="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-teal-tint focus-visible:bg-teal-tint"
-              >
+              <a href={locationWhatsApp(location, withLocation(message, location))} target="_blank" rel="noopener noreferrer" className={OPTION}>
                 <MapPin aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0 text-primary" />
                 <span>
                   <span className="block font-semibold text-heading">{location.name}</span>
@@ -129,13 +61,7 @@ export function LocationWhatsAppPicker({
             </li>
           ))}
           <li>
-            <a
-              href={clinicWhatsApp(message)}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => close(false)}
-              className="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-teal-tint focus-visible:bg-teal-tint"
-            >
+            <a href={clinicWhatsApp(message)} target="_blank" rel="noopener noreferrer" className={OPTION}>
               <HelpCircle aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0 text-primary" />
               <span>
                 <span className="block font-semibold text-heading">No sé cuál me queda cerca</span>
@@ -147,6 +73,6 @@ export function LocationWhatsAppPicker({
           </li>
         </ul>
       </div>
-    </div>
+    </details>
   );
 }

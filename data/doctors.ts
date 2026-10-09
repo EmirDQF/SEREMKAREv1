@@ -1,7 +1,6 @@
 import { visibility } from "@/data/visibility";
 import type { Doctor } from "@/types/medical";
 
-const unsplash = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=900&q=75`;
 const HOUR = 60;
 
 const NO_CALCOM_EVENTS: Doctor["booking"] = { calEventTypeIds: { meet: null, presencial: null } };
@@ -54,7 +53,7 @@ export const allDoctors: readonly Doctor[] = [
       "Diplomado en Ecografía Musculoesquelética (provisional)",
     ],
     focus: ["Artrosis", "Infiltraciones ecoguiadas", "Dolor de rodilla y hombro"],
-    photo: unsplash("1594824476967-48c8b964273f"),
+    photo: null, // muestra: sin foto (el retrato de stock llevaba el nombre de otra persona)
     photoAlt: "Dra. Valeria Quintana, reumatóloga, con uniforme clínico y brazos cruzados",
     complaints: ["articulaciones", "rodilla", "general"],
     // PROVISIONAL: lunes, miércoles y viernes de 7:00 a 10:00 p.m.
@@ -78,7 +77,7 @@ export const allDoctors: readonly Doctor[] = [
       "Fellow en Enfermedades Autoinmunes (provisional)",
     ],
     focus: ["Artritis reumatoide", "Espondiloartritis", "Terapia biológica e inhibidores JAK"],
-    photo: unsplash("1612349317150-e413f6a5b16d"),
+    photo: null, // muestra: sin foto
     photoAlt: "Dr. Martín Salazar, reumatólogo, con bata blanca y estetoscopio",
     complaints: ["articulaciones", "espalda", "general"],
     // PROVISIONAL: martes y jueves de 7:00 a 10:00 p.m., solo videollamada
@@ -102,7 +101,7 @@ export const allDoctors: readonly Doctor[] = [
       "Especialización en Densitometría Clínica (provisional)",
     ],
     focus: ["Osteoporosis", "Lupus", "Gota", "Salud ósea del adulto mayor"],
-    photo: unsplash("1559839734-2b71ea197ec2"),
+    photo: null, // muestra: sin foto
     photoAlt: "Dra. Carmen Ugarte, reumatóloga, sonriendo con bata blanca al aire libre",
     complaints: ["huesos", "articulaciones", "general"],
     // PROVISIONAL: lunes a viernes de 7:00 a 9:00 p.m.
@@ -126,7 +125,7 @@ export const allDoctors: readonly Doctor[] = [
       "Curso en Medicina del Deporte (provisional)",
     ],
     focus: ["Fibromialgia", "Dolor lumbar y cervical", "Lesiones en corredores"],
-    photo: unsplash("1622253692010-333f2da6031d"),
+    photo: null, // muestra: sin foto
     photoAlt: "Dr. Diego Paredes, especialista en rehabilitación, sonriendo con uniforme azul",
     complaints: ["espalda", "rodilla", "generalizado", "general"],
     // PROVISIONAL: lunes a viernes de 8:00 a 10:00 p.m.

@@ -4,6 +4,7 @@ import { NextSlotChip } from "@/components/consulta/NextSlotChip";
 import { HeroVisual } from "@/components/sections/HeroVisual";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
+import { REAL_DOCTOR_SLUG } from "@/data/doctors";
 import { BOOKING_HREF, TRIAGE_HREF } from "@/data/navigation";
 import { teleconsultHero } from "@/data/teleconsult-content";
 import { doctorContact } from "@/lib/whatsapp";
@@ -59,7 +60,7 @@ export function Hero() {
               ¿No sabes si es para ti? Evalúa tus síntomas <ArrowRight aria-hidden className="size-4" />
             </Link>
           </p>
-          <NextSlotChip className="mt-3" />
+          <NextSlotChip doctorSlug={REAL_DOCTOR_SLUG} className="mt-3" />
         </div>
         <HeroVisual />
       </div>

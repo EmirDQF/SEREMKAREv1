@@ -1,5 +1,7 @@
 "use client";
 
+import { MotionScope } from "@/components/layout/MotionScope";
+
 import { useRef } from "react";
 import Image from "next/image";
 import { useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
@@ -100,7 +102,7 @@ function DrawnCheck({ delay }: { delay: number }) {
 }
 
 /** "Así es tu atención": timeline que se dibuja con el scroll + qué llevar a la primera consulta. */
-export function CareJourney() {
+function CareJourneyContent() {
   const ref = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 75%", "end 55%"] });
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
@@ -170,5 +172,14 @@ export function CareJourney() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+/** Con su propio MotionScope: motion solo se carga donde se usa (no en el layout raíz). */
+export function CareJourney() {
+  return (
+    <MotionScope>
+      <CareJourneyContent />
+    </MotionScope>
   );
 }

@@ -10,7 +10,7 @@ const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com",
+  "img-src 'self' data: blob:",
   "font-src 'self'",
   "connect-src 'self'",
   "frame-src https://www.google.com https://maps.google.com",
@@ -38,7 +38,8 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [75],
-    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com", pathname: "/photo-*" }],
+    // Las fotos locales miden como máximo 1200 px: sin variantes de 1920–3840 px en los srcset.
+    deviceSizes: [640, 750, 828, 1080, 1200],
   },
   poweredByHeader: false,
   async redirects() {

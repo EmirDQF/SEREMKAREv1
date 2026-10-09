@@ -1,25 +1,23 @@
-# Fotos de SERMEKARE — qué foto real va en cada lugar
+# Fotos de SERMEKARE: qué hay y cómo reemplazarlas
 
-Todas las imágenes actuales son **PROVISIONALES** e ilustrativas: ninguna muestra al personal real de SERMEKARE (Unsplash, servidas vía `next/image` con `remotePatterns`).
-Antes de publicar, reemplázalas por fotos propias de la clínica (con autorización de las personas que aparecen).
+Todas las imágenes se sirven desde el propio dominio (sin `images.unsplash.com` ni otros orígenes
+remotos) y `next/image` las entrega en AVIF/WebP al tamaño de cada pantalla. Ninguna pesa más de 150 KB.
 
-Para usar fotos locales: guárdalas en esta carpeta (`public/images/`) y cambia la URL en el archivo indicado
-por la ruta local, por ejemplo `/images/hero-medica.jpg`.
-
-| Lugar en la web | Archivo con la URL | Foto actual (verificada: responde 200 y su contenido corresponde) | Foto real recomendada |
+| Lugar en la web | Archivo con la ruta | Imagen actual | Cómo se genera |
 | --- | --- | --- | --- |
-| Hero (Home) | `data/home.ts` → `homeImages.hero` | Médico en videoconsulta con laptop (Unsplash, ilustrativa) | Captura real de una teleconsulta del Dr. Ccolcca (con consentimiento) o el consultorio virtual. |
-| «Así es tu consulta virtual» (3 pasos) | `data/home.ts` → `stepBook`, `stepLink`, `stepReview` | Videoconsultas desde el lado del médico (Unsplash, ilustrativas) | Fotos propias del flujo: reservar en el celular, videollamada, revisión de exámenes. |
-| Banda de telemedicina | `data/home.ts` → `homeImages.telemedicine` | Médico conversando con una paciente por videollamada (ilustrativa) | Captura (simulada) de una teleconsulta real. |
-| Médico real | `data/doctors.ts` → `photo` del Dr. Daniel Ccolcca | **Foto real** en `public/images/doctor/` (AVIF/WebP 400 y 552 px + JPEG para Open Graph), generada con `node scripts/optimize-doctor-photo.mjs` desde `assets/originals/danielccolcca.png` (fuera de git). Recorte a cabeza y hombros: la bata del original lleva otro nombre bordado; el cliente confirmó que es el Dr. Ccolcca. | Si llega un retrato nuevo, reemplaza el original y ajusta `CROP` en el script. |
-| «Así es tu atención» (oculta en la Home) | `data/home.ts` → `homeImages.careJourney` | Médica en videoconsulta (ilustrativa) | — |
-| Comparador guiada vs a ciegas (oculto, D3) | `data/home.ts` → `homeImages.guided` | Especialistas frente a monitores con imágenes | Solo si se confirma el servicio de infiltraciones. |
-| Miniatura del video (oculta) | `data/home.ts` → `homeImages.video` | Examen de rodilla en camilla | Fotograma del video institucional. |
-| Médicos de muestra (ocultos) | `data/doctors.ts` → `photo` | Retratos de stock; dos tienen nombres bordados de otras personas | No reactivar sin reemplazar por fotos reales. |
-| Portadas del blog | `data/home.ts` → `blogPosts[].cover` | Fotos alusivas (escaleras, estetoscopio, monitor, etc.) | Foto alusiva a cada artículo (16:10). |
+| Dr. Daniel Ccolcca (hero, perfil, tarjetas, consultorio, Open Graph, JSON-LD) | `data/doctors.ts` → `photo` y `REAL_DOCTOR_SHARE_PHOTO` | **Foto real**, recorte a cabeza y hombros: `doctor/daniel-ccolcca-{400,552}.{avif,webp}` y `daniel-ccolcca-552.jpg` | `node scripts/optimize-doctor-photo.mjs` desde `assets/originals/danielccolcca.png` (fuera de git). El recorte deja fuera el bordado de la bata, que lleva otro nombre; el cliente confirmó que es el Dr. Ccolcca. |
+| «Así es tu consulta virtual» (3 pasos, Home) | `data/home.ts` → `stepBook`, `stepLink`, `stepReview` | `stock/paso-*.webp` (ilustrativas) | `node scripts/fetch-stock-images.mjs` |
+| Portadas del blog | `data/home.ts` → `blogPosts[].cover` | `stock/blog-*.webp` (ilustrativas) | ídem |
+| Secciones ocultas o sin usar (telemedicina, «así es tu atención», comparador, video) | `data/home.ts` → `telemedicine`, `careJourney`, `guided`, `video`, `hero` | `stock/*.webp` (ilustrativas) | ídem |
+| Médicos de muestra (ocultos) | `data/doctors.ts` → `photo` | Sin foto (`null`): los retratos de stock llevaban nombres de otras personas | No reactivar sin fotos reales. |
+
+Las fotos de `stock/` son ilustrativas (Unsplash, licencia Unsplash) y **no muestran al personal de
+SERMEKARE**. Reemplázalas por fotos propias cuando existan (con autorización por escrito de las personas
+que aparecen): guarda el archivo en `public/images/`, cambia la ruta en el archivo indicado y actualiza
+su texto alternativo (`*Alt`), que está junto a la ruta.
 
 Notas:
 
 - No uses fotos de pacientes reales sin consentimiento informado por escrito.
-- Exporta en JPG/WebP de buena calidad; Next.js genera AVIF/WebP optimizados automáticamente.
-- El texto alternativo (`*Alt`) de cada foto está junto a su URL: actualízalo si cambias la imagen.
+- Exporta en WebP o JPG de buena calidad (≤ 150 KB, ancho ≤ 1200 px): `next/image` genera las versiones
+  AVIF/WebP por tamaño de pantalla.

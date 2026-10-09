@@ -1,9 +1,9 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Clock, Mail, MapPin } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { MotionToggle } from "@/components/layout/MotionToggle";
 import { FooterWaves } from "@/components/layout/FooterWaves";
-import { NewsletterForm } from "@/components/layout/NewsletterForm";
 import { ComplaintsBookIcon, SocialIcon, WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { MedicalDisclaimer } from "@/components/shared/MedicalDisclaimer";
 import { doctors } from "@/data/doctors";
@@ -15,6 +15,9 @@ import { DENSITOMETRY_PATH } from "@/data/densitometry";
 import { specialties } from "@/data/specialties";
 import { allWhatsAppLines, formatLocationAddress, locationNamesLabel, primaryLocation } from "@/lib/locations";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+
+/** Solo se descarga si hay correo real (site.email). */
+const NewsletterIsland = dynamic(() => import("@/components/shared/OptionalIslands").then((mod) => mod.NewsletterIsland));
 
 const LINK = "inline-flex min-h-10 items-center text-slate-300 transition-colors hover:text-white";
 
@@ -73,7 +76,7 @@ export function Footer() {
             <div className="mt-8 max-w-sm rounded-3xl border border-white/10 bg-white/[0.03] p-5">
               <p className="font-display text-lg font-bold text-white">Guía de salud articular</p>
               <p className="mt-1 mb-4 text-sm">Consejos prácticos de nuestros especialistas, una vez al mes.</p>
-              <NewsletterForm />
+              <NewsletterIsland />
             </div>
           ) : null}
         </div>

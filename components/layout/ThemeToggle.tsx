@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { applyTheme, useTheme } from "@/lib/theme";
-import { cn } from "@/lib/utils";
+import { cx } from "@/lib/cx";
 
 interface ThemeToggleProps {
   className?: string;
@@ -18,7 +18,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       onClick={() => applyTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
       aria-pressed={theme === null ? undefined : isDark}
-      className={cn(
+      className={cx(
         "grid size-12 place-items-center rounded-full text-heading transition-colors hover:bg-teal-tint",
         className,
       )}

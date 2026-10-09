@@ -1,26 +1,27 @@
 import { visibility } from "@/data/visibility";
 import type { BlogPost, Insurer, PainPoint } from "@/types/medical";
 
-const unsplash = (id: string, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
+/** Fotos ilustrativas locales (scripts/fetch-stock-images.mjs; Unsplash, licencia Unsplash). */
+const stock = (name: string) => `/images/stock/${name}.webp`;
 
 /** Fotos de la Home. PROVISIONAL: ver public/images/README.md */
 export const homeImages = {
-  // Fotos ilustrativas de videoconsulta (Unsplash, licencia libre). No son personal de SERMEKARE.
-  hero: unsplash("1758691463620-188ca7c1a04f", 1000),
+  // Fotos ilustrativas de videoconsulta (locales). No son personal de SERMEKARE.
+  hero: stock("videoconsulta-laptop"),
   heroAlt: "Médico en una videoconsulta con su paciente desde la laptop (foto ilustrativa)",
-  careJourney: unsplash("1758691462858-f1286e5daf40", 900),
+  careJourney: stock("videoconsulta-escritorio"),
   careJourneyAlt: "Médica en una videoconsulta desde su escritorio (foto ilustrativa)",
-  guided: unsplash("1666214280557-f1b5022eb634", 1000),
+  guided: stock("ecografia-monitor"),
   guidedAlt: "Especialista revisando imágenes de ecografía en un monitor",
-  telemedicine: unsplash("1758691461932-d0aa0ebf6b31", 900),
+  telemedicine: stock("videollamada-paciente"),
   telemedicineAlt: "Médico conversando con una paciente por videollamada (foto ilustrativa)",
-  stepBook: unsplash("1758691462749-a95ce1bd7f96", 700),
+  stepBook: stock("paso-reserva"),
   stepBookAlt: "Médica conectada a una videoconsulta desde su escritorio (foto ilustrativa)",
-  stepLink: unsplash("1758691462743-f9fc9e430d39", 700),
+  stepLink: stock("paso-videollamada"),
   stepLinkAlt: "Videollamada médica en curso en una laptop (foto ilustrativa)",
-  stepReview: unsplash("1758691463606-1493d79cc577", 700),
+  stepReview: stock("paso-revision"),
   stepReviewAlt: "Especialista revisando el caso de su paciente durante la videoconsulta (foto ilustrativa)",
-  video: unsplash("1649751361457-01d3a696c7e6", 1200),
+  video: stock("examen-rodilla"),
   videoAlt: "Especialista examinando la rodilla de un paciente en la camilla",
 } as const;
 
@@ -82,7 +83,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingMinutes: 6,
     authorSlug: null,
     publishedAt: "2026-09-22",
-    cover: unsplash("1666214280391-8ff5bd3c0bf0"),
+    cover: stock("blog-imagenes-medicas"),
     coverAlt: "Dos especialistas revisando imágenes médicas en monitores",
   },
   {
@@ -93,7 +94,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingMinutes: 5,
     authorSlug: null,
     publishedAt: "2026-09-08",
-    cover: unsplash("1573496359142-b8d87734a5a2"),
+    cover: stock("blog-oficina"),
     coverAlt: "Profesional sentada en su oficina",
   },
   {
@@ -104,7 +105,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingMinutes: 7,
     authorSlug: null,
     publishedAt: "2026-08-25",
-    cover: unsplash("1476480862126-209bfaa8edc8"),
+    cover: stock("blog-corredor"),
     coverAlt: "Piernas de una persona corriendo escaleras arriba",
   },
   {
@@ -115,7 +116,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingMinutes: 5,
     authorSlug: null,
     publishedAt: "2026-08-11",
-    cover: unsplash("1576091160550-2173dba999ef"),
+    cover: stock("blog-teclado-estetoscopio"),
     coverAlt: "Manos sobre un teclado junto a un estetoscopio",
   },
   {
@@ -126,7 +127,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingMinutes: 6,
     authorSlug: null,
     publishedAt: "2026-07-28",
-    cover: unsplash("1631217868264-e5b90bb7e133"),
+    cover: stock("blog-adulto-mayor"),
     coverAlt: "Doctora conversando con una paciente adulta mayor",
   },
   {
@@ -137,7 +138,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingMinutes: 6,
     authorSlug: null,
     publishedAt: "2026-07-14",
-    cover: unsplash("1505751172876-fa1923c5c528"),
+    cover: stock("blog-estetoscopio"),
     coverAlt: "Estetoscopio sobre una superficie clara",
   },
 ];

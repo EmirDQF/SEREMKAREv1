@@ -1,5 +1,7 @@
 "use client";
 
+import { MotionScope } from "@/components/layout/MotionScope";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import Link from "next/link";
@@ -219,9 +221,14 @@ function ZoneChips({ selected, onSelect, hidden }: ZoneChipsProps) {
 const HOLOGRAM_HINT = "Toca un punto del holograma o elige una zona";
 
 /** "¿Dónde te duele?": triage orientativo por zona del cuerpo o por condición (fondo navy inmersivo + holograma 3D). */
-export function SymptomTriage() {
-  const [mode, setMode] = useState<TriageMode>("zona");
-  const [target, setTarget] = useState<TriageTarget | null>(null);
+interface SymptomTriageProps {
+  /** Zona o condición ya elegida (p. ej. desde «¿Te identificas?» antes de que el triage cargara). */
+  initialTarget?: TriageTarget | null;
+}
+
+function SymptomTriageContent({ initialTarget = null }: SymptomTriageProps) {
+  const [mode, setMode] = useState<TriageMode>(initialTarget?.kind === "condition" ? "condicion" : "zona");
+  const [target, setTarget] = useState<TriageTarget | null>(initialTarget);
   const [hologramOn, setHologramOn] = useState(false);
   const [hoveredZone, setHoveredZone] = useState<BodyZoneId | null>(null);
 
@@ -340,5 +347,14 @@ export function SymptomTriage() {
         </Tabs>
       </div>
     </section>
+  );
+}
+
+/** Con su propio MotionScope: motion solo se carga donde se usa (no en el layout raíz). */
+export function SymptomTriage({ initialTarget = null }: SymptomTriageProps) {
+  return (
+    <MotionScope>
+      <SymptomTriageContent initialTarget={initialTarget} />
+    </MotionScope>
   );
 }
