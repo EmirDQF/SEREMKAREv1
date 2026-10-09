@@ -9,7 +9,7 @@ import { breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 
 const TITLE = `Preguntas frecuentes | ${site.name}`;
-const DESCRIPTION = "Respuestas claras sobre citas, seguros, teleconsulta, densitometría ósea y las enfermedades que tratamos.";
+const DESCRIPTION = "Respuestas claras sobre la teleconsulta, las citas, la densitometría ósea y las enfermedades que atendemos.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Preguntas frecuentes", href: "/preguntas-frecuentes" },

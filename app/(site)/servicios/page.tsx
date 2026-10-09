@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 const TITLE = `Servicios de reumatología en Lima Norte y Callao | ${site.name}`;
 const DESCRIPTION =
-  "Apoyo diagnóstico, terapia biológica, telemedicina, procedimientos ecoguiados y consulta externa multidisciplinaria en una sola sede en Lima Norte y Callao.";
+  "Teleconsulta reumatológica por videollamada para todo el Perú y densitometría ósea con cita previa en 3 sedes de Lima Norte y Callao.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Servicios", href: "/servicios" },
@@ -37,9 +37,9 @@ export default function ServicesPage() {
         id="servicios-title"
         crumbs={CRUMBS}
         eyebrow="Servicios"
-        title="Cinco pilares para cuidar tus articulaciones"
-        accent="Cinco pilares"
-        lead="Del diagnóstico al tratamiento y el seguimiento, sin que tengas que ir de un lugar a otro."
+        title="Teleconsulta y densitometría ósea"
+        accent="densitometría ósea"
+        lead="Reumatología por videollamada y densitometría con cita previa en 3 sedes."
       />
 
       <section aria-label="Pilares de servicio" className="pb-16">
@@ -56,7 +56,7 @@ export default function ServicesPage() {
                   <span className="rounded-full bg-teal px-2 py-0.5 text-xs font-bold text-navy">Nuevo</span>
                 </span>
                 <span className="mt-1 block text-slate-300">
-                  Mide la fuerza de tus huesos en 10 a 20 minutos. Resultados el mismo día o en 24 horas.
+                  Mide la fuerza de tus huesos con un estudio breve. Resultados el mismo día o en 24 horas.
                 </span>
               </span>
               <ArrowRight aria-hidden className="size-6 shrink-0 text-teal-200 transition-transform group-hover:translate-x-1" />

@@ -124,7 +124,7 @@ export const site: SiteConfig = {
   name: "SERMEKARE", // CONFIRMAR: nombre comercial en la web («SERMEKARE» o «KARE SAC»)
   legalName: "KARE SAC",
   taxId: undefined, // CONFIRMAR: RUC
-  legalTagline: "Centro Especializado en Reumatología y Salud Articular",
+  legalTagline: "KARE SAC — Servicios Médicos",
   slogan: "Mejorar la vida de nuestros pacientes",
   domain: new URL(SITE_URL).host,
   url: SITE_URL,

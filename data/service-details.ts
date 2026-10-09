@@ -7,8 +7,8 @@ import type { ServiceDetail } from "@/types/medical";
 export const serviceDetails: Readonly<Record<string, ServiceDetail>> = {
   "apoyo-diagnostico": {
     intro:
-      "Reunimos en la misma sede los estudios que tu reumatólogo necesita para confirmar un diagnóstico y seguir tu evolución, sin derivarte a otros lugares.",
-    highlights: ["Resultados interpretados por tu especialista", "Ecografía durante la misma consulta", "Todo en una sola sede"],
+      "Densitometría ósea (DXA) de columna y caderas con cita previa en 3 sedes de Lima Norte y Callao. Resultados el mismo día o en 24 horas, sin orden médica.",
+    highlights: ["Resultados claros y confiables", "Atención con cita previa", "Sin orden médica"],
     serviceNotes: {
       "Densitometría ósea": "Mide la densidad de tus huesos para detectar osteopenia u osteoporosis antes de una fractura.",
       Videocapilaroscopía: "Observa los pequeños vasos de la uña para orientar el diagnóstico de enfermedades autoinmunes.",
@@ -43,10 +43,10 @@ export const serviceDetails: Readonly<Record<string, ServiceDetail>> = {
   },
   telemedicina: {
     intro:
-      "Haz tus controles por videollamada desde tu casa u oficina, y combina la teleconsulta con la atención presencial cuando haga falta.",
-    highlights: ["Receta e indicaciones digitales", "Sin traslados ni salas de espera", "Mismo especialista, misma historia"],
+      "Consulta reumatológica por videollamada (WhatsApp, Zoom o Google Meet) desde cualquier lugar del Perú.",
+    highlights: ["Plan de tratamiento digital", "Sin traslados ni salas de espera", "Receta y órdenes si el doctor lo indica"],
     serviceNotes: {
-      Teleconsulta: "Consulta por videollamada con tu especialista, con receta e indicaciones en formato digital.",
+      Teleconsulta: "Consulta por videollamada con el Dr. Daniel Ccolcca: plan de tratamiento en formato digital y, si el doctor lo indica, receta y órdenes de exámenes.",
       Teleinterconsulta: "Tu médico tratante y nuestro especialista revisan tu caso juntos, a distancia.",
       "Atención híbrida": "Alternamos visitas presenciales y teleconsultas según lo que necesite tu tratamiento.",
     },

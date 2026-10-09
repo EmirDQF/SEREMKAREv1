@@ -34,13 +34,13 @@ export const painPoints: readonly PainPoint[] = [
   {
     id: "espalda",
     quote: "Me duele la espalda después de un día frente a la computadora",
-    context: "El dolor postural tiene solución con un plan guiado.",
+    context: "El dolor postural suele mejorar con un plan guiado.",
     target: { kind: "zone", zone: "espalda" },
   },
   {
     id: "corriendo",
     quote: "Me lesioné corriendo y no mejora",
-    context: "Vemos la lesión por ecografía en la misma consulta.",
+    context: "Un reumatólogo puede orientarte por videollamada.",
     target: { kind: "zone", zone: "rodillas" },
   },
   {
@@ -52,7 +52,7 @@ export const painPoints: readonly PainPoint[] = [
   {
     id: "mama",
     quote: "Quiero cuidar los huesos de mi mamá",
-    context: "Densitometría y prevención de caídas en una sola visita.",
+    context: "Densitometría con cita previa y orientación sobre prevención.",
     target: { kind: "condition", slug: "osteoporosis" },
   },
 ];

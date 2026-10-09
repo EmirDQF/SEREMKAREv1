@@ -15,7 +15,7 @@ export function PainPoints() {
         <SectionHeading
           id="identificas-title"
           eyebrow="¿Te identificas?"
-          title="Lo que nos cuentan nuestros pacientes en su primera consulta"
+          title="Frases que se escuchan con frecuencia en consulta"
           description="Si alguna de estas frases eres tú (o alguien que quieres), no tienes que acostumbrarte al dolor."
         />
         <RevealGroup as="ul" className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

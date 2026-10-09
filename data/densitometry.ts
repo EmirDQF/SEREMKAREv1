@@ -13,7 +13,7 @@ export const densitometry: DensitometryContent = {
   measuredAt: "Se mide sobre todo en la columna lumbar y la cadera.",
   purpose: [
     "Detectar osteopenia u osteoporosis antes de que ocurra una fractura.",
-    "Calcular tu riesgo de fractura.",
+    "Valorar tu riesgo de fractura junto con tu médico.",
     "Ver si un tratamiento para fortalecer el hueso está funcionando.",
   ],
   howItWorks: [
@@ -95,11 +95,11 @@ export const densitometry: DensitometryContent = {
   steps: [
     { id: "agenda", title: "Agenda", description: "Escríbenos por WhatsApp y elige el día que te acomode.", icon: "calendar" },
     { id: "preparacion", title: "Preparación", description: "Ropa cómoda sin metales y sin calcio 24 horas antes.", icon: "clipboard" },
-    { id: "estudio", title: "Estudio de 10 a 20 min", description: "Te recuestas y el equipo pasa por encima, sin tocarte.", icon: "scan" },
+    { id: "estudio", title: "Estudio breve", description: "Te recuestas y el equipo pasa por encima, sin tocarte.", icon: "scan" },
     {
       id: "resultado",
       title: "Resultado explicado",
-      description: "El mismo día o en 24 horas. Tu especialista te explica qué significa y los siguientes pasos.",
+      description: "El mismo día o en 24 horas. Puedes revisarlo con un reumatólogo en una teleconsulta.",
       icon: "file-check",
     },
   ],
@@ -148,16 +148,16 @@ export const densitometry: DensitometryContent = {
       id: "resultados",
       question: "¿Cuándo tengo los resultados?",
       answer:
-        "Te entregamos el resultado el mismo día o en un máximo de 24 horas. Tu especialista te lo explica junto con tu historia clínica, y puedes hacer la densitometría y la consulta en una sola visita.",
+        "Te entregamos el resultado el mismo día o en un máximo de 24 horas. Si quieres, puedes revisarlo con un reumatólogo en una teleconsulta.",
     },
   ],
   cta: {
     label: "Agendar densitometría",
     message: "Hola SERMEKARE, quisiera agendar una densitometría ósea de columna y cadera.",
-    support: "Densitometría y consulta en una sola visita",
+    support: "Resultados el mismo día o en 24 horas · sin orden médica",
   },
   disclaimer: "Esta información es orientativa y no reemplaza la evaluación de un especialista.",
-  hud: ["10–20 min", "Indolora", "Dosis muy baja"],
+  hud: ["Estudio breve", "Indolora", "Dosis muy baja"],
 };
 
 export const DENSITOMETRY_PATH = "/densitometria-osea";

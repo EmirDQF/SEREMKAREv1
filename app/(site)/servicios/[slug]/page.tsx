@@ -107,7 +107,7 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
 
       <section aria-labelledby="incluye-title" className="section-y bg-bg-alt">
         <div className="container-page">
-          <SectionHeading id="incluye-title" align="left" eyebrow="Qué incluye" title={`${pillar.services.length} servicios en una sola sede`} />
+          <SectionHeading id="incluye-title" align="left" eyebrow="Qué incluye" title="Qué incluye este servicio" />
           <ul className="mt-6 flex flex-wrap gap-3">
             {detail.highlights.map((highlight) => (
               <li key={highlight} className="inline-flex items-center gap-2 rounded-full bg-teal-tint px-4 py-2 font-semibold text-primary">
@@ -181,7 +181,7 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
 
       <CtaBand
         title={`Agenda tu atención en ${pillar.name.toLowerCase()}`}
-        text="Te respondemos en horario de atención y coordinamos todo en una sola visita cuando es posible."
+        text="Escríbenos por WhatsApp y coordinamos tu cita."
         message={messageAbout(pillar.name)}
       />
     </>

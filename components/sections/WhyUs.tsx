@@ -32,7 +32,7 @@ const DIFFERENTIATORS: readonly Differentiator[] = [
   {
     icon: CalendarClock,
     title: "Densitometría con cita previa",
-    text: "Columna y caderas en 3 sedes de Lima Norte y Callao, frente a hospitales de referencia.",
+    text: "Columna y caderas en 3 sedes de Lima Norte y Callao; dos de ellas frente a hospitales.",
     className: "lg:col-span-2",
   },
 ]

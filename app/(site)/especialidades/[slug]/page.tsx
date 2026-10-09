@@ -125,7 +125,7 @@ export default async function SpecialtyPage({ params }: PageProps<"/especialidad
       <section aria-labelledby="diagnostico-title" className="section-y">
         <div className="container-page grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
-            <SectionHeading id="diagnostico-title" align="left" eyebrow="Diagnóstico" title="Cómo la diagnosticamos" />
+            <SectionHeading id="diagnostico-title" align="left" eyebrow="Diagnóstico" title="Cómo suele diagnosticarse" />
             <RevealGroup as="ol" className="mt-8 space-y-4">
               {detail.diagnosis.map((step, index) => (
                 <RevealItem as="li" key={step} className="flex gap-4 rounded-2xl border border-line bg-card-solid p-5">
@@ -204,7 +204,7 @@ export default async function SpecialtyPage({ params }: PageProps<"/especialidad
       <div className="h-16" />
       <CtaBand
         title={`¿Crees que podrías tener ${specialty.shortName.toLowerCase()}?`}
-        text="Una evaluación a tiempo permite empezar el tratamiento adecuado y evitar complicaciones."
+        text="Una evaluación a tiempo permite empezar el tratamiento adecuado y reducir el riesgo de complicaciones."
         message={message}
       />
     </>

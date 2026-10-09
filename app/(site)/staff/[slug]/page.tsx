@@ -192,7 +192,7 @@ export default async function DoctorPage({ params }: PageProps<"/staff/[slug]">)
 
       <CtaBand
         title={`Agenda con ${doctor.name}`}
-        text="Elige videollamada o llamada y el turno que te acomode, de lunes a viernes desde las 7:00 p.m."
+        text="Elige tu horario en línea o escríbenos por WhatsApp."
         message={messageForDoctor(doctor.name)}
       />
     </>

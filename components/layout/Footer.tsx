@@ -50,8 +50,7 @@ export function Footer() {
         <div>
           <Logo tone="inverted" showTagline />
           <p className="mt-5 max-w-sm">
-            {site.legalTagline} en {locationNamesLabel()}. {site.slogan}: diagnóstico oportuno, tratamiento
-            moderno y un seguimiento cercano.
+            {site.legalTagline}. Densitometría ósea en {locationNamesLabel()} y teleconsulta para todo el Perú.
           </p>
           {site.socials.length > 0 ? (
             <ul className="mt-6 flex gap-2" aria-label="Redes sociales">

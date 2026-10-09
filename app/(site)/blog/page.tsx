@@ -11,7 +11,7 @@ import { buildMetadata } from "@/lib/seo";
 
 const TITLE = `Blog de salud articular | ${site.name}`;
 const DESCRIPTION =
-  "Artículos de nuestros reumatólogos, en lenguaje claro: dolor de espalda y cuello, artrosis, gota, osteoporosis, lesiones deportivas e infiltraciones.";
+  "Artículos en lenguaje claro sobre salud articular y ósea: dolor de espalda y cuello, artrosis, osteoporosis y más.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Blog", href: "/blog" },
@@ -33,7 +33,7 @@ export default function BlogPage() {
         eyebrow="Blog de salud articular"
         title="Aprende a cuidar tus articulaciones"
         accent="cuidar"
-        lead="Artículos escritos por nuestros especialistas, en lenguaje claro y sin alarmismo."
+        lead="Artículos del equipo editorial, en lenguaje claro y sin alarmismo."
       />
       <section aria-label="Artículos" className="pb-16">
         <div className="container-page">

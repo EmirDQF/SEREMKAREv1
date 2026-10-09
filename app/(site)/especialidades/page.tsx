@@ -17,7 +17,7 @@ import { buildMetadata } from "@/lib/seo";
 
 const TITLE = `Especialidades: artrosis, artritis, gota, lupus y más | ${site.name}`;
 const DESCRIPTION =
-  "Conoce las enfermedades reumáticas que tratamos en Lima Norte y Callao: artrosis, artritis reumatoide, gota, lupus, fibromialgia, osteoporosis y espondiloartritis.";
+  "Conoce las enfermedades reumáticas que atendemos por teleconsulta: artrosis, artritis reumatoide, lupus y osteoporosis.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Especialidades", href: "/especialidades" },

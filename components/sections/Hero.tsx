@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Stethoscope, Video } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { NextSlotChip } from "@/components/consulta/NextSlotChip";
 import { HeroHeadline } from "@/components/sections/HeroHeadline";
 import { HeroVisual } from "@/components/sections/HeroVisual";
@@ -9,13 +9,6 @@ import { BOOKING_HREF, TRIAGE_HREF } from "@/data/navigation";
 import { teleconsultHero } from "@/data/teleconsult-content";
 import { clinicWhatsApp } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
-
-/** Sellos reales (sin cifras ni convenios no confirmados). */
-const TRUST_ITEMS = [
-  { icon: ShieldCheck, label: "Ley Marco de Telesalud (N.° 30421)" },
-  { icon: Video, label: "WhatsApp, Zoom o Google Meet" },
-  { icon: Stethoscope, label: "La evaluación orienta, no diagnostica" },
-] as const;
 
 const WHATSAPP_MESSAGE = "Hola, deseo agendar una teleconsulta virtual con el Dr. Ccolcca";
 
@@ -58,16 +51,6 @@ export function Hero() {
             </Link>
           </p>
           <NextSlotChip className="mt-4" />
-          <ul className="mt-8 grid gap-3 xl:grid-cols-3" aria-label="Por qué confiar en nosotros">
-            {TRUST_ITEMS.map(({ icon: ItemIcon, label }) => (
-              <li key={label} className="flex items-center gap-2.5 text-[0.95rem] font-medium text-heading">
-                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-teal-tint text-primary">
-                  <ItemIcon aria-hidden strokeWidth={1.75} className="size-5" />
-                </span>
-                {label}
-              </li>
-            ))}
-          </ul>
         </div>
         <HeroVisual />
       </div>
