@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CtaBand } from "@/components/pages/CtaBand";
+import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { PageHero } from "@/components/pages/PageHero";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Reveal } from "@/components/shared/Reveal";
@@ -86,6 +87,8 @@ export default function ServicesPage() {
           ) : null}
         </div>
       </section>
+
+      <ContactoDoctor />
 
       <CtaBand
         title="¿No sabes qué servicio necesitas?"

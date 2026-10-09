@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import { CtaBand } from "@/components/pages/CtaBand";
+import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { PageHero } from "@/components/pages/PageHero";
 import { MicroIcon } from "@/components/3d/MicroIcon";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
@@ -22,7 +23,7 @@ import { findPillar, findTreatment, servicePath } from "@/lib/catalog";
 import { isMicroVariant } from "@/lib/micro-variants";
 import { breadcrumbSchema, medicalServiceSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
-import { clinicWhatsApp, messageAbout } from "@/lib/whatsapp";
+import { doctorContact, messageAbout } from "@/lib/whatsapp";
 import type { Treatment } from "@/types/medical";
 
 /** Subservicios con página propia. */
@@ -56,6 +57,7 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
   const pillar = findPillar(slug);
   if (!pillar) notFound();
   const detail = getServiceDetail(slug);
+  const contact = doctorContact();
   const related = detail.relatedTreatments.map(findTreatment).filter((t): t is Treatment => t !== undefined);
   const others = servicePillars.filter((item) => item.slug !== slug);
   const crumbs = [
@@ -85,17 +87,15 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
         lead={detail.intro}
         actions={
           <>
-            <a
-              href={clinicWhatsApp(messageAbout(pillar.name))}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonVariants({ variant: "primary", size: "lg" })}
-            >
-              <WhatsAppIcon /> Consultar por WhatsApp
+            <a href={BOOKING_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
+              Agendar teleconsulta
             </a>
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
-              Agendar cita
-            </a>
+            {contact ? (
+              <a href={contact.whatsappHref} target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "outline", size: "lg" })}>
+                <WhatsAppIcon className="text-whatsapp-strong" /> Consultar con el doctor
+                <span className="sr-only"> (WhatsApp, se abre en otra pestaña)</span>
+              </a>
+            ) : null}
           </>
         }
         visual={
@@ -178,6 +178,8 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
           </ul>
         </div>
       </nav>
+
+      <ContactoDoctor />
 
       <CtaBand
         title={`Agenda tu atención en ${pillar.name.toLowerCase()}`}

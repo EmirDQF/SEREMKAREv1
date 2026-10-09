@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/pages/CtaBand";
+import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { PageHero } from "@/components/pages/PageHero";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -61,6 +62,7 @@ export default function FaqPage() {
           </section>
         ))}
       </div>
+      <ContactoDoctor />
       <CtaBand
         title="¿Tienes otra pregunta?"
         text="Escríbenos por WhatsApp y te respondemos en horario de atención."

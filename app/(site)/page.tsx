@@ -13,6 +13,7 @@ import { PricingPreview } from "@/components/sections/PricingPreview";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { FAQ } from "@/components/sections/FAQ";
 import { LocationCTA } from "@/components/sections/LocationCTA";
+import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
 import { site } from "@/data/site";
@@ -55,6 +56,7 @@ export default function Home() {
       <Testimonials />
       <LocationCTA />
       <FAQ />
+      <ContactoDoctor id="contacto-title" className="section-y" />
     </>
   );
 }

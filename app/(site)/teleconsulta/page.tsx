@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, FileText, MonitorSmartphone, ShieldCheck, Stethoscope, Video } from "lucide-react";
 import { CtaBand } from "@/components/pages/CtaBand";
+import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { PageHero } from "@/components/pages/PageHero";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import { JsonLd } from "@/components/shared/JsonLd";
@@ -188,6 +189,8 @@ export default function TeleconsultaPage() {
           </p>
         </div>
       </section>
+
+      <ContactoDoctor />
 
       <CtaBand
         title="Agenda tu teleconsulta"

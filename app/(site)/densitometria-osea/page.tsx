@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Clock, ShieldCheck, Target } from "lucide-react";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
+import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { KineticText } from "@/components/shared/KineticText";
 import { Reveal } from "@/components/shared/Reveal";
@@ -210,6 +211,8 @@ export default function DensitometryPage() {
           </Accordion>
         </div>
       </section>
+
+      <ContactoDoctor />
 
       {/* CTA final */}
       <section aria-labelledby="dxa-cta" className="pb-24">

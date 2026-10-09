@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, CreditCard, MapPin, Video } from "lucide-react";
 import { CtaBand } from "@/components/pages/CtaBand";
+import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { PageHero } from "@/components/pages/PageHero";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { RevealGroup, RevealItem } from "@/components/shared/Reveal";
@@ -79,6 +80,8 @@ export default function TarifasPage() {
           </p>
         </div>
       </section>
+
+      <ContactoDoctor />
 
       <CtaBand
         title="¿Tienes dudas sobre el costo?"
