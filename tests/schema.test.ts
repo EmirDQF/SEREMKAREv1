@@ -7,6 +7,7 @@ import {
   locationClinicSchema,
   medicalServiceSchema,
   organizationSchema,
+  physicianSchema,
   procedureSchema,
 } from "@/lib/schema";
 import { getLocation, primaryLocation } from "@/lib/locations";
@@ -154,5 +155,18 @@ describe("procedureSchema and medicalServiceSchema", () => {
     const catalog = schema.hasOfferCatalog as { itemListElement: { itemOffered: { name: string } }[] };
     expect(catalog.itemListElement.map((item) => item.itemOffered.name)).toEqual(["A", "B"]);
     expect(schema.provider).toEqual({ "@id": ORGANIZATION_ID });
+  });
+});
+
+describe("physicianSchema", () => {
+  const base = { name: "Dr. Daniel Ccolcca", path: "/staff/daniel-ccolcca", specialty: "Reumatología", knowsAbout: ["Lupus"] };
+
+  it("publishes the photo as an absolute URL", () => {
+    const schema = physicianSchema({ ...base, image: "/images/doctor/daniel-ccolcca-552.jpg" });
+    expect(schema.image).toBe(`${site.url}/images/doctor/daniel-ccolcca-552.jpg`);
+  });
+
+  it("omits image when there is no real photo", () => {
+    expect(physicianSchema({ ...base, image: null })).not.toHaveProperty("image");
   });
 });

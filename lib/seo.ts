@@ -9,6 +9,17 @@ interface PageSeo {
   path?: string;
 }
 
+/**
+ * Imagen para compartir (app/opengraph-image.tsx, con la foto del Dr. Ccolcca). Se declara en cada
+ * página porque un `openGraph` propio reemplaza al heredado y la imagen se perdía.
+ */
+export const SHARE_IMAGE = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: `${site.name}: teleconsulta con un médico reumatólogo`,
+} as const;
+
 /** Metadata consistente por página (canonical, Open Graph y Twitter). */
 export function buildMetadata({ title, description, path = "/" }: PageSeo): Metadata {
   return {
@@ -22,8 +33,9 @@ export function buildMetadata({ title, description, path = "/" }: PageSeo): Meta
       siteName: site.name,
       locale: "es_PE",
       type: "website",
+      images: [SHARE_IMAGE],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: [SHARE_IMAGE.url] },
   };
 }
 

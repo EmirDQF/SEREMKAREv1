@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# originales de fotos (fuera de public/; ver scripts/optimize-doctor-photo.mjs)
+/assets/originals/

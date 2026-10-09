@@ -4,6 +4,11 @@ import type { ClinicLocation, FAQItem, OpeningHours } from "@/types/medical";
 
 type JsonLdObject = Record<string, unknown>;
 
+/** "/images/x.jpg" → "https://dominio/images/x.jpg" (los buscadores exigen URL absolutas). */
+function absoluteUrl(pathOrUrl: string): string {
+  return /^https?:\/\//.test(pathOrUrl) ? pathOrUrl : `${site.url}${pathOrUrl}`;
+}
+
 const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] as const;
 
 const toTime = (minutes: number) =>
@@ -229,7 +234,7 @@ export function physicianSchema(info: PhysicianInfo): JsonLdObject {
     "@type": "Physician",
     name: info.name,
     url: `${site.url}${info.path}`,
-    ...(info.image ? { image: info.image } : {}),
+    ...(info.image ? { image: absoluteUrl(info.image) } : {}),
     medicalSpecialty: "Rheumatologic",
     description: info.specialty,
     knowsAbout: info.knowsAbout,

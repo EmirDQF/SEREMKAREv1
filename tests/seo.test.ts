@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildMetadata, locationMetadata, locationPageTitle } from "@/lib/seo";
+import { SHARE_IMAGE, buildMetadata, locationMetadata, locationPageTitle } from "@/lib/seo";
 import { getLocation } from "@/lib/locations";
 import { site } from "@/data/site";
 
@@ -8,6 +8,13 @@ describe("buildMetadata", () => {
     const metadata = buildMetadata({ title: "T", description: "D", path: "/contacto" });
     expect(metadata.alternates?.canonical).toBe("/contacto");
     expect(metadata.openGraph).toMatchObject({ url: "/contacto", locale: "es_PE", siteName: site.name });
+  });
+
+  it("shares the image with the doctor photo on Open Graph and Twitter", () => {
+    const metadata = buildMetadata({ title: "T", description: "D", path: "/contacto" });
+    expect(metadata.openGraph?.images).toEqual([SHARE_IMAGE]);
+    expect(metadata.twitter?.images).toEqual([SHARE_IMAGE.url]);
+    expect(SHARE_IMAGE).toMatchObject({ url: "/opengraph-image", width: 1200, height: 630 });
   });
 });
 

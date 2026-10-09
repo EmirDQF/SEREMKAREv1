@@ -4,7 +4,7 @@ import { Providers } from "@/components/layout/Providers";
 import { CanvasHost } from "@/components/3d/CanvasHost";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { site } from "@/data/site";
-import { DEFAULT_DESCRIPTION } from "@/lib/seo";
+import { DEFAULT_DESCRIPTION, SHARE_IMAGE } from "@/lib/seo";
 import { organizationSchema } from "@/lib/schema";
 import "./globals.css";
 
@@ -50,8 +50,9 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: DEFAULT_TITLE,
     description: DEFAULT_DESCRIPTION,
+    images: [SHARE_IMAGE],
   },
-  twitter: { card: "summary_large_image", title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION },
+  twitter: { card: "summary_large_image", title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION, images: [SHARE_IMAGE.url] },
   formatDetection: { telephone: false },
 };
 

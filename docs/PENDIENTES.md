@@ -7,7 +7,7 @@ dato en el archivo indicado; la web se actualiza sola.
 
 | Dato | Archivo | Hoy se muestra |
 |---|---|---|
-| Foto real del Dr. Daniel Ccolcca | `data/doctors.ts` → `photo` (deja el archivo en `public/images/doctor/`) | Retrato con iniciales «DC» |
+| Foto del Dr. Daniel Ccolcca | Publicada (recorte sin el bordado de la bata). Para cambiarla: `scripts/optimize-doctor-photo.mjs` | — |
 | CMP y RNE del Dr. Ccolcca | `data/doctors.ts` → `cmp`, `rne` | «CMP/RNE por confirmar» |
 | Años de experiencia y formación | `data/doctors.ts` → `yearsOfExperience`, `education` | Ocultos / «Formación por confirmar» |
 | Horario de teleconsulta | `data/teleconsult.ts` → `TELECONSULT_HOURS` | «Horario por confirmar» (agenda demo rotulada) |

@@ -4,6 +4,9 @@ import { cn } from "@/lib/utils";
 
 type PortraitDoctor = Pick<Doctor, "name" | "photo" | "photoAlt" | "initials">;
 
+/** Encuadre hacia el rostro: los retratos cuadrados y 4:5 recortan el pecho, no la cabeza. */
+const FACE_POSITION = "object-cover object-[50%_22%]";
+
 interface DoctorPortraitProps {
   doctor: PortraitDoctor;
   /** Clases del contenedor (tamaño, radio). Con `fill`, el padre debe ser `relative`. */
@@ -13,15 +16,15 @@ interface DoctorPortraitProps {
   /** Tamaño en px cuando no se usa `fill`. */
   size?: number;
   sizes?: string;
-  /** Solo en la imagen LCP (hero). */
+  /** Solo si el retrato está en el primer pantallazo (hero): se precarga. El resto es lazy. */
   priority?: boolean;
   /** "" si la imagen es decorativa (el nombre ya está al lado). */
   alt?: string;
 }
 
 /**
- * Retrato del médico. Mientras no haya foto real (`photo: null`) muestra un retrato de marca
- * con las iniciales, del mismo tamaño, para que no haya saltos de layout al cambiarla.
+ * Retrato del médico con next/image (AVIF/WebP, tamaño reservado: sin saltos de layout).
+ * Sin foto real (`photo: null`) muestra un retrato de marca con las iniciales, del mismo tamaño.
  */
 export function DoctorPortrait({
   doctor,
@@ -35,14 +38,16 @@ export function DoctorPortrait({
   const label = alt ?? doctor.photoAlt;
 
   if (doctor.photo) {
+    const loading = priority ? { preload: true } : { loading: "lazy" as const };
     return fill ? (
       <Image
         src={doctor.photo}
         alt={label}
         fill
         sizes={sizes ?? "100vw"}
-        preload={priority}
-        className={cn("object-cover object-top", className)}
+        decoding="async"
+        {...loading}
+        className={cn(FACE_POSITION, className)}
       />
     ) : (
       <Image
@@ -50,8 +55,9 @@ export function DoctorPortrait({
         alt={label}
         width={size}
         height={size}
-        preload={priority}
-        className={cn("object-cover object-top", className)}
+        decoding="async"
+        {...loading}
+        className={cn(FACE_POSITION, className)}
       />
     );
   }

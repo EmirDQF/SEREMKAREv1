@@ -7,6 +7,8 @@ const HOUR = 60;
 const NO_CALCOM_EVENTS: Doctor["booking"] = { calEventTypeIds: { meet: null, presencial: null } };
 
 export const REAL_DOCTOR_SLUG = "daniel-ccolcca";
+/** JPEG del mismo recorte para Open Graph (WhatsApp, Facebook) y buscadores. */
+export const REAL_DOCTOR_SHARE_PHOTO = "/images/doctor/daniel-ccolcca-552.jpg";
 
 /**
  * Todos los médicos. El único real es el Dr. Daniel Ccolcca (index.html de SEREMKAREWEB).
@@ -25,8 +27,10 @@ export const allDoctors: readonly Doctor[] = [
     education: [], // CONFIRMAR: formación
     // Motivos que nombra el index.html real de la teleconsulta.
     focus: ["Dolor de rodilla", "Artritis", "Artrosis", "Lupus", "Osteoporosis"],
-    photo: null, // CONFIRMAR: foto real (la recibida muestra otro nombre bordado en la bata)
-    photoAlt: "Dr. Daniel Ccolcca, médico reumatólogo de SERMEKARE",
+    // Recorte de cabeza y hombros (scripts/optimize-doctor-photo.mjs): el original lleva otro nombre
+    // bordado en la bata; el cliente confirmó que la persona es el Dr. Ccolcca.
+    photo: "/images/doctor/daniel-ccolcca-552.webp",
+    photoAlt: "Dr. Daniel Ccolcca, médico reumatólogo",
     complaints: ["articulaciones", "espalda", "rodilla", "huesos", "generalizado", "general"],
     // PROVISIONAL: franja de la agenda demo; la disponibilidad real la dará Cal.com.
     schedule: [{ days: [1, 2, 3, 4, 5], from: 9 * HOUR, to: 22 * HOUR, modalities: ["videollamada"] }],

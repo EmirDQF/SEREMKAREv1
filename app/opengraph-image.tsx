@@ -1,10 +1,20 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { REAL_DOCTOR_SHARE_PHOTO, REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
 import { site } from "@/data/site";
 import { locationNamesLabel } from "@/lib/locations";
 
-export const alt = `${site.name} — ${site.legalTagline} en ${locationNamesLabel()}`;
+const doctor = getDoctor(REAL_DOCTOR_SLUG);
+
+export const alt = `${site.name}: teleconsulta con el ${doctor.name}, médico reumatólogo`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+/** Foto 4:5 a todo el alto de la imagen. Se lee una vez (no depende de la petición). */
+const PHOTO_WIDTH = Math.round((size.height * 4) / 5);
+const photoData = await readFile(join(process.cwd(), "public", REAL_DOCTOR_SHARE_PHOTO), "base64");
+const photoSrc = `data:image/jpeg;base64,${photoData}`;
 
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -14,43 +24,29 @@ export default function OpengraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "72px 80px",
           background: "linear-gradient(135deg, #0B192C 0%, #1E3E62 100%)",
           color: "white",
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div
-            style={{
-              width: 72,
-              height: 72,
-              borderRadius: 22,
-              background: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div style={{ width: 26, height: 26, borderRadius: 13, background: "#00A896" }} />
-          </div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "64px 56px 56px 72px" }}>
           <div style={{ display: "flex", fontSize: 44, fontWeight: 800, letterSpacing: -2 }}>
             SERME<span style={{ color: "#2DD4BF" }}>KARE</span>
           </div>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 72, fontWeight: 800, lineHeight: 1.05, letterSpacing: -3, maxWidth: 900 }}>
-            Recupera tu movilidad y vive sin dolor articular
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ fontSize: 62, fontWeight: 800, lineHeight: 1.06, letterSpacing: -2 }}>
+              Teleconsulta con un reumatólogo sin salir de casa
+            </div>
+            <div style={{ marginTop: 24, fontSize: 30, color: "#CBD5E1" }}>
+              {`${doctor.name} · Videollamada para todo el Perú`}
+            </div>
           </div>
-          <div style={{ marginTop: 24, fontSize: 30, color: "#CBD5E1" }}>
-            Reumatólogos certificados · Ecografía en consultorio · Teleconsulta
+          <div style={{ display: "flex", fontSize: 24, color: "#5EEAD4" }}>
+            {`Densitometría ósea en ${locationNamesLabel()}`}
           </div>
         </div>
-        <div style={{ display: "flex", fontSize: 26, color: "#5EEAD4" }}>
-          {site.legalTagline} · {locationNamesLabel()}
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse (Satori) solo admite <img> */}
+        <img src={photoSrc} width={PHOTO_WIDTH} height={size.height} alt="" style={{ objectFit: "cover" }} />
       </div>
     ),
     { ...size },
