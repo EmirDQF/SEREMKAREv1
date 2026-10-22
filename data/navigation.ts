@@ -19,6 +19,8 @@ export const mainNav: readonly NavLink[] = [
   { label: "Servicios", href: "/servicios" },
   { label: "Evaluación rápida", href: "/consulta-virtual" },
   { label: "Tarifas", href: "/tarifas" },
+  // Acceso destacado pedido por el cliente: justo antes de Sedes.
+  { label: "Suplementos", href: "/suplementos", icon: "pill", highlight: true },
   { label: "Sedes", href: "/sedes" },
   { label: "Blog", href: "/blog" },
 ];

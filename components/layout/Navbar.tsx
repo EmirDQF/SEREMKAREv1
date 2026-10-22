@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarCheck, ChevronDown, ScanLine } from "lucide-react";
+import { CalendarCheck, ChevronDown, Pill, ScanLine } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
@@ -19,8 +19,9 @@ const MOBILE_MENU_BUTTONS = {
 
 /** Icono clínico sutil de Densitometría (servicio estrella), sin insignias de texto. */
 function NavIcon({ link }: { link: NavLink }) {
-  if (link.icon !== "scan") return null;
-  return <ScanLine aria-hidden strokeWidth={1.75} className="size-4 text-primary" />;
+  if (link.icon === "scan") return <ScanLine aria-hidden strokeWidth={1.75} className="size-4 text-primary" />;
+  if (link.icon === "pill") return <Pill aria-hidden strokeWidth={1.75} className="size-4 text-primary" />;
+  return null;
 }
 
 const NAV_ITEM =
@@ -62,7 +63,14 @@ export function Navbar() {
               <ul className="glass absolute right-0 top-full mt-2 grid w-72 rounded-3xl p-2 shadow-lift">
                 {moreLinks.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="flex min-h-12 items-center rounded-2xl px-4 font-medium text-heading hover:bg-teal-tint">
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "flex min-h-12 items-center gap-2 rounded-2xl px-4 font-medium text-heading hover:bg-teal-tint",
+                        link.highlight && "bg-teal-tint font-semibold",
+                      )}
+                    >
+                      <NavIcon link={link} />
                       {link.label}
                     </Link>
                   </li>

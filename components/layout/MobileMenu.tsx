@@ -2,7 +2,7 @@
 
 import { useRef, useState, type MouseEvent, type ReactNode } from "react";
 import Link from "next/link";
-import { ArrowRight, CalendarCheck, Menu, Phone, ScanLine, X } from "lucide-react";
+import { ArrowRight, CalendarCheck, Menu, Phone, Pill, ScanLine, X } from "lucide-react";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { APPOINTMENT_HREF, footerOnlyLinks, mainNav } from "@/data/navigation";
 import type { DoctorContact } from "@/lib/whatsapp";
@@ -85,6 +85,7 @@ export function MobileMenu({ logo, contact, footnote, buttonClasses }: MobileMen
                   >
                     <span className="flex items-center gap-2.5">
                       {link.icon === "scan" ? <ScanLine aria-hidden strokeWidth={1.75} className="size-6 text-primary" /> : null}
+                      {link.icon === "pill" ? <Pill aria-hidden strokeWidth={1.75} className="size-6 text-primary" /> : null}
                       {link.label}
                     </span>
                     <ArrowRight aria-hidden strokeWidth={1.75} className="size-5 shrink-0 text-primary" />

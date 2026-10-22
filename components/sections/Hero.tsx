@@ -51,6 +51,9 @@ export function Hero() {
             <Link href={TRIAGE_HREF} className="inline-flex min-h-12 items-center gap-1 font-semibold text-primary hover:underline">
               ¿No sabes qué necesitas? Evaluación rápida <ArrowRight aria-hidden className="size-4" />
             </Link>
+            <Link href="/suplementos" className="inline-flex min-h-12 items-center gap-1 font-semibold text-primary hover:underline">
+              Ver suplementos <ArrowRight aria-hidden className="size-4" />
+            </Link>
           </p>
           <ul aria-label="Nuestro modelo de atención" className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 sm:flex sm:flex-wrap">
             {CARE_CONCEPTS.map(({ label, icon: Icon }) => (

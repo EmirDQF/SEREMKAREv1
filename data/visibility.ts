@@ -25,6 +25,8 @@ export const visibility = {
   email: false,
   socials: false,
   phoneCallModality: false,
+  /** Catálogo de suplementos con productos (D13). CONFIRMAR: productos, precios y registros sanitarios. */
+  supplementsCatalog: false,
 } as const;
 
 /** Especialidades visibles (D11): las que nombra el index.html real de la teleconsulta. */
