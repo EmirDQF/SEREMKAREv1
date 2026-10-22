@@ -11,13 +11,14 @@ export function HoursSection() {
     <section aria-labelledby="horario-title" className="pb-16 sm:pb-24">
       <div className="container-page grid gap-4 md:grid-cols-2">
         <HoursBlock />
-        <div className="flex flex-col justify-between gap-6 rounded-[1.75rem] bg-navy p-6 text-white shadow-soft dark:bg-navy-3">
+        <div className="scan-panel relative isolate flex flex-col justify-between gap-6 overflow-hidden rounded-[1.75rem] p-6 text-white">
+          <div aria-hidden className="aurora -z-10 opacity-70" />
           <div>
             <p className="font-display text-xl font-bold">¿Listo para tu primera cita?</p>
-            <p className="mt-2 text-slate-200">Te atendemos con cita previa en {locationNamesLabel()}, o por teleconsulta desde casa.</p>
+            <p className="mt-2 text-on-navy-muted">Te atendemos con cita previa en {locationNamesLabel()}, o por teleconsulta desde casa.</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-            <Link href={APPOINTMENT_HREF} className={buttonVariants({ variant: "light", size: "lg" })}>
+            <Link href={APPOINTMENT_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
               <CalendarCheck aria-hidden strokeWidth={1.75} /> Agendar cita
             </Link>
             <Link href={LOCATIONS_PATH} className="inline-flex min-h-12 items-center gap-1.5 font-semibold text-teal-200 hover:text-white">

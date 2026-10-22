@@ -14,7 +14,7 @@ interface HoursBlockProps {
  */
 export function HoursBlock({ className, id = "horario-title" }: HoursBlockProps) {
   return (
-    <div className={cn("rounded-[1.75rem] border border-line bg-card-solid p-6 shadow-soft", className)}>
+    <div className={cn("gradient-border glass-panel rounded-[1.75rem] p-6 shadow-soft", className)}>
       <h2 id={id} className="flex items-center gap-2.5 font-display text-xl font-bold text-heading">
         <Clock aria-hidden strokeWidth={1.75} className="size-6 text-primary" /> Horario de atención
       </h2>
@@ -22,11 +22,12 @@ export function HoursBlock({ className, id = "horario-title" }: HoursBlockProps)
         {OPENING_SCHEDULE.map((row) => (
           <div key={row.days} className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-line pb-2 last:border-b-0">
             <dt className="text-[1.0625rem] text-muted">{row.days}</dt>
-            <dd className="font-display text-lg font-bold tabular-nums text-heading">{row.hours}</dd>
+            <dd className="data-mono text-lg font-bold text-heading">{row.hours}</dd>
           </div>
         ))}
         <div className="flex flex-wrap items-baseline justify-between gap-x-4">
           <dt className="text-[1.0625rem] text-muted">Domingos y feriados</dt>
+          {/* CONFIRMAR: domingos y feriados (docs/PENDIENTES.md). */}
           <dd className="font-semibold text-muted">Por confirmar</dd>
         </div>
       </dl>

@@ -24,7 +24,7 @@ import { buildMetadata } from "@/lib/seo";
 
 const TITLE = `Densitometría ósea en Lima Norte y Callao | ${site.name}`;
 const DESCRIPTION =
-  "Densitometría ósea (DXA) en Los Olivos, Callao y Puente Piedra: prueba rápida e indolora para detectar osteopenia y osteoporosis antes de una fractura. Resultados el mismo día o en 24 horas. Agenda en línea o por WhatsApp.";
+  "Densitometría ósea (DXA) en Los Olivos, Callao y Puente Piedra: prueba rápida e indolora que detecta la osteoporosis antes de una fractura. Resultado en 24 h.";
 
 const CRUMBS = [
   { label: "Inicio", href: "/" },
@@ -138,7 +138,7 @@ export default function DensitometryPage() {
       </section>
 
       {/* El estudio */}
-      <section aria-labelledby="dxa-estudio" className="section-y relative isolate overflow-hidden rounded-[2.5rem] bg-navy text-slate-200 lg:rounded-[4rem]">
+      <section aria-labelledby="dxa-estudio" className="section-y relative isolate overflow-hidden rounded-[2.5rem] scan-panel text-on-navy-muted lg:rounded-[4rem]">
         <div aria-hidden className="immersive-glow -z-10" />
         <div aria-hidden className="immersive-grid -z-10" />
         <div className="container-page">

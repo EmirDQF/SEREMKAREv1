@@ -20,7 +20,7 @@ import type { SupplementCategoryId } from "@/types/supplements";
 
 const TITLE = `Suplementos: salud ósea, articular y bienestar | ${site.name}`;
 const DESCRIPTION =
-  "Suplementos para el cuidado de huesos y articulaciones en nuestras sedes de Lima Norte y Callao. Pídelos por WhatsApp. No reemplazan el tratamiento indicado por tu médico.";
+  "Suplementos para huesos y articulaciones en nuestras sedes de Lima Norte y Callao. Pídelos por WhatsApp. No reemplazan el tratamiento de tu médico.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Suplementos", href: SUPPLEMENTS_PATH },
@@ -64,7 +64,7 @@ export default function SupplementsPage() {
 
       <section aria-label="Aviso importante" className="pb-10">
         <div className="container-page">
-          <p className="flex items-start gap-3 rounded-2xl border-2 border-line-strong bg-card-solid p-4 text-[1rem] font-semibold text-heading">
+          <p id="aviso-suplementos" className="flex scroll-mt-32 items-start gap-3 rounded-2xl border-2 border-line-strong bg-card-solid p-4 text-[1rem] font-semibold text-heading">
             <ShieldAlert aria-hidden strokeWidth={1.75} className="mt-0.5 size-6 shrink-0 text-primary" />
             {SUPPLEMENTS_DISCLAIMER}
           </p>
@@ -102,7 +102,8 @@ export default function SupplementsPage() {
               ))}
             </ul>
           ) : (
-            <div className="mt-10 flex flex-col items-start gap-4 rounded-[1.75rem] border-2 border-dashed border-line-strong bg-bg-alt p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div className="glass-panel gradient-border relative isolate mt-10 flex flex-col items-start gap-4 overflow-hidden rounded-[1.75rem] p-6 shadow-soft sm:flex-row sm:items-center sm:justify-between sm:p-8">
+              <div aria-hidden className="scan-grid -z-10" />
               <div className="flex gap-4">
                 <PackageOpen aria-hidden strokeWidth={1.5} className="size-10 shrink-0 text-primary" />
                 <div>

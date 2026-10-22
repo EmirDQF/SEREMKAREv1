@@ -179,7 +179,7 @@ export default async function SpecialtyPage({ params }: PageProps<"/especialidad
             {slug === "osteoporosis" ? (
               <Link
                 href={DENSITOMETRY_PATH}
-                className="flex items-center justify-between gap-3 rounded-[1.75rem] bg-navy p-5 font-display font-semibold text-white transition-colors hover:bg-navy-2"
+                className="flex items-center justify-between gap-3 rounded-[1.75rem] scan-panel p-5 font-display font-semibold text-white transition-colors hover:bg-navy-2"
               >
                 Todo sobre la densitometría ósea <ArrowRight aria-hidden className="size-5 shrink-0 text-teal-200" />
               </Link>

@@ -24,7 +24,7 @@ import { site } from "@/data/site";
 import { findPillar, findTreatment, servicePath } from "@/lib/catalog";
 import { isMicroVariant } from "@/lib/micro-variants";
 import { breadcrumbSchema, medicalServiceSchema } from "@/lib/schema";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, metaDescription } from "@/lib/seo";
 import { doctorContact, messageAbout } from "@/lib/whatsapp";
 import type { Treatment } from "@/types/medical";
 
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: PageProps<"/servicios/[slug]"
   if (!pillar) return {};
   const title = `${pillar.name} en Lima Norte y Callao | ${site.name}`;
   return {
-    ...buildMetadata({ title, description: `${pillar.tagline} ${getServiceDetail(slug).intro}`, path: servicePath(slug) }),
+    ...buildMetadata({ title, description: metaDescription(`${pillar.tagline} ${getServiceDetail(slug).intro}`), path: servicePath(slug) }),
     title: { absolute: title },
   };
 }
@@ -168,9 +168,9 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
               </li>
             ))}
           </ul>
-          <div className="mt-6 flex flex-col items-start gap-3 rounded-[1.75rem] bg-navy p-6 text-white sm:flex-row sm:items-center sm:justify-between dark:bg-navy-3">
+          <div className="mt-6 flex flex-col items-start gap-3 rounded-[1.75rem] scan-panel p-6 text-white sm:flex-row sm:items-center sm:justify-between dark:bg-navy-3">
             <p className="font-display text-lg font-bold">¿Qué hago ahora? Agenda y te confirmamos todo por WhatsApp.</p>
-            <Link href={booking.href} className={buttonVariants({ variant: "light", size: "lg", className: "shrink-0" })}>
+            <Link href={booking.href} className={buttonVariants({ variant: "primary", size: "lg", className: "shrink-0" })}>
               {booking.label} <ArrowRight aria-hidden strokeWidth={1.75} />
             </Link>
           </div>

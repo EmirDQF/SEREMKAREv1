@@ -18,7 +18,7 @@ import { buildWhatsAppLink } from "@/lib/whatsapp";
  * webpack empaquetaba su JS (y todo data/site.ts) en todas las páginas aunque no se renderizara.
  */
 
-const LINK = "inline-flex min-h-10 items-center text-slate-300 transition-colors hover:text-white";
+const LINK = "inline-flex min-h-12 items-center text-on-navy-muted transition-colors hover:text-white";
 
 interface FooterColumnProps {
   title: string;
@@ -46,9 +46,10 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative isolate overflow-hidden bg-navy pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-slate-300 md:pb-0 dark:bg-[#071222]">
+    <footer className="relative isolate overflow-hidden bg-navy pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-on-navy-muted md:pb-0 dark:bg-navy-950">
       <FooterWaves />
-      <div className="container-page grid gap-12 pt-16 lg:grid-cols-[1.2fr_2fr] lg:pt-20">
+      <div aria-hidden className="immersive-grid -z-10" />
+      <div className="container-page grid gap-12 pt-16 lg:grid-cols-[1fr_2.4fr] lg:pt-20">
         <div>
           <Logo tone="inverted" showTagline />
           <p className="mt-5 max-w-sm font-display text-lg font-bold text-white">{CENTER_TAGLINE}</p>
@@ -72,7 +73,7 @@ export function Footer() {
           ) : null}
         </div>
 
-        <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-[0.9fr_1fr_1fr_1.5fr]">
           <FooterColumn
             title="Especialidades"
             links={specialties.map((s) => ({ label: s.shortName, href: `/especialidades/${s.slug}` }))}
@@ -109,10 +110,12 @@ export function Footer() {
                   <span className="block font-semibold text-white">Horario de atención</span>
                   {OPENING_SCHEDULE.map((row) => (
                     <span key={row.days} className="block">
-                      {row.days}: {row.hours}
+                      {row.days}: <span className="data-mono text-white">{row.hours}</span>
                     </span>
                   ))}
-                  <span className="block text-sm text-slate-400">Con cita previa. Confirma el horario de tu sede por WhatsApp.</span>
+                  {/* CONFIRMAR: domingos y feriados y horario por sede (docs/PENDIENTES.md). */}
+                  <span className="block">Domingos y feriados: por confirmar</span>
+                  <span className="block text-sm text-on-navy-subtle">Con cita previa. Confirma el horario de tu sede por WhatsApp.</span>
                 </span>
               </li>
             </ul>

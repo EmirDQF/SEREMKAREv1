@@ -1,9 +1,6 @@
 import { densitometry } from "@/data/densitometry";
 import { cn } from "@/lib/utils";
 
-/** Recorrido del brazo del equipo sobre la camilla (coordenadas del dibujo; el viewBox recorta los márgenes vacíos). */
-const SCAN_END = 330;
-const BODY_LEFT = 78;
 const VERTEBRAE = ["L1", "L2", "L3", "L4"] as const;
 
 interface DxaScanFXProps {
@@ -14,9 +11,9 @@ interface DxaScanFXProps {
 
 /**
  * Ilustración del estudio: persona recostada en la camilla y el brazo del densitómetro barriendo con
- * una línea láser; a su paso se revela (estilo rayos X) la columna lumbar y la cadera.
- * Componente de servidor: el barrido es una animación CSS (`.dxa-arm`, `.dxa-reveal` en globals.css),
- * solo transform; con movimiento reducido queda quieta en la posición final (todo revelado).
+ * una línea láser sobre la columna lumbar y la cadera (capa estilo rayos X).
+ * Componente de servidor: el barrido es una animación CSS (`.dxa-arm` en globals.css), solo transform;
+ * con movimiento reducido el brazo queda quieto al final del recorrido.
  */
 export function DxaScanFX({ className, idPrefix = "dxa" }: DxaScanFXProps) {
   const uid = idPrefix;
@@ -31,9 +28,6 @@ export function DxaScanFX({ className, idPrefix = "dxa" }: DxaScanFXProps) {
         className="relative h-auto w-full"
       >
         <defs>
-          <clipPath id={`reveal-${uid}`}>
-            <rect className="dxa-reveal" x={BODY_LEFT} y="100" height="90" width={SCAN_END - BODY_LEFT} />
-          </clipPath>
           <linearGradient id={`beam-${uid}`} x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stopColor="var(--teal-300)" stopOpacity="0.55" />
             <stop offset="100%" stopColor="var(--teal-300)" stopOpacity="0" />
@@ -52,8 +46,8 @@ export function DxaScanFX({ className, idPrefix = "dxa" }: DxaScanFXProps) {
           <path d="M262 140 L366 146 Q374 151 366 158 L262 166 Z" />
         </g>
 
-        {/* Capa de rayos X revelada por el barrido */}
-        <g clipPath={`url(#reveal-${uid})`}>
+        {/* Capa de rayos X: columna lumbar y cadera (lo que mide el estudio) */}
+        <g>
           <path
             d="M80 140 Q86 132 110 134 L246 136 Q262 138 264 152 Q262 168 246 169 L110 170 Q86 171 80 162 Z M262 140 L366 146 Q374 151 366 158 L262 166 Z"
             fill="var(--navy-950)"

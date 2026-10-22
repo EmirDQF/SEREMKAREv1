@@ -25,7 +25,7 @@ function NavIcon({ link }: { link: NavLink }) {
 }
 
 const NAV_ITEM =
-  "inline-flex min-h-12 items-center gap-1 rounded-full px-3.5 font-display text-[0.95rem] font-semibold text-heading transition-colors hover:bg-teal-tint";
+  "inline-flex min-h-12 items-center gap-1 rounded-full px-3.5 font-display text-base font-semibold text-heading transition-colors hover:bg-teal-tint";
 
 /**
  * Barra principal. Componente de servidor: el «Más» es un <details> nativo (sin Radix) y el estilo
@@ -38,10 +38,10 @@ export function Navbar() {
         aria-label="Principal"
         className={cn(
           "flex min-h-[4.5rem] items-center justify-between gap-3 rounded-full border border-transparent bg-transparent px-3 transition-[background-color,box-shadow,border-color,min-height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-4",
-          "group-data-[scrolled=true]/header:glass group-data-[scrolled=true]/header:min-h-16 group-data-[scrolled=true]/header:border-line group-data-[scrolled=true]/header:shadow-soft",
+          "group-data-[scrolled=true]/header:glass group-data-[scrolled=true]/header:gradient-border group-data-[scrolled=true]/header:min-h-16 group-data-[scrolled=true]/header:shadow-soft",
         )}
       >
-        <Link href="/" aria-label={`${site.name}, ir al inicio`} className="flex shrink-0 items-center gap-2 rounded-full">
+        <Link href="/" aria-label={`${site.name}, ir al inicio`} className="flex min-h-12 shrink-0 items-center gap-2 rounded-full">
           <Logo />
         </Link>
 
@@ -84,11 +84,8 @@ export function Navbar() {
           <ThemeToggle />
           <Link
             href={APPOINTMENT_HREF}
-            className={cn(
-              buttonVariants({ variant: "primary" }),
-              "hidden sm:inline-flex",
-              "shadow-[0_0_0_0_rgb(0_168_150/0.4),0_10px_28px_-10px_rgb(0_118_106/0.7)] hover:shadow-[0_0_0_6px_rgb(0_168_150/0.15),0_14px_36px_-8px_rgb(0_168_150/0.65)]",
-            )}
+            // En móvil (< 640 px) la acción vive en la barra fija inferior (siempre visible, al alcance del pulgar).
+            className={cn(buttonVariants({ variant: "primary" }), "hidden sm:inline-flex")}
           >
             <CalendarCheck aria-hidden strokeWidth={1.75} />
             Agendar cita

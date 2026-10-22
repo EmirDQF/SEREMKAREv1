@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Clock, FileCheck2, MapPin, ScanLine, Shirt, Wallet } from "lucide-react";
 import { AudienceCards } from "@/components/densitometry/AudienceCards";
+import { TScoreScale } from "@/components/densitometry/TScoreScale";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { buttonVariants } from "@/components/ui/button";
 import { DENSITOMETRY_PATH, densitometry } from "@/data/densitometry";
@@ -11,9 +12,9 @@ import { locationNamesLabel } from "@/lib/locations";
 const HOME_AUDIENCE_LIMIT = 4;
 
 /**
- * Home: densitometría ósea, el servicio estrella. Responde en un pantallazo qué es, para quién,
- * cómo prepararse, cuánto dura, qué recibes, dónde y cuánto cuesta. Componente de servidor (el hueso
- * 3D y la escala interactiva viven en /densitometria-osea).
+ * Home: densitometría ósea, el servicio estrella. Un panel oscuro de «sala de imagen» con la escala
+ * T-score en SVG, y al lado lo práctico: preparación, duración, qué recibes, dónde y precio (o «Por
+ * confirmar»). Componente de servidor (el hueso 3D y la escala interactiva viven en /densitometria-osea).
  */
 export function BoneDensitySection() {
   const price = formatPrice(getPricing("densitometria").price);
@@ -26,53 +27,65 @@ export function BoneDensitySection() {
   ] as const;
 
   return (
-    <section aria-labelledby="densitometria-title" className="section-y relative overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_80%_20%,rgb(0_168_150/0.1),transparent_70%),radial-gradient(50%_45%_at_10%_90%,rgb(2_132_199/0.08),transparent_70%)]"
-      />
+    <section aria-labelledby="densitometria-title" className="section-y relative isolate overflow-hidden">
+      <div aria-hidden className="scan-lines -z-10 opacity-60" />
       <div className="container-page">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <SectionHeading
-            id="densitometria-title"
-            align="left"
-            eyebrow="Densitometría ósea · Diagnóstico"
-            title="¿Qué tan fuertes están tus huesos?"
-            accent="fuertes"
-            description={`${densitometry.whatIs} Sirve para detectar la osteoporosis (huesos frágiles) antes de una fractura. ${densitometry.technicalName}`}
-          />
-          <Link href={DENSITOMETRY_BOOKING_HREF} className={buttonVariants({ variant: "primary", size: "lg", className: "shrink-0" })}>
-            <ScanLine aria-hidden strokeWidth={1.75} />
-            Agendar densitometría
-          </Link>
-        </div>
+        <SectionHeading
+          id="densitometria-title"
+          align="left"
+          eyebrow="Densitometría ósea · Servicio estrella"
+          title="¿Qué tan fuertes están tus huesos?"
+          accent="fuertes"
+          description={`${densitometry.whatIs} Sirve para detectar la osteoporosis (huesos frágiles) antes de una fractura. ${densitometry.technicalName}`}
+        />
 
-        <div className="mt-12 grid items-start gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
-          <div>
-            <h3 className="text-h3 text-heading">¿Quién debería hacérsela?</h3>
-            <AudienceCards limit={HOME_AUDIENCE_LIMIT} className="mt-4" />
+        <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+          {/* Panel «sala de imagen»: escala T-score y CTA */}
+          <div className="scan-panel relative flex flex-col overflow-hidden rounded-[2rem] p-6 sm:p-8">
+            <div aria-hidden className="immersive-grid" />
+            <div aria-hidden className="aurora opacity-50" />
+            <div className="relative">
+              <p className="tech-label flex items-center gap-2 text-teal-300">
+                <ScanLine aria-hidden strokeWidth={1.75} className="size-5" />
+                Lectura del resultado · T-score
+              </p>
+              <p className="mt-3 max-w-md text-lg text-on-navy-muted">
+                El estudio compara la densidad de tus huesos con la de un adulto joven sano. Tu especialista te lo explica.
+              </p>
+              <TScoreScale className="mt-6 text-on-navy-muted" />
+            </div>
+            <div className="relative mt-auto flex flex-col gap-3 pt-8 sm:flex-row sm:flex-wrap sm:items-center">
+              <Link href={DENSITOMETRY_BOOKING_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
+                <ScanLine aria-hidden strokeWidth={1.75} />
+                Agendar densitometría
+              </Link>
+              <Link
+                href={DENSITOMETRY_PATH}
+                className="inline-flex min-h-12 items-center gap-2 font-display font-semibold text-teal-200 hover:text-white"
+              >
+                Todo sobre el estudio <ArrowRight aria-hidden strokeWidth={1.75} className="size-5" />
+              </Link>
+            </div>
           </div>
-          <dl className="grid gap-3 rounded-[1.75rem] border border-line bg-card-solid p-5 shadow-soft sm:p-6">
+
+          {/* Lo práctico */}
+          <dl className="glass-panel gradient-border grid content-start gap-3 rounded-[2rem] p-6 shadow-soft sm:p-7">
             {facts.map(({ icon: Icon, title, text }) => (
-              <div key={title} className="border-b border-line pb-3 last:border-b-0 last:pb-0">
-                <dt className="flex items-center gap-3 font-display font-bold text-heading">
-                  <Icon aria-hidden strokeWidth={1.75} className="size-6 shrink-0 text-primary" />
-                  {title}
-                </dt>
-                <dd className="pl-9 text-[0.975rem] text-muted">{text}</dd>
+              <div key={title} className="grid grid-cols-[2.75rem_1fr] gap-x-3 border-b border-line pb-3 last:border-b-0 last:pb-0">
+                <span aria-hidden className="row-span-2 grid size-11 place-items-center rounded-xl bg-teal-tint text-primary">
+                  <Icon strokeWidth={1.75} className="size-6" />
+                </span>
+                <dt className="font-display font-bold text-heading">{title}</dt>
+                <dd className="text-base text-muted">{text}</dd>
               </div>
             ))}
           </dl>
         </div>
 
-        <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <Link
-            href={DENSITOMETRY_PATH}
-            className="inline-flex min-h-12 items-center gap-2 font-display font-semibold text-primary hover:underline"
-          >
-            Todo sobre la densitometría y tu resultado (T-score) <ArrowRight aria-hidden strokeWidth={1.75} className="size-5" />
-          </Link>
-          <p className="text-sm text-muted">{densitometry.disclaimer}</p>
+        <div className="mt-12">
+          <h3 className="text-h3 text-heading">¿Quién debería hacérsela?</h3>
+          <AudienceCards limit={HOME_AUDIENCE_LIMIT} className="mt-4" />
+          <p className="mt-6 text-base text-muted">{densitometry.disclaimer}</p>
         </div>
       </div>
     </section>

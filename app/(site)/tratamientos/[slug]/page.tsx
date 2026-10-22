@@ -159,7 +159,7 @@ export default async function TreatmentPage({ params }: PageProps<"/tratamientos
             {pillar ? (
               <Link
                 href={servicePath(pillar.slug)}
-                className="flex items-center justify-between gap-3 rounded-[1.75rem] bg-navy p-5 font-display font-semibold text-white transition-colors hover:bg-navy-2"
+                className="flex items-center justify-between gap-3 rounded-[1.75rem] scan-panel p-5 font-display font-semibold text-white transition-colors hover:bg-navy-2"
               >
                 <span>
                   <span className="block text-sm font-medium text-teal-200">Forma parte de</span>

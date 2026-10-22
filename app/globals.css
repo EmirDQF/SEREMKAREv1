@@ -835,30 +835,18 @@ dialog[open] { animation: var(--animate-dialog-in); }
    Sistema visual 2026: piezas «futuristas» baratas (CSS/SVG, solo transform y opacity)
    ========================================================================== */
 
-/* Ilustración DXA: el brazo barre la camilla y revela la capa de rayos X (DxaScanFX). */
+/* Ilustración DXA: el brazo del densitómetro barre la camilla (DxaScanFX). */
 .dxa-arm {
   transform: translateX(330px);
   @media (prefers-reduced-motion: no-preference) {
     animation: dxa-arm 4.5s ease-in-out infinite alternate both;
   }
 }
-.dxa-reveal {
-  transform-box: fill-box;
-  transform-origin: left center;
-  @media (prefers-reduced-motion: no-preference) {
-    animation: dxa-reveal 4.5s ease-in-out infinite alternate both;
-  }
-}
 @keyframes dxa-arm {
   from { transform: translateX(92px); }
   to { transform: translateX(330px); }
 }
-@keyframes dxa-reveal {
-  from { transform: scaleX(0.056); }
-  to { transform: scaleX(1); }
-}
 [data-reduce-motion="true"] .dxa-arm { animation: none; transform: translateX(330px); }
-[data-reduce-motion="true"] .dxa-reveal { animation: none; transform: none; }
 
 /*
  * Bento con foco que sigue al puntero, SOLO CSS y solo con mouse/trackpad: una rejilla 3×3 de zonas

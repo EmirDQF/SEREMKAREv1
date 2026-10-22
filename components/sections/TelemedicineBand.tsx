@@ -29,7 +29,8 @@ interface TelemedicineBandProps {
 
 /**
  * «Servicio extra: Teleconsulta». Bloque visualmente distinto de los pilares (borde punteado en
- * azul de videollamada sobre fondo claro). Componente de servidor, sin blur ni animaciones de JS.
+ * aqua de videollamada sobre fondo claro, cuadrícula tenue). 3 pasos numerados, cuándo no sirve y los
+ * dos botones del cliente. Componente de servidor, sin animaciones de JS.
  */
 export function TelemedicineBand({ id = "tele-title" }: TelemedicineBandProps) {
   const doctor = getDoctor(REAL_DOCTOR_SLUG);
@@ -38,8 +39,9 @@ export function TelemedicineBand({ id = "tele-title" }: TelemedicineBandProps) {
   return (
     <section aria-labelledby={id} className="section-y">
       <div className="container-page">
-        <div className="relative rounded-[2rem] border-2 border-dashed border-video/40 bg-[linear-gradient(180deg,var(--video-tint),transparent_70%)] p-6 sm:p-10 lg:p-12">
-          <p className="inline-flex items-center gap-2 rounded-full bg-video px-3.5 py-1.5 text-sm font-bold uppercase tracking-[0.08em] text-on-video">
+        <div className="relative isolate overflow-hidden rounded-[2rem] border-2 border-dashed border-video/45 bg-[linear-gradient(180deg,var(--video-tint),transparent_70%)] p-6 sm:p-10 lg:p-12">
+          <div aria-hidden className="scan-grid -z-10 opacity-60" />
+          <p className="tech-label inline-flex items-center gap-2 rounded-full bg-video px-3.5 py-1.5 text-on-video">
             <Video aria-hidden strokeWidth={2} className="size-4" /> Servicio extra
           </p>
 
@@ -54,15 +56,12 @@ export function TelemedicineBand({ id = "tele-title" }: TelemedicineBandProps) {
 
               <ol className="mt-8 grid gap-4 sm:grid-cols-3">
                 {STEPS.map((step, index) => (
-                  <li key={step.title} className="rounded-2xl border border-line bg-card-solid p-4 shadow-soft">
-                    <span
-                      aria-hidden
-                      className="grid size-9 place-items-center rounded-full bg-video-tint font-display font-bold text-video"
-                    >
-                      {index + 1}
+                  <li key={step.title} className="glass-panel rounded-2xl p-4 shadow-soft">
+                    <span aria-hidden className="data-mono block text-3xl font-bold leading-none text-video">
+                      {String(index + 1).padStart(2, "0")}
                     </span>
                     <h3 className="mt-3 font-display text-lg font-bold text-heading">{step.title}</h3>
-                    <p className="mt-1 text-[0.95rem] text-muted">{step.body}</p>
+                    <p className="mt-1 text-base text-muted">{step.body}</p>
                   </li>
                 ))}
               </ol>
@@ -109,12 +108,12 @@ export function TelemedicineBand({ id = "tele-title" }: TelemedicineBandProps) {
                     <Icon aria-hidden strokeWidth={1.75} className="mt-0.5 size-6 shrink-0 text-video" />
                     <span>
                       <span className="block font-display font-bold text-heading">{title}</span>
-                      <span className="block text-[0.95rem] text-muted">{body}</span>
+                      <span className="block text-base text-muted">{body}</span>
                     </span>
                   </li>
                 ))}
               </ul>
-              <div className="flex gap-3 rounded-2xl border border-line bg-bg-alt p-4 text-[0.95rem] text-muted">
+              <div className="flex gap-3 rounded-2xl border border-line bg-bg-alt p-4 text-base text-muted">
                 <Info aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0 text-heading" />
                 <p>
                   <strong className="font-semibold text-heading">¿Cuándo no sirve?</strong> {teleconsultLimits.physicalExam}{" "}

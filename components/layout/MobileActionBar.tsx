@@ -19,7 +19,7 @@ export function MobileActionBar() {
       aria-label="Acciones rápidas"
       className="glass fixed inset-x-0 bottom-0 z-50 flex gap-2 border-x-0 border-b-0 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 md:hidden"
     >
-      <Link href={APPOINTMENT_HREF} className={cn(ACTION, "flex-[2] bg-primary text-on-primary shadow-soft")}>
+      <Link href={APPOINTMENT_HREF} className={cn(ACTION, "flex-[2] bg-primary text-on-primary glow-cta")}>
         <CalendarCheck aria-hidden strokeWidth={1.75} />
         Agendar cita
       </Link>

@@ -48,7 +48,7 @@ export default function ServicesPage() {
           <Reveal>
             <Link
               href={DENSITOMETRY_PATH}
-              className="group mb-6 flex flex-col gap-4 rounded-[1.75rem] bg-navy p-6 text-white shadow-lift transition-colors hover:bg-navy-2 sm:flex-row sm:items-center"
+              className="group mb-6 flex flex-col gap-4 rounded-[1.75rem] scan-panel p-6 text-white shadow-lift transition-shadow hover:glow-card sm:flex-row sm:items-center"
             >
               <IconBadge name="scan" size="lg" className="bg-white/10 text-teal-200" />
               <span className="flex-1">
