@@ -69,6 +69,15 @@
   --grain-opacity: 0.035;
   --glass-bg: rgb(255 255 255 / 0.7);
   --glass-border: rgb(226 232 240 / 0.8);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Escala tipográfica fluida (clamp): cuerpo ≥ 16 px en cualquier pantalla (baja visión). */
+  --fs-body: clamp(1.0625rem, 0.25vw + 1rem, 1.125rem);
+  --fs-lead: clamp(1.125rem, 0.6vw + 1rem, 1.3125rem);
+  --fs-eyebrow: 0.875rem;
+
+  /* Espaciado vertical: secciones y bloques (ritmo alternado bg / bg-alt). */
+  --space-section: clamp(4rem, 9vw, 7.5rem);
+  --space-block: clamp(2rem, 4vw, 3rem);
 }
 
 [data-theme="dark"] {
@@ -167,11 +176,15 @@
   --color-on-whatsapp: var(--on-whatsapp);
   --color-rating: var(--rating);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-jakarta), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
+  /* Radios: control (botones, campos) · tarjeta · panel (bloques grandes). Concéntricos: panel = tarjeta + padding. */
   --radius-card: 1.5rem;
   --radius-xl2: 2rem;
+  --radius-control: 9999px;
+  --radius-panel: 1.75rem;
+
 
   --shadow-soft: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 4px 12px hsl(var(--shadow-color) / 0.06),
     0 16px 40px -12px hsl(var(--shadow-color) / 0.12);
@@ -232,14 +245,10 @@
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
-    font-size: 1.0625rem;
+    font-size: var(--fs-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-  }
-
-  @media (min-width: 768px) {
-    body { font-size: 1.125rem; }
   }
 
   h1, h2, h3, h4 {
@@ -294,7 +303,27 @@
 }
 
 @utility section-y {
-  padding-block: clamp(4rem, 9vw, 7.5rem);
+  padding-block: var(--space-section);
+}
+
+/* Números que cambian o se comparan (precios, horarios, contadores): ancho fijo. */
+@utility nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Etiqueta sobre los títulos (eyebrow): la misma píldora que SectionHeading, en todo el sitio. */
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  border-radius: 9999px;
+  padding: 0.375rem 0.875rem;
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  background: var(--teal-tint);
+  color: var(--teal-strong);
 }
 
 @utility text-display {
@@ -343,7 +372,8 @@
     background: color-mix(in srgb, var(--card-solid) 94%, transparent);
   }
   @media (min-width: 768px) {
-    backdrop-filter: blur(24px) saturate(1.4);
+    /* Vidrio refinado: blur pequeño (12 px) para no repintar caro al hacer scroll. */
+    backdrop-filter: blur(12px) saturate(1.3);
   }
 }
 
@@ -675,3 +705,28 @@ html.lenis, html.lenis body { height: auto; }
 dialog::backdrop { background: rgb(11 25 44 / 0.7); }
 html:has(dialog[open]) { overflow: hidden; }
 dialog[open] { animation: var(--animate-dialog-in); }
+
+/* Menú «Más» (<details> nativo): entrada con @starting-style, solo opacity + transform. */
+[data-dropdown] > ul {
+  transition: opacity 0.18s var(--ease-out-soft), transform 0.18s var(--ease-out-soft);
+}
+@starting-style {
+  [data-dropdown][open] > ul { opacity: 0; transform: translateY(-6px); }
+}
+
+/* Transición entre páginas (React <ViewTransition>, sin JS extra): fundido corto.
+   Sin soporte del navegador, la navegación es instantánea. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.2s;
+  animation-timing-function: var(--ease-out-soft);
+}
+
+/* Movimiento reducido (sistema o interruptor del pie): sin transiciones de página ni entradas. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+  [data-dropdown] > ul, dialog[open] { transition: none; animation: none; }
+}
+[data-reduce-motion="true"] dialog[open] { animation: none; }

@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Clock, Mail, MapPin } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
@@ -13,8 +12,11 @@ import { specialties } from "@/data/specialties";
 import { allWhatsAppLines, formatLocationAddress } from "@/lib/locations";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
-/** Solo se descarga si hay correo real (site.email). */
-const NewsletterIsland = dynamic(() => import("@/components/shared/OptionalIslands").then((mod) => mod.NewsletterIsland));
+/*
+ * Boletín: con correo real (visibility.email), volver a montar <NewsletterIsland />
+ * (components/shared/OptionalIslands) bajo las redes. No se importa mientras esté oculto: el build con
+ * webpack empaquetaba su JS (y todo data/site.ts) en todas las páginas aunque no se renderizara.
+ */
 
 const LINK = "inline-flex min-h-10 items-center text-slate-300 transition-colors hover:text-white";
 
@@ -67,13 +69,6 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          ) : null}
-          {site.email ? (
-            <div className="mt-8 max-w-sm rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-              <p className="font-display text-lg font-bold text-white">Guía de salud articular</p>
-              <p className="mt-1 mb-4 text-sm">Consejos prácticos de nuestros especialistas, una vez al mes.</p>
-              <NewsletterIsland />
-            </div>
           ) : null}
         </div>
 

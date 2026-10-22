@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { Doctor } from "@/types/medical";
 import { cn } from "@/lib/utils";
 
@@ -22,8 +21,20 @@ interface DoctorPortraitProps {
   alt?: string;
 }
 
+/** Anchos pregenerados por scripts/optimize-doctor-photo.mjs (AVIF y WebP). */
+const PHOTO_WIDTHS = [400, 552] as const;
+const VARIANT = /^(.*)-552\.webp$/;
+
+/** "/images/doctor/x-552.webp" → srcset de 400 y 552 px en un formato; null si no sigue la convención. */
+function variantSrcSet(photo: string, format: "avif" | "webp"): string | null {
+  const match = VARIANT.exec(photo);
+  if (!match) return null;
+  return PHOTO_WIDTHS.map((width) => `${match[1]}-${width}.${format} ${width}w`).join(", ");
+}
+
 /**
- * Retrato del médico con next/image (AVIF/WebP, tamaño reservado: sin saltos de layout).
+ * Retrato del médico con <picture> de servidor (AVIF/WebP pregenerados, tamaño reservado: sin saltos
+ * de layout). Sin next/image: la Home no descarga su componente cliente (~5 KB gzip).
  * Sin foto real (`photo: null`) muestra un retrato de marca con las iniciales, del mismo tamaño.
  */
 export function DoctorPortrait({
@@ -38,27 +49,24 @@ export function DoctorPortrait({
   const label = alt ?? doctor.photoAlt;
 
   if (doctor.photo) {
-    const loading = priority ? { preload: true } : { loading: "lazy" as const };
-    return fill ? (
-      <Image
-        src={doctor.photo}
-        alt={label}
-        fill
-        sizes={sizes ?? "100vw"}
-        decoding="async"
-        {...loading}
-        className={cn(FACE_POSITION, className)}
-      />
-    ) : (
-      <Image
-        src={doctor.photo}
-        alt={label}
-        width={size}
-        height={size}
-        decoding="async"
-        {...loading}
-        className={cn(FACE_POSITION, className)}
-      />
+    const resolvedSizes = sizes ?? (fill ? "100vw" : `${size}px`);
+    const avif = variantSrcSet(doctor.photo, "avif");
+    const webp = variantSrcSet(doctor.photo, "webp");
+    return (
+      <picture className={fill ? "absolute inset-0" : "contents"}>
+        {avif ? <source type="image/avif" srcSet={avif} sizes={resolvedSizes} /> : null}
+        {webp ? <source type="image/webp" srcSet={webp} sizes={resolvedSizes} /> : null}
+        <img
+          src={doctor.photo}
+          alt={label}
+          width={fill ? 552 : size}
+          height={fill ? 690 : size}
+          decoding="async"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
+          className={cn(FACE_POSITION, fill && "absolute inset-0 size-full", className)}
+        />
+      </picture>
     );
   }
 

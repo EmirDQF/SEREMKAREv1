@@ -42,6 +42,11 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200],
   },
   poweredByHeader: false,
+  experimental: {
+    // CSS en el <head> en vez de un <link> que bloquea el render: una petición menos antes del primer
+    // pintado (pacientes que entran por primera vez, en 4G). Ver docs/MEJORA-2026.md (medición).
+    inlineCss: true,
+  },
   async redirects() {
     // Ambas URLs funcionan: «Especialistas» es el nombre del menú; el directorio vive en /staff.
     return [{ source: "/especialistas", destination: "/staff", permanent: true }];

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/Hero";
 import { TelemedicineBand } from "@/components/sections/TelemedicineBand";
 import { TrustStrip } from "@/components/sections/TrustStrip";
@@ -15,17 +14,18 @@ import { LocationCTA } from "@/components/sections/LocationCTA";
 import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
-import { site } from "@/data/site";
-import { visibility } from "@/data/visibility";
-import { physicianSchema, teleconsultServiceSchema } from "@/lib/schema";
+import { CENTER_MISSION, CENTER_TAGLINE, site } from "@/data/site";
+import { physicianSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 
-/** Aseguradoras: solo se descargan con convenios firmados (visibility.insurers). */
-const InsurersIsland = dynamic(() => import("@/components/shared/OptionalIslands").then((mod) => mod.InsurersIsland));
+/*
+ * Aseguradoras: con convenios firmados (visibility.insurers), volver a montar
+ * <InsurersIsland /> (components/shared/OptionalIslands) después de <TrustStrip />. No se importa
+ * mientras esté oculta: el build con webpack empaquetaba su JS aunque no se renderizara.
+ */
 
-const HOME_TITLE = `Reumatólogo online: teleconsulta por videollamada en todo el Perú | ${site.name}`;
-const HOME_DESCRIPTION =
-  "Consulta con un reumatólogo sin salir de casa: evaluación rápida, reserva en línea y videollamada por WhatsApp, Zoom o Google Meet. Densitometría ósea en Lima Norte y Callao.";
+const HOME_TITLE = `${CENTER_TAGLINE} en Lima | ${site.name}`;
+const HOME_DESCRIPTION = `${CENTER_MISSION} Densitometría ósea en Lima Norte y Callao. Agenda tu cita en línea.`;
 
 export const metadata: Metadata = {
   ...buildMetadata({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" }),
@@ -41,7 +41,6 @@ export default function Home() {
   const doctor = getDoctor(REAL_DOCTOR_SLUG);
   return (
     <>
-      <JsonLd data={teleconsultServiceSchema("/teleconsulta")} />
       <JsonLd data={physicianSchema({ name: doctor.name, path: `/staff/${doctor.slug}`, specialty: doctor.specialty, image: doctor.photo, knowsAbout: doctor.focus })} />
       {/* Orden móvil (decisión del cliente): hero → pilares → densitometría → servicio extra →
           suplementos → ruta del paciente + horario → doctor y equipo → sedes → preguntas → contacto.
@@ -57,7 +56,6 @@ export default function Home() {
       </div>
       <div className="cv-auto"><DoctorsSection /></div>
       <TrustStrip />
-      {visibility.insurers ? <InsurersIsland /> : null}
       <Testimonials />
       <div className="cv-auto"><LocationCTA /></div>
       <div className="cv-auto"><FAQ /></div>
