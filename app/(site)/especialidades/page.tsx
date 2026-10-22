@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CtaBand } from "@/components/pages/CtaBand";
@@ -74,6 +75,8 @@ export default function SpecialtiesPage() {
         text="Si tienes dolor, rigidez o hinchazón que no ceden, agenda una evaluación con un reumatólogo."
         message={`Hola ${site.name}, quisiera agendar una evaluación con un reumatólogo.`}
       />
+      {/* Lienzo 3D compartido: solo en las páginas con escenas (nunca en la Home ni en móviles de gama baja). */}
+      <CanvasHostLoader />
     </>
   );
 }

@@ -33,9 +33,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * Home del Centro de Excelencia en Reumatología. Las secciones que ya no van en la Home
- * (PainPoints, SymptomTriage, WhyUs, PricingPreview, ConsultaSteps) siguen en el código; las que no
- * tienen datos reales (aseguradoras, testimonios) se reactivan desde data/visibility.ts.
+ * Home del Centro de Excelencia en Reumatología. Las secciones sin datos reales (aseguradoras,
+ * testimonios) se reactivan desde data/visibility.ts.
  */
 export default function Home() {
   const doctor = getDoctor(REAL_DOCTOR_SLUG);
@@ -46,20 +45,20 @@ export default function Home() {
           suplementos → ruta del paciente + horario → doctor y equipo → sedes → preguntas → contacto.
           .cv-auto (content-visibility: auto): el navegador no pinta las secciones largas hasta acercarse. */}
       <Hero />
-      <div className="cv-auto"><ServicesGrid /></div>
-      <div className="cv-auto"><BoneDensitySection /></div>
-      <div className="cv-auto"><TelemedicineBand /></div>
-      <div className="cv-auto"><SupplementsStrip /></div>
-      <div className="cv-auto">
-        <PatientRoute />
-        <HoursSection />
-      </div>
-      <div className="cv-auto"><DoctorsSection /></div>
-      <TrustStrip />
-      <Testimonials />
-      <div className="cv-auto"><LocationCTA /></div>
-      <div className="cv-auto"><FAQ /></div>
-      <ContactoDoctor id="contacto-title" className="section-y" />
+        <div className="cv-auto"><ServicesGrid /></div>
+        <div className="cv-auto"><BoneDensitySection /></div>
+        <div className="cv-auto"><TelemedicineBand /></div>
+        <div className="cv-auto"><SupplementsStrip /></div>
+        <div className="cv-auto">
+          <PatientRoute />
+          <HoursSection />
+        </div>
+        <div className="cv-auto"><DoctorsSection /></div>
+        <TrustStrip />
+        <Testimonials />
+        <div className="cv-auto"><LocationCTA /></div>
+        <div className="cv-auto"><FAQ /></div>
+        <ContactoDoctor id="contacto-title" className="section-y" />
     </>
   );
 }

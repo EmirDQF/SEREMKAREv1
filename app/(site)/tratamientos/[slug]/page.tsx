@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, Check, Clock, HeartPulse, UserRoundCheck } from "lucide-react";
@@ -204,6 +205,8 @@ export default async function TreatmentPage({ params }: PageProps<"/tratamientos
         text="Tu especialista lo confirma en la consulta, con ecografía en el mismo consultorio si hace falta."
         message={message}
       />
+      {/* Lienzo 3D compartido: solo en las páginas con escenas (nunca en la Home ni en móviles de gama baja). */}
+      <CanvasHostLoader />
     </>
   );
 }

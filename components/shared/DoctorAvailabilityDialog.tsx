@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CalendarClock } from "lucide-react";
 import type { Doctor } from "@/types/medical";
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DialogPanel, DialogTrigger } from "@/components/ui/dialog";
 import { buttonVariants, type ButtonVariant } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { DoctorHours } from "@/components/shared/DoctorHours";
@@ -15,6 +15,8 @@ interface DoctorAvailabilityDialogProps {
   triggerClassName?: string;
   /** Variante del botón que abre el diálogo (en el agendador es secundario). */
   triggerVariant?: ButtonVariant;
+  /** Si el mismo médico aparece dos veces en la página, un sufijo distinto evita ids repetidos. */
+  idSuffix?: string;
 }
 
 /** "Dra. Valeria Quintana Ríos" → "Dra. Valeria" */
@@ -22,21 +24,17 @@ function shortName(name: string): string {
   return name.split(" ").slice(0, 2).join(" ");
 }
 
-/** Componente de servidor: el contenido (horario, enlaces) se arma aquí; el diálogo nativo es la única pieza cliente. */
-export function DoctorAvailabilityDialog({ doctor, triggerClassName, triggerVariant = "primary" }: DoctorAvailabilityDialogProps) {
+/** Componente de servidor: el contenido (horario, enlaces) va en el HTML; SiteEffects abre el <dialog> nativo. */
+export function DoctorAvailabilityDialog({ doctor, triggerClassName, triggerVariant = "primary", idSuffix = "" }: DoctorAvailabilityDialogProps) {
+  const dialogId = `disponibilidad-${doctor.slug}${idSuffix}`;
   return (
-    <Dialog>
-      <DialogTrigger className={cn(buttonVariants({ variant: triggerVariant }), triggerClassName)}>
+    <>
+      <DialogTrigger dialogId={dialogId} className={cn(buttonVariants({ variant: triggerVariant }), triggerClassName)}>
         <CalendarClock aria-hidden strokeWidth={1.75} />
         Ver disponibilidad
         <span className="sr-only">de {doctor.name}</span>
       </DialogTrigger>
-      <DialogContent>
-        <DialogTitle>{doctor.name}</DialogTitle>
-        <DialogDescription>
-          {doctor.title} · {credentialsLabel(doctor)}
-        </DialogDescription>
-
+      <DialogPanel id={dialogId} title={doctor.name} description={`${doctor.title} · ${credentialsLabel(doctor)}`}>
         <DoctorHours doctor={doctor} className="mt-6" />
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -57,7 +55,7 @@ export function DoctorAvailabilityDialog({ doctor, triggerClassName, triggerVari
         <Link href={`/staff/${doctor.slug}`} className="mt-3 inline-flex min-h-12 items-center font-semibold text-primary hover:underline">
           Ver perfil completo
         </Link>
-      </DialogContent>
-    </Dialog>
+      </DialogPanel>
+    </>
   );
 }

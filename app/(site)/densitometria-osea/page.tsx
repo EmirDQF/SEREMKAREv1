@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
 import Link from "next/link";
 import { ArrowRight, Clock, ScanLine, ShieldCheck, Target } from "lucide-react";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
@@ -8,9 +9,8 @@ import { KineticText } from "@/components/shared/KineticText";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { AudienceCards } from "@/components/densitometry/AudienceCards";
-import { BoneDensityExplorerLazy, TScoreGaugeLazy } from "@/components/densitometry/DensitometryLazy";
+import { BoneDensityExplorerLazy, DensitometryChecklistLazy, TScoreGaugeLazy } from "@/components/densitometry/DensitometryLazy";
 import { BookDensitometryButton } from "@/components/densitometry/BookDensitometryButton";
-import { DensitometryChecklist } from "@/components/densitometry/DensitometryChecklist";
 import { DensitometrySteps } from "@/components/densitometry/DensitometrySteps";
 import { DxaScanFX } from "@/components/densitometry/DxaScanFX";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -138,7 +138,7 @@ export default function DensitometryPage() {
       </section>
 
       {/* El estudio */}
-      <section aria-labelledby="dxa-estudio" className="section-y relative isolate overflow-hidden rounded-[2.5rem] bg-navy text-slate-200 lg:rounded-[4rem] dark:bg-[#071222]">
+      <section aria-labelledby="dxa-estudio" className="section-y relative isolate overflow-hidden rounded-[2.5rem] bg-navy text-slate-200 lg:rounded-[4rem]">
         <div aria-hidden className="immersive-glow -z-10" />
         <div aria-hidden className="immersive-grid -z-10" />
         <div className="container-page">
@@ -189,7 +189,7 @@ export default function DensitometryPage() {
             description="Responde sí o no. No es un diagnóstico: solo te orienta para conversarlo con un especialista."
           />
           <div className="mt-12">
-            <DensitometryChecklist />
+            <DensitometryChecklistLazy questions={densitometry.checklist.map((item) => item.question)} />
           </div>
         </div>
       </section>
@@ -251,6 +251,8 @@ export default function DensitometryPage() {
           <p className="mt-6 text-center text-sm text-muted">{densitometry.disclaimer}</p>
         </div>
       </section>
+      {/* Lienzo 3D compartido: solo en las páginas con escenas (nunca en la Home ni en móviles de gama baja). */}
+      <CanvasHostLoader />
     </>
   );
 }

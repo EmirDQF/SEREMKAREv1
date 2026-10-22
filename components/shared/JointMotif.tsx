@@ -1,36 +1,9 @@
-"use client";
-
-import { useEffect, useId, useRef, useState, type RefObject } from "react";
 import { cx } from "@/lib/cx";
 
-/** Parte visible necesaria para considerar que el motivo «entró en pantalla». */
-const IN_VIEW_THRESHOLD = 0.6;
-
-/** true la primera vez que el elemento entra en pantalla (IntersectionObserver nativo, sin motion). */
-function useSeenOnce(ref: RefObject<Element | null>, enabled: boolean): boolean {
-  const [seen, setSeen] = useState(false);
-  useEffect(() => {
-    const element = ref.current;
-    if (!enabled || seen || !element) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setSeen(true);
-        observer.disconnect();
-      },
-      { threshold: IN_VIEW_THRESHOLD },
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [ref, enabled, seen]);
-  return seen;
-}
-
-type JointMotifMode = "inview" | "hover" | "loop";
+type JointMotifMode = "hover" | "loop";
 
 interface JointMotifProps {
   /**
-   * inview: pasa de inflamación (coral) a alivio (teal) al entrar en pantalla.
    * hover: cambia a alivio cuando el contenedor con la clase `group` recibe hover/foco.
    * loop: alterna suavemente (separadores y estados de carga).
    */
@@ -38,6 +11,8 @@ interface JointMotifProps {
   className?: string;
   /** Texto accesible; si se omite, el motivo es decorativo. */
   label?: string;
+  /** Prefijo de los ids de los degradados (único si hay dos motivos en la misma página). */
+  idPrefix?: string;
 }
 
 const FEMUR =
@@ -48,29 +23,26 @@ const CARTILAGE = "M64 119C80 116 92 118 100 119C108 118 120 116 136 119";
 
 const TRANSITION = "transition-opacity duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]";
 
-/** Firma visual "del dolor al alivio": una rodilla estilizada que pasa de coral a teal. */
-export function JointMotif({ mode = "inview", className, label }: JointMotifProps) {
-  const ref = useRef<SVGSVGElement>(null);
-  const inView = useSeenOnce(ref, mode === "inview");
-  const uid = useId().replace(/:/g, "");
-  const relieved = mode === "inview" && inView;
+/**
+ * Firma visual "del dolor al alivio": una rodilla estilizada que pasa de coral a teal. Componente de
+ * servidor: el cambio es CSS (bucle `joint-swap` o hover del contenedor `group`), sin JS.
+ */
+export function JointMotif({ mode = "loop", className, label, idPrefix = "joint" }: JointMotifProps) {
+  const uid = idPrefix;
 
   const painClass = cx(
     TRANSITION,
-    mode === "inview" && (relieved ? "opacity-0 delay-500" : "opacity-100"),
     mode === "hover" && "opacity-100 group-hover:opacity-0 group-focus-visible:opacity-0",
     mode === "loop" && "joint-swap",
   );
   const reliefClass = cx(
     TRANSITION,
-    mode === "inview" && (relieved ? "opacity-100 delay-500" : "opacity-0"),
     mode === "hover" && "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100",
     mode === "loop" && "joint-swap joint-swap-reverse",
   );
 
   return (
     <svg
-      ref={ref}
       viewBox="0 0 200 240"
       className={cx("overflow-visible", className)}
       role={label ? "img" : undefined}

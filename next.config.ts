@@ -43,9 +43,13 @@ const nextConfig: NextConfig = {
   },
   poweredByHeader: false,
   experimental: {
-    // CSS en el <head> en vez de un <link> que bloquea el render: una petición menos antes del primer
-    // pintado (pacientes que entran por primera vez, en 4G). Ver docs/MEJORA-2026.md (medición).
-    inlineCss: true,
+    /*
+     * CSS como archivo externo (cacheable), NO en línea. Medido en la Home (docs/MEJORA-2026.md, fase A):
+     * con inlineCss, Next copia los 92 KB de CSS también dentro de la carga RSC (está documentado) y el
+     * HTML pesa 92 KB gzip con TBT de 600–870 ms; sin él, 59 KB y TBT ~260 ms, a cambio de una petición
+     * de CSS (19 KB gzip) que el navegador descubre en el <head> y baja en paralelo.
+     */
+    inlineCss: false,
   },
   async redirects() {
     // Ambas URLs funcionan: «Especialistas» es el nombre del menú; el directorio vive en /staff.

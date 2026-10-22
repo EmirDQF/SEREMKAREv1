@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, CalendarCheck, Check, ClipboardList, UserRound, Wallet } from "lucide-react";
@@ -163,7 +164,7 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
               <li key={title} className="rounded-[1.75rem] border border-line bg-card-solid p-6 text-muted shadow-soft">
                 <Icon aria-hidden strokeWidth={1.75} className="size-7 text-primary" />
                 <h3 className="text-h3 mt-3 text-heading">{title}</h3>
-                <div className="mt-2 text-[0.975rem]">{body}</div>
+                <div className="mt-2 text-base">{body}</div>
               </li>
             ))}
           </ul>
@@ -257,6 +258,8 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
         text="Escríbenos por WhatsApp y coordinamos tu cita."
         message={messageAbout(pillar.name)}
       />
+      {/* Lienzo 3D compartido: solo en las páginas con escenas (nunca en la Home ni en móviles de gama baja). */}
+      <CanvasHostLoader />
     </>
   );
 }

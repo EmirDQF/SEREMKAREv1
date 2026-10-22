@@ -1,11 +1,10 @@
-import { HeaderScrollState } from "@/components/layout/HeaderScrollState";
 import { Navbar } from "@/components/layout/Navbar";
 import { TopBar } from "@/components/layout/TopBar";
 
 const HEADER_ID = "site-header";
 
 /**
- * TopBar + Navbar. Componente de servidor: al hacer scroll, HeaderScrollState marca
+ * TopBar + Navbar. Componente de servidor: al hacer scroll, SiteEffects marca
  * data-scrolled y el CSS oculta la TopBar y compacta la barra (sin re-render de React).
  */
 export function SiteHeader() {
@@ -29,7 +28,6 @@ export function SiteHeader() {
         <TopBar />
         <Navbar />
       </header>
-      <HeaderScrollState headerId={HEADER_ID} />
     </>
   );
 }

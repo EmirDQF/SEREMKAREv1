@@ -4,9 +4,12 @@ import { lazy } from "react";
 import { LazyOnView } from "@/components/shared/LazyOnView";
 import { cx } from "@/lib/cx";
 
-/** Islas de densitometría con JS propio (hueso 3D y escala T-score): se descargan al acercarse. */
+/** Islas de densitometría con JS propio (hueso 3D, escala T-score y checklist): se descargan al acercarse. */
 const BoneDensityExplorer = lazy(() =>
   import("@/components/densitometry/BoneDensityExplorer").then((mod) => ({ default: mod.BoneDensityExplorer })),
+);
+const DensitometryChecklist = lazy(() =>
+  import("@/components/densitometry/DensitometryChecklist").then((mod) => ({ default: mod.DensitometryChecklist })),
 );
 const TScoreGauge = lazy(() => import("@/components/densitometry/TScoreGauge").then((mod) => ({ default: mod.TScoreGauge })));
 
@@ -58,6 +61,27 @@ export function TScoreGaugeLazy({ compact = false, className }: GaugeProps) {
   return (
     <LazyOnView fallback={<GaugePlaceholder compact={compact} className={className} />}>
       <TScoreGauge compact={compact} className={className} />
+    </LazyOnView>
+  );
+}
+
+/** Marcador del checklist: las preguntas ya visibles (texto del servidor), sin botones activos. */
+function ChecklistPlaceholder({ questions }: { questions: readonly string[] }) {
+  return (
+    <ol aria-hidden className="space-y-3 lg:max-w-[60%]">
+      {questions.map((question) => (
+        <li key={question} className="min-h-[5.5rem] rounded-2xl border border-line bg-card-solid p-4 text-fg sm:min-h-20">
+          {question}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+export function DensitometryChecklistLazy({ questions }: { questions: readonly string[] }) {
+  return (
+    <LazyOnView fallback={<ChecklistPlaceholder questions={questions} />}>
+      <DensitometryChecklist />
     </LazyOnView>
   );
 }

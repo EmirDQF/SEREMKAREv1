@@ -1,13 +1,11 @@
-"use client";
-
-import { useRef, useState, type MouseEvent, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowRight, CalendarCheck, Menu, Phone, Pill, ScanLine, X } from "lucide-react";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { APPOINTMENT_HREF, footerOnlyLinks, mainNav } from "@/data/navigation";
 import type { DoctorContact } from "@/lib/whatsapp";
 
-
+const MENU_ID = "menu-movil";
 
 interface MobileMenuProps {
   /** Logo renderizado en el servidor. */
@@ -22,48 +20,36 @@ interface MobileMenuProps {
 
 /**
  * Menú móvil a pantalla completa sobre <dialog> nativo (showModal: foco atrapado y Escape sin JS
- * extra). Sin Radix ni motion: solo abre, cierra y se cierra al elegir un enlace.
+ * extra). Componente de servidor: SiteEffects abre el diálogo (`data-dialog-open`), lo cierra con
+ * «Cerrar» (`data-dialog-close`) y al elegir un enlace (`data-close-on-link`).
  */
 export function MobileMenu({ logo, contact, footnote, buttonClasses }: MobileMenuProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const [open, setOpen] = useState(false);
-
-  const show = () => {
-    dialogRef.current?.showModal();
-    setOpen(true);
-  };
-  const close = () => dialogRef.current?.close();
-
-  /** Al tocar cualquier enlace del menú, se cierra (la navegación es del lado del cliente). */
-  const closeOnLink = (event: MouseEvent<HTMLElement>) => {
-    if ((event.target as HTMLElement).closest("a")) close();
-  };
-
   return (
     <>
       <button
         type="button"
-        onClick={show}
+        data-dialog-open={MENU_ID}
         aria-haspopup="dialog"
-        aria-expanded={open}
+        aria-expanded="false"
+        aria-controls={MENU_ID}
         aria-label="Abrir menú"
         className="grid size-12 place-items-center rounded-full text-heading hover:bg-teal-tint xl:hidden"
       >
         <Menu aria-hidden strokeWidth={1.75} className="size-6" />
       </button>
       <dialog
-        ref={dialogRef}
+        id={MENU_ID}
         data-lenis-prevent
+        data-close-on-link
         aria-label="Menú de navegación"
-        onClose={() => setOpen(false)}
         className="m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-bg p-0 text-fg backdrop:bg-transparent"
       >
-        <div className="flex min-h-full flex-col" onClick={closeOnLink}>
+        <div className="flex min-h-full flex-col">
           <div className="container-page flex min-h-[4.5rem] items-center justify-between pt-3">
             {logo}
             <button
               type="button"
-              onClick={close}
+              data-dialog-close
               aria-label="Cerrar menú"
               className="grid size-12 place-items-center rounded-full text-heading hover:bg-teal-tint"
             >

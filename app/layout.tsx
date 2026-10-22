@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { Providers } from "@/components/layout/Providers";
-import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
+import { SiteEffects } from "@/components/layout/SiteEffects";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { CENTER_TAGLINE, site } from "@/data/site";
 import { DEFAULT_DESCRIPTION, SHARE_IMAGE } from "@/lib/seo";
@@ -64,8 +63,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b192c" },
+    { media: "(prefers-color-scheme: light)", color: "#f7fafe" },
+    { media: "(prefers-color-scheme: dark)", color: "#081128" },
   ],
 };
 
@@ -89,11 +88,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-dvh overflow-x-clip">
         <JsonLd data={organizationSchema()} />
-        <Providers>
-          {/* Cabecera y pie los pone cada grupo: (site) completo; (consultorio) mínimo. */}
-          {children}
-          <CanvasHostLoader />
-        </Providers>
+        {/* Cabecera y pie los pone cada grupo: (site) completo; (consultorio) mínimo. */}
+        {children}
+        {/* Hoja sin hijos: conecta menús, diálogos e interruptores del HTML de servidor (sin envolver la página). */}
+        <SiteEffects />
       </body>
     </html>
   );

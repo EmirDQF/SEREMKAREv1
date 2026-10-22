@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -207,6 +208,8 @@ export default async function SpecialtyPage({ params }: PageProps<"/especialidad
         text="Una evaluación a tiempo permite empezar el tratamiento adecuado y reducir el riesgo de complicaciones."
         message={message}
       />
+      {/* Lienzo 3D compartido: solo en las páginas con escenas (nunca en la Home ni en móviles de gama baja). */}
+      <CanvasHostLoader />
     </>
   );
 }

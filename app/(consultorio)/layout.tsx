@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
+import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { MedicalDisclaimer } from "@/components/shared/MedicalDisclaimer";
@@ -57,6 +58,8 @@ export default function ConsultorioLayout({ children }: LayoutProps<"/">) {
           </Link>
         </p>
       </footer>
+      {/* Lienzo 3D compartido del consultorio (mapa corporal y escenas del triaje). */}
+      <CanvasHostLoader />
     </div>
   );
 }
