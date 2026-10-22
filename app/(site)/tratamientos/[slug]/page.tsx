@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, Check, Clock, HeartPulse, UserRoundCheck } from "lucide-react";
@@ -12,7 +13,7 @@ import { RevealGroup, RevealItem } from "@/components/shared/Reveal";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { buttonVariants } from "@/components/ui/button";
 import { DENSITOMETRY_PATH } from "@/data/densitometry";
-import { BOOKING_HREF } from "@/data/navigation";
+import { APPOINTMENT_HREF } from "@/data/navigation";
 import { getTreatmentDetail } from "@/data/treatment-details";
 import { treatments } from "@/data/treatments";
 import { site } from "@/data/site";
@@ -86,7 +87,7 @@ export default async function TreatmentPage({ params }: PageProps<"/tratamientos
             >
               <WhatsAppIcon /> Agendar por WhatsApp
             </a>
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
+            <a href={APPOINTMENT_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
               Agendar cita
             </a>
           </>
@@ -158,7 +159,7 @@ export default async function TreatmentPage({ params }: PageProps<"/tratamientos
             {pillar ? (
               <Link
                 href={servicePath(pillar.slug)}
-                className="flex items-center justify-between gap-3 rounded-[1.75rem] bg-navy p-5 font-display font-semibold text-white transition-colors hover:bg-navy-2"
+                className="flex items-center justify-between gap-3 rounded-[1.75rem] scan-panel p-5 font-display font-semibold text-white transition-colors hover:bg-navy-2"
               >
                 <span>
                   <span className="block text-sm font-medium text-teal-200">Forma parte de</span>
@@ -204,6 +205,8 @@ export default async function TreatmentPage({ params }: PageProps<"/tratamientos
         text="Tu especialista lo confirma en la consulta, con ecografía en el mismo consultorio si hace falta."
         message={message}
       />
+      {/* Lienzo 3D compartido: solo en las páginas con escenas (nunca en la Home ni en móviles de gama baja). */}
+      <CanvasHostLoader />
     </>
   );
 }

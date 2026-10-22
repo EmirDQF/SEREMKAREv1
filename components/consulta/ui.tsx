@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 export const PANEL = "glass rounded-[1.75rem] p-5 shadow-soft sm:p-8";
 export const LEGEND = "font-display text-h3 text-heading";
-export const HINT = "mt-1 text-[0.95rem] text-muted";
+export const HINT = "mt-1 text-base text-muted";
 
 interface OptionProps {
   selected?: boolean;

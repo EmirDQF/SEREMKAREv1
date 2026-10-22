@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Clock, Mail, MapPin } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
@@ -7,19 +6,19 @@ import { FooterWaves } from "@/components/layout/FooterWaves";
 import { ComplaintsBookIcon, SocialIcon, WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { MedicalDisclaimer } from "@/components/shared/MedicalDisclaimer";
 import { doctors } from "@/data/doctors";
-import { LOCATIONS_PATH, legalLinks } from "@/data/navigation";
-import { servicePillars } from "@/data/services";
-import { site } from "@/data/site";
-import { treatments } from "@/data/treatments";
-import { DENSITOMETRY_PATH } from "@/data/densitometry";
+import { LOCATIONS_PATH, footerOnlyLinks, legalLinks, mainNav } from "@/data/navigation";
+import { CENTER_MISSION, CENTER_TAGLINE, OPENING_SCHEDULE, site } from "@/data/site";
 import { specialties } from "@/data/specialties";
-import { allWhatsAppLines, formatLocationAddress, locationNamesLabel, primaryLocation } from "@/lib/locations";
+import { allWhatsAppLines, formatLocationAddress } from "@/lib/locations";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
-/** Solo se descarga si hay correo real (site.email). */
-const NewsletterIsland = dynamic(() => import("@/components/shared/OptionalIslands").then((mod) => mod.NewsletterIsland));
+/*
+ * Boletín: con correo real (visibility.email), volver a montar <NewsletterIsland />
+ * (components/shared/OptionalIslands) bajo las redes. No se importa mientras esté oculto: el build con
+ * webpack empaquetaba su JS (y todo data/site.ts) en todas las páginas aunque no se renderizara.
+ */
 
-const LINK = "inline-flex min-h-10 items-center text-slate-300 transition-colors hover:text-white";
+const LINK = "inline-flex min-h-12 items-center text-on-navy-muted transition-colors hover:text-white";
 
 interface FooterColumnProps {
   title: string;
@@ -47,14 +46,14 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative isolate overflow-hidden bg-navy pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-slate-300 md:pb-0 dark:bg-[#071222]">
+    <footer className="relative isolate overflow-hidden bg-navy pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-on-navy-muted md:pb-0 dark:bg-navy-950">
       <FooterWaves />
-      <div className="container-page grid gap-12 pt-16 lg:grid-cols-[1.2fr_2fr] lg:pt-20">
+      <div aria-hidden className="immersive-grid -z-10" />
+      <div className="container-page grid gap-12 pt-16 lg:grid-cols-[1fr_2.4fr] lg:pt-20">
         <div>
           <Logo tone="inverted" showTagline />
-          <p className="mt-5 max-w-sm">
-            {site.legalTagline}. Densitometría ósea en {locationNamesLabel()} y teleconsulta para todo el Perú.
-          </p>
+          <p className="mt-5 max-w-sm font-display text-lg font-bold text-white">{CENTER_TAGLINE}</p>
+          <p className="mt-2 max-w-sm">{CENTER_MISSION}</p>
           {site.socials.length > 0 ? (
             <ul className="mt-6 flex gap-2" aria-label="Redes sociales">
               {site.socials.map((social) => (
@@ -72,28 +71,14 @@ export function Footer() {
               ))}
             </ul>
           ) : null}
-          {site.email ? (
-            <div className="mt-8 max-w-sm rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-              <p className="font-display text-lg font-bold text-white">Guía de salud articular</p>
-              <p className="mt-1 mb-4 text-sm">Consejos prácticos de nuestros especialistas, una vez al mes.</p>
-              <NewsletterIsland />
-            </div>
-          ) : null}
         </div>
 
-        <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-[0.9fr_1fr_1fr_1.5fr]">
           <FooterColumn
             title="Especialidades"
             links={specialties.map((s) => ({ label: s.shortName, href: `/especialidades/${s.slug}` }))}
           />
-          <FooterColumn
-            title="Servicios"
-            links={[
-              ...servicePillars.map((p) => ({ label: p.name, href: `/servicios/${p.slug}` })),
-              { label: "Densitometría ósea", href: DENSITOMETRY_PATH },
-              ...(treatments.length > 0 ? [{ label: "Tratamientos", href: "/tratamientos" }] : []),
-            ]}
-          />
+          <FooterColumn title="Navegación" links={[...mainNav, ...footerOnlyLinks]} />
           <FooterColumn
             title="Directorio médico"
             links={[
@@ -122,9 +107,15 @@ export function Footer() {
               <li className="flex gap-2.5">
                 <Clock aria-hidden strokeWidth={1.75} className="mt-1 size-5 shrink-0 text-teal" />
                 <span>
-                  {primaryLocation().hours.label}
-                  <br />
-                  {primaryLocation().hours.closedLabel}
+                  <span className="block font-semibold text-white">Horario de atención</span>
+                  {OPENING_SCHEDULE.map((row) => (
+                    <span key={row.days} className="block">
+                      {row.days}: <span className="data-mono text-white">{row.hours}</span>
+                    </span>
+                  ))}
+                  {/* CONFIRMAR: domingos y feriados y horario por sede (docs/PENDIENTES.md). */}
+                  <span className="block">Domingos y feriados: por confirmar</span>
+                  <span className="block text-sm text-on-navy-subtle">Con cita previa. Confirma el horario de tu sede por WhatsApp.</span>
                 </span>
               </li>
             </ul>
@@ -178,7 +169,7 @@ export function Footer() {
         </div>
         <MedicalDisclaimer tone="inverted" className="mt-6" />
         <p className="mt-6 text-sm text-slate-400">
-          © {year} {site.name} — {site.legalTagline}. Todos los derechos reservados.
+          © {year} {site.name} — {CENTER_TAGLINE}. {site.legalTagline}. Todos los derechos reservados.
         </p>
       </div>
     </footer>

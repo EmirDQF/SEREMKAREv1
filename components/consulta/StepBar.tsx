@@ -4,9 +4,9 @@ import { STEP_ORDER } from "@/lib/consulta/state";
 import { cn } from "@/lib/utils";
 
 const LABELS: Readonly<Record<ConsultaStep, string>> = {
-  evaluacion: "Evaluación",
-  orientacion: "Orientación",
-  horario: "Horario",
+  evaluacion: "Tus síntomas",
+  orientacion: "Recomendación",
+  horario: "Fecha y hora",
   datos: "Tus datos",
 };
 

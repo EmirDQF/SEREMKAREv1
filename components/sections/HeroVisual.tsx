@@ -1,70 +1,54 @@
-import type { ReactNode } from "react";
-import { MapPin, ShieldCheck, Video } from "lucide-react";
+import { CalendarCheck, HeartPulse, ScanLine, Video } from "lucide-react";
 import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import { REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
-import { cn } from "@/lib/utils";
 
-interface HeroBadgeProps {
-  icon: ReactNode;
-  title: string;
-  text: string;
-  className: string;
-}
-
-/** Tarjeta fija (sin parallax): no mueve el layout ni ejecuta JS. */
-function HeroBadge({ icon, title, text, className }: HeroBadgeProps) {
-  return (
-    <span className={cn("glass absolute z-10 flex items-center gap-3 rounded-2xl px-3.5 py-2.5 shadow-lift", className)}>
-      <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-xl bg-teal-tint text-primary [&_svg]:size-5">
-        {icon}
-      </span>
-      <span>
-        <span className="block font-display font-extrabold leading-tight text-heading">{title}</span>
-        <span className="block text-sm text-muted">{text}</span>
-      </span>
-    </span>
-  );
-}
+/** Modalidades de atención reales del centro. */
+const CARE_MODES = [
+  { label: "Consulta presencial", icon: CalendarCheck },
+  { label: "Densitometría", icon: ScanLine },
+  { label: "Seguimiento clínico", icon: HeartPulse },
+  { label: "Teleconsulta", icon: Video },
+] as const;
 
 /**
- * Retrato del Dr. Daniel Ccolcca en el hero. Componente de servidor: sin parallax ni 3D, para que
- * la Home móvil no descargue three.js ni motion.
+ * Tarjeta del especialista en el hero: foto real del Dr. Daniel Ccolcca (recorte limpio con borde
+ * luminoso de 1 px y marcas de encuadre) y las modalidades de atención. Componente de servidor:
+ * sin parallax, carrusel ni 3D; la foto es la única imagen precargada de la página.
  */
 export function HeroVisual() {
   const doctor = getDoctor(REAL_DOCTOR_SLUG);
   return (
-    <figure className="relative mx-auto w-full max-w-[19rem] sm:max-w-[23rem] lg:max-w-[28rem]">
-      <div
-        aria-hidden
-        className="absolute -inset-[6%] rounded-[46%_54%_52%_48%/50%_44%_56%_50%] bg-gradient-to-br from-teal/25 via-video-strong/10 to-navy-2/20"
-      />
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-bg-alt shadow-lift">
-        <DoctorPortrait
-          doctor={doctor}
-          fill
-          priority
-          sizes="(min-width: 1024px) 448px, (min-width: 640px) 368px, 304px"
-        />
+    <figure className="relative mx-auto w-full max-w-[21rem] sm:max-w-[24rem] lg:max-w-[28rem]">
+      <div className="gradient-border glass-panel relative overflow-hidden rounded-[2.25rem] p-2 shadow-lift">
+        <div className="relative aspect-square overflow-hidden rounded-[1.75rem] bg-[linear-gradient(160deg,var(--navy-100),var(--teal-50))] dark:bg-[linear-gradient(160deg,var(--navy-800),var(--navy-900))]">
+          <DoctorPortrait
+            doctor={doctor}
+            fill
+            priority
+            className="img-outline rounded-[1.75rem]"
+            sizes="(min-width: 1024px) 432px, (min-width: 640px) 368px, 320px"
+          />
+          {/* Marcas de encuadre (visor de imagen médica), decorativas. */}
+          <span aria-hidden className="frame-corners pointer-events-none absolute inset-3" />
+          <span className="tech-label absolute bottom-3 left-3 rounded-full bg-navy-950/75 px-3 py-1.5 text-white">Reumatología</span>
+        </div>
+        <figcaption className="px-3 pb-3 pt-4 sm:px-4">
+          <span className="block font-display text-lg font-bold leading-tight text-heading">{doctor.name}</span>
+          <span className="block text-base text-muted">{doctor.title}</span>
+          <span className="tech-label mt-4 block text-subtle">Modalidades de atención</span>
+          <ul className="mt-2 grid grid-cols-2 gap-2">
+            {CARE_MODES.map(({ label, icon: Icon }) => (
+              <li
+                key={label}
+                className="flex min-h-12 items-center gap-2 rounded-xl border border-line bg-card-solid px-3 py-2 text-base font-semibold leading-tight text-heading"
+              >
+                <Icon aria-hidden strokeWidth={1.75} className="size-5 shrink-0 text-primary" />
+                {label}
+              </li>
+            ))}
+          </ul>
+        </figcaption>
       </div>
-      <HeroBadge
-        icon={<MapPin strokeWidth={1.75} />}
-        title="Todo el Perú"
-        text="consulta virtual"
-        className="-left-3 top-[8%] sm:-left-10"
-      />
-      <HeroBadge
-        icon={<ShieldCheck strokeWidth={1.75} />}
-        title="Ley 30421"
-        text="Marco de Telesalud"
-        className="-right-3 top-[38%] sm:-right-10"
-      />
-      <figcaption className="glass absolute inset-x-3 bottom-3 z-10 flex items-center gap-3 rounded-2xl px-4 py-3 shadow-lift">
-        <Video aria-hidden strokeWidth={1.75} className="size-6 shrink-0 text-primary" />
-        <span>
-          <span className="block font-display font-bold leading-tight text-heading">{doctor.name}</span>
-          <span className="block text-sm text-muted">{doctor.title} · por videollamada</span>
-        </span>
-      </figcaption>
     </figure>
   );
 }

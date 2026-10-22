@@ -176,7 +176,7 @@ export function ComplaintForm() {
                 complaint.kind === kind ? "border-primary bg-teal-tint" : "border-line-strong hover:border-primary",
               )}
             >
-              <input type="radio" name="tipo" checked={complaint.kind === kind} onChange={() => update("kind", kind)} className="mt-1.5 accent-[var(--teal-strong)]" />
+              <input type="radio" name="tipo" checked={complaint.kind === kind} onChange={() => update("kind", kind)} className="mt-1 size-5 accent-[var(--teal-strong)]" />
               <span>
                 <span className="block font-display font-semibold capitalize text-heading">{kind}</span>
                 <span className="block text-sm text-muted">

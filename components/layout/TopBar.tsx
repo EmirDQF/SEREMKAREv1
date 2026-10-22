@@ -1,48 +1,43 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Clock, MapPin, Video } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
-import { LOCATIONS_PATH } from "@/data/navigation";
-import { site } from "@/data/site";
-import { TELECONSULT_HOURS_LABEL } from "@/data/teleconsult";
-import { primaryLocation, primaryWhatsAppLine } from "@/lib/locations";
+import { APPOINTMENT_HREF, LOCATIONS_PATH } from "@/data/navigation";
+import { CENTER_TAGLINE, site } from "@/data/site";
+import { primaryWhatsAppLine } from "@/lib/locations";
 import { clinicWhatsApp } from "@/lib/whatsapp";
 
-/** Estado «abierto ahora» en vivo: solo se descarga con horario confirmado. */
-const OpenStatusIsland = dynamic(() => import("@/components/shared/OptionalIslands").then((mod) => mod.OpenStatusIsland));
-
-/** Franja superior. Componente de servidor; el estado «abierto ahora» solo se monta con horario confirmado. */
+/** Franja superior. Componente de servidor: posicionamiento + «Agenda tu cita» + WhatsApp. */
 export function TopBar() {
-  const teleconsultLink = (
-    <Link href="/teleconsulta" className="inline-flex min-w-0 items-center gap-1.5 truncate hover:text-white">
-      <Video aria-hidden strokeWidth={1.75} className="size-4 shrink-0 text-teal" />
-      <span className="truncate">Teleconsulta por videollamada · todo el Perú</span>
-      <span className="hidden lg:inline">
-        {" "}
-        · <Clock aria-hidden strokeWidth={1.75} className="inline size-4 text-teal" /> {TELECONSULT_HOURS_LABEL}
-      </span>
-    </Link>
-  );
-
   return (
-    <div className="h-10 bg-navy text-[0.85rem] text-slate-200">
+    <div className="h-12 bg-navy text-base text-slate-200">
       <div className="container-page flex h-full items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-5">
-          <Link href={LOCATIONS_PATH} className="hidden items-center gap-1.5 hover:text-white xl:inline-flex">
+          <Link href={LOCATIONS_PATH} className="hidden min-h-12 items-center gap-1.5 hover:text-white 2xl:inline-flex">
             <MapPin aria-hidden strokeWidth={1.75} className="size-4 text-teal" />
             {site.locations.length} sedes: {site.locations.map((location) => location.name).join(" · ")}
           </Link>
-          {primaryLocation().hours.confirmed ? <OpenStatusIsland fallback={teleconsultLink} /> : teleconsultLink}
+          <Link href={APPOINTMENT_HREF} className="group inline-flex min-h-12 min-w-0 items-center gap-1.5 hover:text-white">
+            <span className="truncate">
+              <span className="font-semibold text-white">{CENTER_TAGLINE}</span>
+              <span className="hidden md:inline"> y Densitometría</span>
+              <span className="hidden sm:inline"> — Agenda tu cita o estudio hoy</span>
+            </span>
+            <ArrowRight
+              aria-hidden
+              strokeWidth={1.75}
+              className="size-4 shrink-0 text-teal transition-transform group-hover:translate-x-0.5"
+            />
+          </Link>
         </div>
         <a
           href={clinicWhatsApp()}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex shrink-0 items-center gap-1.5 font-semibold text-white hover:text-teal-200"
+          className="-mr-3 inline-flex min-h-12 min-w-12 shrink-0 items-center justify-center gap-1.5 px-3 font-semibold text-white hover:text-teal-200"
         >
           <WhatsAppIcon className="size-4" />
-          <span className="hidden sm:inline">{primaryWhatsAppLine().display}</span>
-          <span className="sm:hidden">WhatsApp</span>
+          <span className="hidden lg:inline">{primaryWhatsAppLine().display}</span>
+          <span className="sr-only lg:hidden">WhatsApp</span>
           <span className="sr-only"> (abre WhatsApp en otra pestaña)</span>
         </a>
       </div>

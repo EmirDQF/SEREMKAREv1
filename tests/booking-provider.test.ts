@@ -152,6 +152,14 @@ describe("calcom provider", () => {
     if (!result.ok) expect(result.error.message).not.toMatch(/stack/);
   });
 
+  it("returns a friendly error (no crash) when Cal.com is unreachable — no internet or timeout", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("fetch failed")));
+    const provider = createCalcomProvider(config, eventTypeIdFor);
+    const result = await provider.getSlots({ doctorId: REAL_DOCTOR_SLUG, modality: "meet", from: "2026-10-06", to: "2026-10-06" });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.error.message).toMatch(/[a-záéíóúñ]/i);
+  });
+
   it("maps a taken slot (409) to slot_unavailable", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(Response.json({ status: "error" }, { status: 409 })));
     const provider = createCalcomProvider(config, eventTypeIdFor);
@@ -180,5 +188,10 @@ describe("resolveProvider", () => {
   it("uses Cal.com when the key and the doctor's event type exist", () => {
     const env = { BOOKING_PROVIDER: "calcom", CALCOM_API_KEY: "cal_x" };
     expect(resolveProvider(env, REAL_DOCTOR_SLUG, "meet", () => 99).id).toBe("calcom");
+  });
+
+  it("tolerates case and spaces in BOOKING_PROVIDER, and stays in demo with an unknown value", () => {
+    expect(resolveProvider({ BOOKING_PROVIDER: " Calcom ", CALCOM_API_KEY: "cal_x" }, REAL_DOCTOR_SLUG, "meet", () => 99).id).toBe("calcom");
+    expect(resolveProvider({ BOOKING_PROVIDER: "calcomm", CALCOM_API_KEY: "cal_x" }, REAL_DOCTOR_SLUG, "meet", () => 99).id).toBe("demo");
   });
 });

@@ -1,118 +1,68 @@
-"use client";
-
-import { createContext, useContext, useEffect, useId, useMemo, useRef, useState, type ComponentProps, type ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { X } from "lucide-react";
 import { cx } from "@/lib/cx";
 
 /**
  * Diálogo modal sobre <dialog> nativo (showModal): foco atrapado, Escape, capa superior y retorno del
- * foco los da el navegador. Sustituye a Radix con la misma API y una fracción del JS.
+ * foco los da el navegador. Componentes de servidor: SiteEffects abre (`data-dialog-open`) y cierra
+ * (`data-dialog-close`, clic en el fondo, enlace elegido). El contenido ya está en el HTML.
  */
 
-interface DialogState {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  titleId: string;
-  descriptionId: string;
+interface DialogTriggerProps extends Omit<ComponentProps<"button">, "type" | "onClick"> {
+  /** id del <DialogPanel> que abre. */
+  dialogId: string;
 }
 
-const DialogContext = createContext<DialogState | null>(null);
-
-function useDialog(): DialogState {
-  const state = useContext(DialogContext);
-  if (!state) throw new Error("Los componentes Dialog* deben ir dentro de <Dialog>.");
-  return state;
-}
-
-export function Dialog({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false);
-  const id = useId();
-  const state = useMemo(() => ({ open, setOpen, titleId: `${id}-title`, descriptionId: `${id}-description` }), [open, id]);
-  return <DialogContext.Provider value={state}>{children}</DialogContext.Provider>;
-}
-
-export function DialogTrigger({ children, ...props }: Omit<ComponentProps<"button">, "type" | "onClick">) {
-  const { open, setOpen } = useDialog();
+export function DialogTrigger({ dialogId, children, ...props }: DialogTriggerProps) {
   return (
-    <button type="button" aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen(true)} {...props}>
+    <button type="button" data-dialog-open={dialogId} aria-haspopup="dialog" aria-expanded="false" aria-controls={dialogId} {...props}>
       {children}
     </button>
   );
 }
 
-export function DialogClose({ children, ...props }: Omit<ComponentProps<"button">, "type" | "onClick">) {
-  const { setOpen } = useDialog();
-  return (
-    <button type="button" onClick={() => setOpen(false)} {...props}>
-      {children}
-    </button>
-  );
-}
-
-interface DialogContentProps {
+interface DialogPanelProps {
+  id: string;
+  title: ReactNode;
+  description?: ReactNode;
   children: ReactNode;
   className?: string;
-  /** Sin padding ni fondo (p. ej. reproductor de video). */
-  bare?: boolean;
-  /** Ancho máximo amplio (video) en lugar del de un diálogo de texto. */
-  wide?: boolean;
 }
 
-export function DialogContent({ children, className, bare = false, wide = false }: DialogContentProps) {
-  const { open, setOpen, titleId, descriptionId } = useDialog();
-  const ref = useRef<HTMLDialogElement>(null);
-
-  useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
-
+export function DialogPanel({ id, title, description, children, className }: DialogPanelProps) {
+  const titleId = `${id}-title`;
+  const descriptionId = description ? `${id}-description` : undefined;
   return (
     <dialog
-      ref={ref}
+      id={id}
       data-lenis-prevent
+      data-close-on-link
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      onClose={() => setOpen(false)}
-      // Clic en el fondo (fuera del contenido): el destino es el propio <dialog>.
-      onClick={(event) => {
-        if (event.target === event.currentTarget) setOpen(false);
-      }}
       className={cx(
-        "m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] overflow-y-auto rounded-[1.75rem] p-0 focus:outline-none",
-        wide ? "max-w-5xl" : "max-w-lg",
-        bare ? "border-0 bg-transparent" : "border border-line bg-card-solid text-fg shadow-lift",
+        "m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-[1.75rem] border border-line bg-card-solid p-0 text-fg shadow-lift focus:outline-none",
         className,
       )}
     >
-      {open ? (
-        <div className={cx("relative", !bare && "p-6 sm:p-8")}>
-          {children}
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            className={cx(
-              "absolute right-3 top-3 grid size-12 place-items-center rounded-full transition-colors",
-              bare ? "bg-black/50 text-white hover:bg-black/70" : "text-muted hover:bg-teal-tint hover:text-heading",
-            )}
-            aria-label="Cerrar"
-          >
-            <X aria-hidden className="size-5" />
-          </button>
-        </div>
-      ) : null}
+      <div className="relative p-6 sm:p-8">
+        <h2 id={titleId} className="text-h3 pr-10 text-heading">
+          {title}
+        </h2>
+        {description ? (
+          <p id={descriptionId} className="mt-2 text-muted">
+            {description}
+          </p>
+        ) : null}
+        {children}
+        <button
+          type="button"
+          data-dialog-close
+          aria-label="Cerrar"
+          className="absolute right-3 top-3 grid size-12 place-items-center rounded-full text-muted transition-colors hover:bg-teal-tint hover:text-heading"
+        >
+          <X aria-hidden className="size-5" />
+        </button>
+      </div>
     </dialog>
   );
-}
-
-export function DialogTitle({ className, ...props }: Omit<ComponentProps<"h2">, "id">) {
-  const { titleId } = useDialog();
-  return <h2 id={titleId} className={cx("text-h3 pr-10 text-heading", className)} {...props} />;
-}
-
-export function DialogDescription({ className, ...props }: Omit<ComponentProps<"p">, "id">) {
-  const { descriptionId } = useDialog();
-  return <p id={descriptionId} className={cx("mt-2 text-muted", className)} {...props} />;
 }

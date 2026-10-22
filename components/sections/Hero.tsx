@@ -1,66 +1,122 @@
 import Link from "next/link";
-import { ArrowRight, Video } from "lucide-react";
-import { NextSlotChip } from "@/components/consulta/NextSlotChip";
+import { ArrowRight, CalendarCheck, ScanLine } from "lucide-react";
 import { HeroVisual } from "@/components/sections/HeroVisual";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
-import { buttonVariants } from "@/components/ui/button";
-import { REAL_DOCTOR_SLUG } from "@/data/doctors";
-import { BOOKING_HREF, TRIAGE_HREF } from "@/data/navigation";
-import { teleconsultHero } from "@/data/teleconsult-content";
-import { doctorContact } from "@/lib/whatsapp";
+import { Reticle } from "@/components/shared/Reticle";
+import { APPOINTMENT_HREF, DENSITOMETRY_BOOKING_HREF, TRIAGE_HREF } from "@/data/navigation";
+import { CENTER_TAGLINE } from "@/data/site";
+import { clinicWhatsApp } from "@/lib/whatsapp";
+import { cn } from "@/lib/utils";
 
-const HEADLINE_LEAD = "Teleconsulta con un reumatólogo";
-const HEADLINE_ACCENT = "sin salir de casa";
+/** Mensaje de WhatsApp del tercer camino del hero. */
+const HERO_WHATSAPP_MESSAGE = "Hola SERMEKARE, quisiera orientación para agendar una cita.";
 
 /**
- * Hero de la Home: abre con la teleconsulta. Componente de servidor (sin JS propio salvo el chip
- * de próximo horario): el h1 se pinta con el HTML, así el LCP no espera a ninguna animación.
+ * Hero de la Home: posiciona al centro de reumatología y ofrece 3 caminos claros (cita,
+ * densitometría, WhatsApp). Componente de servidor sin JS propio: el h1 y el párrafo (elemento LCP)
+ * se pintan con el primer HTML; el fondo aurora, la cuadrícula y la línea de barrido son CSS.
  */
 export function Hero() {
-  const contact = doctorContact();
+  const paths = [
+    {
+      href: APPOINTMENT_HREF,
+      label: "Agendar cita",
+      hint: "Presencial o teleconsulta",
+      icon: CalendarCheck,
+      primary: true,
+      external: false,
+    },
+    {
+      href: DENSITOMETRY_BOOKING_HREF,
+      label: "Densitometría",
+      hint: "Reserva tu estudio",
+      icon: ScanLine,
+      primary: false,
+      external: false,
+    },
+    {
+      href: clinicWhatsApp(HERO_WHATSAPP_MESSAGE),
+      label: "WhatsApp",
+      hint: "Te orientamos",
+      icon: null,
+      primary: false,
+      external: true,
+    },
+  ] as const;
+
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden pb-14 pt-32 sm:pt-40 lg:pb-24 lg:pt-44">
-      <div aria-hidden className="mesh-bg -z-10" />
-      <div className="container-page grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
+    <section aria-labelledby="hero-title" className="relative isolate overflow-hidden pb-14 pt-36 sm:pt-40 lg:pb-24 lg:pt-44">
+      <div aria-hidden className="aurora -z-10" />
+      <div aria-hidden className="scan-grid -z-10" />
+      <div aria-hidden className="scan-sweep -z-10 [--sweep-distance:640px]" />
+      <Reticle className="pointer-events-none absolute -right-10 top-28 -z-10 hidden size-72 text-teal/30 lg:block" />
+
+      <div className="container-page grid items-center gap-12 lg:grid-cols-[1.12fr_1fr] lg:gap-10">
         <div className="min-w-0">
-          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-card-solid/70 px-4 py-2 text-sm font-semibold text-heading shadow-soft">
-            <Video aria-hidden strokeWidth={1.75} className="size-4 text-primary" />
-            {teleconsultHero.eyebrow}
+          <p className="eyebrow">
+            <span aria-hidden className="size-1.5 rounded-full bg-teal" />
+            {CENTER_TAGLINE}
           </p>
-          <h1 id="hero-title" className="text-display mt-5 text-heading">
-            {HEADLINE_LEAD}{" "}
-            <span className="bg-gradient-to-r from-primary to-video bg-clip-text text-transparent dark:from-teal">
-              {HEADLINE_ACCENT}
-            </span>
+          <h1 id="hero-title" className="text-hero mt-5 text-balance text-heading">
+            Excelencia en Reumatología, <span className="text-gradient-teal">Densitometría</span> y Cuidado Articular Integral
           </h1>
           <p className="mt-5 max-w-xl text-lg text-muted sm:text-xl">
-            Si tienes dolor de rodilla, artritis, artrosis, lupus u osteoporosis, atiéndete por videollamada con el Dr. Daniel Ccolcca,
-            médico reumatólogo. Revisamos tus exámenes y te acompañamos en tu tratamiento.
+            Somos un centro especializado en las enfermedades de las articulaciones y los huesos. Te ayudamos a prevenir, a saber qué
+            tienes (con densitometría ósea y otros estudios), a tratarte y a seguir tu evolución. En nuestras sedes o por
+            teleconsulta.
           </p>
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Link href={BOOKING_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
-              Agendar teleconsulta
-              <ArrowRight aria-hidden strokeWidth={1.75} />
-            </Link>
-            {contact ? (
-              <a
-                href={contact.whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonVariants({ variant: "outline", size: "lg" })}
-              >
-                <WhatsAppIcon className="text-whatsapp-strong" />
-                Hablar con el doctor
-                <span className="sr-only"> (WhatsApp, se abre en otra pestaña)</span>
-              </a>
-            ) : null}
-          </div>
-          <p className="mt-3">
+
+          <ul aria-label="Elige cómo empezar" className="mt-8 grid gap-3 sm:grid-cols-3">
+            {paths.map((path) => {
+              const Icon = path.icon;
+              const content = (
+                <>
+                  <span
+                    className={cn(
+                      "grid size-11 shrink-0 place-items-center rounded-xl",
+                      path.primary ? "bg-white/15 text-on-primary" : "bg-teal-tint text-primary",
+                    )}
+                  >
+                    {Icon ? <Icon aria-hidden strokeWidth={1.75} className="size-6" /> : <WhatsAppIcon className="size-6 text-whatsapp-strong" />}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-display text-lg font-bold leading-tight">{path.label}</span>
+                    <span className={cn("block text-base", path.primary ? "text-on-primary/90" : "text-muted")}>{path.hint}</span>
+                  </span>
+                </>
+              );
+              const className = cn(
+                // Móvil: fila (icono + texto). Desde sm, tarjeta vertical: cabe en columnas estrechas sin cortar el texto.
+                "flex h-full min-h-[4.5rem] items-center gap-3 rounded-2xl px-4 py-3 transition-[transform,box-shadow,border-color,background-color] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] sm:flex-col sm:items-start sm:gap-4 sm:p-4",
+                path.primary
+                  ? "glow-cta bg-primary text-on-primary hover:bg-primary-hover"
+                  : "glass-panel text-heading shadow-soft hover:border-primary/50 hover:shadow-lift",
+              );
+              return (
+                <li key={path.label}>
+                  {path.external ? (
+                    <a href={path.href} target="_blank" rel="noopener noreferrer" className={className}>
+                      {content}
+                      <span className="sr-only"> (se abre en otra pestaña)</span>
+                    </a>
+                  ) : (
+                    <Link href={path.href} className={className}>
+                      {content}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+
+          <p className="mt-4 flex flex-wrap gap-x-6">
             <Link href={TRIAGE_HREF} className="inline-flex min-h-12 items-center gap-1 font-semibold text-primary hover:underline">
-              ¿No sabes si es para ti? Evalúa tus síntomas <ArrowRight aria-hidden className="size-4" />
+              ¿No sabes qué necesitas? Evaluación rápida <ArrowRight aria-hidden className="size-4" />
+            </Link>
+            <Link href="/suplementos" className="inline-flex min-h-12 items-center gap-1 font-semibold text-primary hover:underline">
+              Ver suplementos <ArrowRight aria-hidden className="size-4" />
             </Link>
           </p>
-          <NextSlotChip doctorSlug={REAL_DOCTOR_SLUG} className="mt-3" />
         </div>
         <HeroVisual />
       </div>

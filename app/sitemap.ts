@@ -25,6 +25,8 @@ const ROUTES: readonly Route[] = [
   { path: "/tarifas", priority: 0.8, changeFrequency: MONTHLY },
   { path: "/densitometria-osea", priority: 0.9, changeFrequency: "monthly" },
   { path: "/servicios", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/suplementos", priority: 0.7, changeFrequency: MONTHLY },
+  { path: "/seguimiento", priority: 0.6, changeFrequency: MONTHLY },
   ...servicePillars.map((pillar) => ({ path: `/servicios/${pillar.slug}`, priority: 0.7, changeFrequency: "monthly" as const })),
   ...(treatments.length > 0 ? [{ path: "/tratamientos", priority: 0.8, changeFrequency: MONTHLY }] : []),
   ...treatments.map((treatment) => ({ path: `/tratamientos/${treatment.slug}`, priority: 0.7, changeFrequency: "monthly" as const })),

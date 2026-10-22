@@ -178,7 +178,7 @@ export function TScoreGauge({ compact = false, className }: TScoreGaugeProps) {
         <p className="font-display text-lg font-bold text-heading">
           {name} {formatScore(score)} · <span className={reading.tone}>{reading.label}</span>
         </p>
-        <p className="mt-1 text-[0.98rem] text-fg">{reading.explanation}</p>
+        <p className="mt-1 text-base text-fg">{reading.explanation}</p>
       </div>
       {compact ? null : (
         <p className="mt-3 text-sm text-muted">{mode === "t" ? densitometry.tScoreNote : densitometry.zScore.note}</p>

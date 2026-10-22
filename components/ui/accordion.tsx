@@ -31,7 +31,7 @@ export function AccordionItem({ children, className }: AccordionItemProps) {
     <details
       className={cn(
         "group rounded-3xl border border-line bg-card-solid transition-[box-shadow,border-color] duration-300",
-        "open:border-teal/50 open:shadow-[0_0_0_1px_rgb(0_168_150/0.25),0_16px_40px_-16px_rgb(0_168_150/0.45)]",
+        "open:border-teal/50 open:glow-card",
         className,
       )}
     >

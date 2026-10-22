@@ -28,7 +28,7 @@ export function FooterWaves() {
       className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-56 w-full"
     >
       {Array.from({ length: WAVES }, (_, index) => (
-        <path key={index} d={wavePath(index)} fill="none" stroke="#2dd4bf" strokeOpacity={0.12 + index * 0.025} strokeWidth="1.2" />
+        <path key={index} d={wavePath(index)} fill="none" stroke="var(--teal-300)" strokeOpacity={0.12 + index * 0.025} strokeWidth="1.2" />
       ))}
     </svg>
   );

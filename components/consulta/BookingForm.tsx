@@ -286,7 +286,7 @@ interface ConsentProps {
 function Consent({ name, children, error, errorId, ...input }: ConsentProps) {
   return (
     <div>
-      <label className="flex min-h-12 cursor-pointer items-start gap-3 rounded-xl p-1 text-[0.95rem] text-fg">
+      <label className="flex min-h-12 cursor-pointer items-start gap-3 rounded-xl p-1 text-base text-fg">
         <input type="checkbox" name={name} {...input} className="mt-0.5 size-5 shrink-0 accent-[var(--teal-strong)]" />
         <span>{children}</span>
       </label>

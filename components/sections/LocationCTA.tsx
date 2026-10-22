@@ -1,5 +1,6 @@
-import { BOOKING_HREF } from "@/data/navigation";
-import { Phone } from "lucide-react";
+import Link from "next/link";
+import { APPOINTMENT_HREF } from "@/data/navigation";
+import { CalendarCheck, Phone } from "lucide-react";
 import { JointMotif } from "@/components/shared/JointMotif";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { LocationCard } from "@/components/shared/LocationCard";
@@ -11,6 +12,7 @@ import { site } from "@/data/site";
 import { locationNamesLabel, primaryWhatsAppLine } from "@/lib/locations";
 import { clinicWhatsApp } from "@/lib/whatsapp";
 
+/** Sedes (con «cómo llegar» en cada tarjeta) y banda final de llamada a la acción. Componente de servidor. */
 export function LocationCTA() {
   const mainLine = primaryWhatsAppLine();
 
@@ -33,17 +35,18 @@ export function LocationCTA() {
           ))}
         </RevealGroup>
 
-        <div className="relative isolate overflow-hidden rounded-[2rem] bg-navy px-6 py-14 text-center text-white sm:px-12 lg:py-20 dark:bg-navy-3">
-          <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(50%_70%_at_50%_0%,rgb(0_168_150/0.3),transparent_70%)]" />
+        <div className="scan-panel relative isolate overflow-hidden rounded-[2rem] px-6 py-14 text-center text-white sm:px-12 lg:py-20">
+          <div aria-hidden className="aurora -z-10" />
+          <div aria-hidden className="immersive-grid -z-10" />
           <JointMotif mode="loop" className="mx-auto h-28 w-auto" />
           <h2 className="text-h2 mx-auto mt-6 max-w-3xl text-white">No tienes que acostumbrarte al dolor</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-200">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-on-navy-muted">
             Da el primer paso hoy. Te orientamos y agendamos tu consulta con el especialista adecuado.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "light", size: "lg" })}>
-              Agendar consulta
-            </a>
+            <Link href={APPOINTMENT_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
+              <CalendarCheck aria-hidden strokeWidth={1.75} /> Agendar cita
+            </Link>
             <a
               href={clinicWhatsApp()}
               target="_blank"

@@ -28,9 +28,9 @@ import { breadcrumbSchema, faqSchema, physicianSchema, teleconsultServiceSchema 
 import { buildMetadata } from "@/lib/seo";
 
 const PATH = "/teleconsulta";
-const TITLE = `Teleconsulta reumatológica por videollamada en todo el Perú | ${site.name}`;
+const TITLE = `Teleconsulta reumatológica por videollamada · Perú | ${site.name}`;
 const DESCRIPTION =
-  "Consulta con un reumatólogo desde casa por WhatsApp, Zoom o Google Meet: revisión de exámenes, plan de tratamiento y, si el doctor lo indica, receta y órdenes en formato digital.";
+  "Consulta con un reumatólogo desde casa por WhatsApp, Zoom o Meet: revisión de exámenes, plan de tratamiento y, si el doctor lo indica, receta digital.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Teleconsulta", href: PATH },
@@ -136,7 +136,7 @@ export default function TeleconsultaPage() {
                   {index + 1}
                 </span>
                 <h3 className="mt-4 font-display text-lg font-bold text-heading">{step.title}</h3>
-                <p className="mt-2 text-[0.95rem] text-muted">{step.body}</p>
+                <p className="mt-2 text-base text-muted">{step.body}</p>
                 {step.pending.length > 0 ? (
                   <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted">
                     {PENDING}: {step.pending.join(", ").toLowerCase()}

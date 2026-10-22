@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
+import { AppointmentTypePicker } from "@/components/consulta/AppointmentTypePicker";
 import { ConsultaApp } from "@/components/consulta/ConsultaApp";
 import type { ConsultaService } from "@/lib/consulta/state";
 
 export const metadata: Metadata = {
   title: "Consulta virtual",
-  description: "Evaluación rápida, orientación y reserva de tu teleconsulta reumatológica por videollamada.",
+  description: "Agenda tu cita: consulta presencial, densitometría ósea, teleconsulta o control, con evaluación rápida de síntomas.",
   robots: { index: false, follow: true },
   alternates: { canonical: "/consulta-virtual" },
 };
 
 const SERVICES: readonly ConsultaService[] = ["teleconsulta", "densitometria"];
+/** «Agendar cita» (APPOINTMENT_HREF): primero se elige el tipo de cita. */
+const PICKER = "elegir";
 
 function parseService(value: string | string[] | undefined): ConsultaService | null {
   return typeof value === "string" && (SERVICES as readonly string[]).includes(value) ? (value as ConsultaService) : null;
@@ -24,7 +27,7 @@ export default async function ConsultaVirtualPage({ searchParams }: PageProps<"/
           Para reservar en línea necesitas JavaScript. También puedes agendar por WhatsApp desde la página de inicio.
         </p>
       </noscript>
-      <ConsultaApp initialService={parseService(servicio)} />
+      {servicio === PICKER ? <AppointmentTypePicker /> : <ConsultaApp initialService={parseService(servicio)} />}
     </div>
   );
 }

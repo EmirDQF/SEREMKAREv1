@@ -29,7 +29,7 @@ export function AudienceCards({ limit, className }: AudienceCardsProps) {
             </div>
             <ul className="mt-4 space-y-2.5">
               {items.map((item) => (
-                <li key={item} className="flex gap-2.5 text-[0.98rem] text-fg">
+                <li key={item} className="flex gap-2.5 text-base text-fg">
                   <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-teal" />
                   {item}
                 </li>

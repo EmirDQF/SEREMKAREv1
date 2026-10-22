@@ -1,34 +1,32 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/Hero";
 import { TelemedicineBand } from "@/components/sections/TelemedicineBand";
 import { TrustStrip } from "@/components/sections/TrustStrip";
-import { PainPoints } from "@/components/sections/PainPoints";
-import { SymptomTriageLazy } from "@/components/sections/SymptomTriageLazy";
-import { SymptomTriageTeaser } from "@/components/sections/SymptomTriageTeaser";
-import { ConsultaSteps } from "@/components/sections/ConsultaSteps";
 import { DoctorsSection } from "@/components/sections/DoctorsSection";
 import { BoneDensitySection } from "@/components/sections/BoneDensitySection";
-import { WhyUs } from "@/components/sections/WhyUs";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
-import { PricingPreview } from "@/components/sections/PricingPreview";
+import { SupplementsStrip } from "@/components/sections/SupplementsStrip";
+import { PatientRoute } from "@/components/sections/PatientRoute";
+import { HoursSection } from "@/components/sections/HoursSection";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { FAQ } from "@/components/sections/FAQ";
 import { LocationCTA } from "@/components/sections/LocationCTA";
 import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
-import { site } from "@/data/site";
-import { visibility } from "@/data/visibility";
-import { physicianSchema, teleconsultServiceSchema } from "@/lib/schema";
+import { CENTER_TAGLINE, site } from "@/data/site";
+import { physicianSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 
-/** Aseguradoras: solo se descargan con convenios firmados (visibility.insurers). */
-const InsurersIsland = dynamic(() => import("@/components/shared/OptionalIslands").then((mod) => mod.InsurersIsland));
+/*
+ * Aseguradoras: con convenios firmados (visibility.insurers), volver a montar
+ * <InsurersIsland /> (components/shared/OptionalIslands) después de <TrustStrip />. No se importa
+ * mientras esté oculta: el build con webpack empaquetaba su JS aunque no se renderizara.
+ */
 
-const HOME_TITLE = `Reumatólogo online: teleconsulta por videollamada en todo el Perú | ${site.name}`;
+const HOME_TITLE = `${CENTER_TAGLINE} en Lima | ${site.name}`;
 const HOME_DESCRIPTION =
-  "Consulta con un reumatólogo sin salir de casa: evaluación rápida, reserva en línea y videollamada por WhatsApp, Zoom o Google Meet. Densitometría ósea en Lima Norte y Callao.";
+  "Centro de reumatología en Lima Norte y Callao: densitometría ósea, tratamiento y seguimiento continuo de tus articulaciones y huesos. Agenda tu cita en línea.";
 
 export const metadata: Metadata = {
   ...buildMetadata({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" }),
@@ -36,34 +34,32 @@ export const metadata: Metadata = {
 };
 
 /**
- * Home transaccional del consultorio virtual. Secciones sin datos reales (aseguradoras,
- * testimonios, video de muestra, tratamientos, comparador de infiltraciones) siguen en el código
- * y se reactivan desde data/visibility.ts.
+ * Home del Centro de Excelencia en Reumatología. Las secciones sin datos reales (aseguradoras,
+ * testimonios) se reactivan desde data/visibility.ts.
  */
 export default function Home() {
   const doctor = getDoctor(REAL_DOCTOR_SLUG);
   return (
     <>
-      <JsonLd data={teleconsultServiceSchema("/teleconsulta")} />
       <JsonLd data={physicianSchema({ name: doctor.name, path: `/staff/${doctor.slug}`, specialty: doctor.specialty, image: doctor.photo, knowsAbout: doctor.focus })} />
-      {/* Orden móvil: hero → banda de telemedicina → teleconsulta (3 pasos) → el doctor → servicios → sedes → preguntas → contacto.
+      {/* Orden móvil (decisión del cliente): hero → pilares → densitometría → servicio extra →
+          suplementos → ruta del paciente + horario → doctor y equipo → sedes → preguntas → contacto.
           .cv-auto (content-visibility: auto): el navegador no pinta las secciones largas hasta acercarse. */}
       <Hero />
-      <TelemedicineBand />
-      <ConsultaSteps />
-      <div className="cv-auto"><DoctorsSection /></div>
-      <TrustStrip />
-      {visibility.insurers ? <InsurersIsland /> : null}
-      <div className="cv-auto"><ServicesGrid /></div>
-      <div className="cv-auto"><BoneDensitySection /></div>
-      <div className="cv-auto"><PricingPreview /></div>
-      <div className="cv-auto"><PainPoints /></div>
-      <SymptomTriageLazy fallback={<SymptomTriageTeaser />} />
-      <div className="cv-auto"><WhyUs /></div>
-      <Testimonials />
-      <div className="cv-auto"><LocationCTA /></div>
-      <div className="cv-auto"><FAQ /></div>
-      <ContactoDoctor id="contacto-title" className="section-y" />
+        <div className="cv-auto"><ServicesGrid /></div>
+        <div className="cv-auto"><BoneDensitySection /></div>
+        <div className="cv-auto"><TelemedicineBand /></div>
+        <div className="cv-auto"><SupplementsStrip /></div>
+        <div className="cv-auto">
+          <PatientRoute />
+          <HoursSection />
+        </div>
+        <div className="cv-auto"><DoctorsSection /></div>
+        <TrustStrip />
+        <Testimonials />
+        <div className="cv-auto"><LocationCTA /></div>
+        <div className="cv-auto"><FAQ /></div>
+        <ContactoDoctor id="contacto-title" className="section-y" />
     </>
   );
 }

@@ -1,24 +1,24 @@
 import type { Theme } from "@/lib/theme";
 
 /**
- * Colores de marca para WebGL: espejo de los tokens de app/globals.css ("Teal clínico × Azul digital").
+ * Colores de marca para WebGL: espejo de los tokens de app/globals.css (paleta 2026: teal clínico × aqua tecnológico × navy índigo).
  * three no lee variables CSS; si cambias un token, cámbialo también aquí.
  */
 export const PALETTE = {
-  teal: "#00a896", // --teal (claro)
-  tealLight: "#2dd4bf", // --teal (oscuro)
+  teal: "#0dac9d", // --teal (claro)
+  tealLight: "#61e0d0", // --teal (oscuro)
   coral: "#f97362", // --coral (claro)
   coralLight: "#fb8a7b", // --coral (oscuro)
-  sky: "#0284c7", // --ring (claro)
-  skyLight: "#7dd3fc", // --video (oscuro) / --video-glow
-  video: "#0369a1", // --video (claro)
-  videoStrong: "#38bdf8", // --video-strong (oscuro)
+  sky: "#0283a1", // --ring (claro)
+  skyLight: "#82d5f1", // --video (oscuro) / --video-glow
+  video: "#036881", // --video (claro)
+  videoStrong: "#49bee2", // --video-strong (oscuro)
   pain: "#f59e0b", // --pain (claro)
   painLight: "#fbbf24", // --pain (oscuro)
   online: "#10b981", // --online-dot (claro)
-  cyan: "#67e8f9",
-  navy: "#0b192c", // --navy
-  navy2: "#1e3e62", // --navy-2
+  cyan: "#b0e6fa",
+  navy: "#0f1d3a", // --navy
+  navy2: "#263d70", // --navy-2
 } as const;
 
 export interface ThemeColors {

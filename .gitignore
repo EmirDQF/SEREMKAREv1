@@ -43,3 +43,7 @@ next-env.d.ts
 
 # originales de fotos (fuera de public/; ver scripts/optimize-doctor-photo.mjs)
 /assets/originals/
+.lighthouse/
+
+# Paquetes para Hostinger (se generan con scripts/package-hostinger.mjs)
+/deploy/

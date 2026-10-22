@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { ThreeElements } from "@react-three/fiber";
 import { useSceneEnv } from "@/components/3d/scene-context";
-import { themeColors } from "@/components/3d/palette";
+import { PALETTE, themeColors } from "@/components/3d/palette";
 
 /* ==========================================================================
    Materiales compartidos de las escenas 3D.
@@ -38,7 +38,7 @@ export function ClinicalGlassMaterial({ transmissive = false, ...props }: Clinic
         ior={1.32}
         clearcoat={1}
         clearcoatRoughness={0.06}
-        attenuationColor="#00a896"
+        attenuationColor={PALETTE.teal}
         attenuationDistance={3}
         envMapIntensity={1.2}
         {...props}

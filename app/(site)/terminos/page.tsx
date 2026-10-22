@@ -3,6 +3,7 @@ import { LegalDocument, type LegalSection } from "@/components/pages/LegalDocume
 import { legal } from "@/data/legal";
 import { MEDICAL_DISCLAIMER, site } from "@/data/site";
 import { buildMetadata } from "@/lib/seo";
+import { teleconsultLimits } from "@/data/teleconsult-content";
 
 const CRUMBS = [
   { label: "Inicio", href: "/" },
@@ -11,7 +12,7 @@ const CRUMBS = [
 
 export const metadata: Metadata = buildMetadata({
   title: "Términos y condiciones",
-  description: `Condiciones de uso de la web y de los servicios de ${site.name}.`,
+  description: `Condiciones de uso de la web, de la teleconsulta y de los servicios de ${site.name}: citas, pagos, consentimiento y responsabilidades.`,
   path: "/terminos",
 });
 
@@ -46,8 +47,8 @@ const SECTIONS: readonly LegalSection[] = [
       "Al marcar el consentimiento al reservar declaras que entiendes y aceptas lo siguiente:",
     ],
     bullets: [
-      "La teleconsulta no permite un examen físico completo. Si el médico lo considera necesario, te indicará una evaluación presencial o exámenes complementarios.",
-      "No es un servicio para emergencias. Ante una emergencia acude al servicio de emergencias más cercano o llama al SAMU 106.",
+      teleconsultLimits.physicalExam,
+      teleconsultLimits.emergency,
       "Al terminar recibes en formato digital tu plan de tratamiento y, si el doctor lo indica, la receta y las órdenes de exámenes, además de las indicaciones para tu seguimiento.",
       "Necesitas un celular, tablet o computadora con cámara, micrófono e internet estable.",
       "Tus datos personales y de salud se tratan según nuestra política de privacidad (Ley N.° 29733). Puedes retirar este consentimiento y pedir atención presencial en cualquier momento.",

@@ -161,7 +161,16 @@ function BookingDetails({ booking, now }: { booking: BookingConfirmation; now: n
               </p>
             </div>
           ) : null}
-          <p className="mt-4 text-sm text-muted">Modalidad: videollamada · Código: {booking.uid}</p>
+          <p className="mt-4 text-sm text-muted">
+            Modalidad: {booking.modality === "presencial" ? "presencial" : "videollamada"} · Código: {booking.uid}
+          </p>
+          {booking.modality === "presencial" ? (
+            <p className="mt-2 text-sm">
+              <Link href="/sedes" className="inline-flex min-h-12 items-center font-semibold text-primary hover:underline">
+                Ver la dirección y cómo llegar a tu sede
+              </Link>
+            </p>
+          ) : null}
           <div className="mt-5 grid gap-2">
             <a href={googleCalendarUrl(event)} target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "outline" })}>
               <CalendarPlus aria-hidden /> Añadir a Google Calendar<span className="sr-only"> (se abre en otra pestaña)</span>
@@ -195,7 +204,7 @@ function BookingDetails({ booking, now }: { booking: BookingConfirmation; now: n
           <h2 className="font-display text-lg font-bold text-heading">Prepárate para tu consulta</h2>
           <ul className="mt-4 grid gap-3">
             {PREPARE.map(({ icon: Icon, text }) => (
-              <li key={text} className="flex items-start gap-3 text-[0.95rem] text-fg">
+              <li key={text} className="flex items-start gap-3 text-base text-fg">
                 <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-teal-tint text-primary">
                   <Icon aria-hidden className="size-5" />
                 </span>
@@ -210,7 +219,10 @@ function BookingDetails({ booking, now }: { booking: BookingConfirmation; now: n
         </div>
       </div>
 
-      <p className="text-center">
+      <p className="flex flex-wrap justify-center gap-x-6 text-center">
+        <Link href="/seguimiento" className="inline-flex min-h-12 items-center font-semibold text-primary hover:underline">
+          Después de tu cita: cómo te acompañamos
+        </Link>
         <Link href="/" className="inline-flex min-h-12 items-center font-semibold text-primary hover:underline">
           Volver al inicio
         </Link>

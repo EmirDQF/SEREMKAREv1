@@ -76,6 +76,14 @@ export const teleconsultGuide: readonly GuideStep[] = [
   },
 ];
 
+/** Cuándo la teleconsulta NO sirve (texto del consentimiento de /terminos). */
+export const teleconsultLimits = {
+  physicalExam:
+    "La teleconsulta no permite un examen físico completo. Si el médico lo considera necesario, te indicará una evaluación presencial o exámenes complementarios.",
+  emergency:
+    "No es un servicio para emergencias. Ante una emergencia acude al servicio de emergencias más cercano o llama al SAMU 106.",
+} as const;
+
 export const teleconsultRequirements = {
   devices: "Un celular, tablet o computadora con cámara, micrófono e internet estable.",
   apps: "WhatsApp, Zoom o Google Meet (el que prefieras).",

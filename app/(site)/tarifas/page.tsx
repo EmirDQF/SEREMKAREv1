@@ -56,7 +56,7 @@ export default function TarifasPage() {
                 <p className="mt-6 font-display text-2xl font-extrabold text-heading">{formatPrice(item.price)}</p>
                 <ul className="mt-6 space-y-2.5">
                   {item.includes.map((line) => (
-                    <li key={line} className="flex items-start gap-2 text-[0.95rem] text-fg">
+                    <li key={line} className="flex items-start gap-2 text-base text-fg">
                       <CheckCircle2 aria-hidden className="mt-0.5 size-5 shrink-0 text-primary" /> {line}
                     </li>
                   ))}
@@ -74,7 +74,7 @@ export default function TarifasPage() {
           ))}
         </RevealGroup>
         <div className="container-page mt-8">
-          <p className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.95rem] text-heading">
+          <p className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-base text-heading">
             <CreditCard aria-hidden className="size-5 text-primary" />
             {PAYMENT_METHODS.length > 0 ? `Medios de pago: ${PAYMENT_METHODS.join(", ")}` : PAYMENT_PENDING}
           </p>

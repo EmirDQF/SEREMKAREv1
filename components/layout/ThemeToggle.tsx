@@ -1,33 +1,27 @@
-"use client";
-
 import { Moon, Sun } from "lucide-react";
-import { applyTheme, useTheme } from "@/lib/theme";
 import { cx } from "@/lib/cx";
 
 interface ThemeToggleProps {
   className?: string;
 }
 
+/**
+ * Claro / oscuro. Componente de servidor: el clic lo atiende SiteEffects (`data-theme-toggle`) y el
+ * icono cambia solo con CSS según `data-theme` en <html> (sin re-render ni hidratación propia).
+ */
 export function ThemeToggle({ className }: ThemeToggleProps) {
-  const theme = useTheme();
-  const isDark = theme === "dark";
-
   return (
     <button
       type="button"
-      onClick={() => applyTheme(isDark ? "light" : "dark")}
-      aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-      aria-pressed={theme === null ? undefined : isDark}
+      data-theme-toggle
+      aria-label="Cambiar a modo oscuro"
       className={cx(
         "grid size-12 place-items-center rounded-full text-heading transition-colors hover:bg-teal-tint",
         className,
       )}
     >
-      {isDark ? (
-        <Sun aria-hidden strokeWidth={1.75} className="size-5" />
-      ) : (
-        <Moon aria-hidden strokeWidth={1.75} className="size-5" />
-      )}
+      <Moon aria-hidden strokeWidth={1.75} className="size-5 dark:hidden" />
+      <Sun aria-hidden strokeWidth={1.75} className="hidden size-5 dark:block" />
     </button>
   );
 }

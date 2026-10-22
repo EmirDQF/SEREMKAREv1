@@ -97,7 +97,7 @@ export function BoneDensityExplorer({ className }: BoneDensityExplorerProps) {
               aria-pressed={active}
               onClick={() => setLevel(state.id)}
               className={cn(
-                "min-h-12 rounded-full border px-2 font-display text-[0.92rem] font-semibold transition-colors sm:px-4",
+                "min-h-12 rounded-full border px-2 font-display text-base font-semibold transition-colors sm:px-4",
                 active ? STATE_ACTIVE[state.id] : "border-line-strong bg-card-solid text-heading hover:border-primary hover:text-primary",
               )}
             >
@@ -106,7 +106,7 @@ export function BoneDensityExplorer({ className }: BoneDensityExplorerProps) {
           );
         })}
       </div>
-      <p aria-live="polite" className="mt-4 min-h-[3.25rem] text-center text-[0.98rem] text-fg">
+      <p aria-live="polite" className="mt-4 min-h-[3.25rem] text-center text-base text-fg">
         <span className="font-display font-semibold text-heading">{current.range}: </span>
         {current.explanation}
       </p>

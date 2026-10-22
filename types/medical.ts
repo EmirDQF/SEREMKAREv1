@@ -18,6 +18,13 @@ export interface OpeningHours {
   confirmed: boolean;
 }
 
+/** Fila del horario general visible ("Lunes a viernes" · "08:00 a 20:00"). */
+export interface OpeningScheduleRow {
+  days: string;
+  shortDays: string;
+  hours: string;
+}
+
 /** Horario de teleconsulta: además de la franja, la duración de cada turno. */
 export interface TeleconsultHours extends OpeningHours {
   /** Duración de cada turno de teleconsulta, en minutos. */
@@ -157,6 +164,7 @@ export interface Specialty {
 
 export interface Service {
   name: string;
+  /** Explicación breve del término técnico, en lenguaje simple (va entre paréntesis o debajo). */
   description?: string;
 }
 
@@ -164,10 +172,14 @@ export interface ServicePillar {
   slug: string;
   name: string;
   tagline: string;
+  /** Una frase simple para el paciente: qué hacemos aquí. */
+  summary: string;
   icon: IconName;
   services: readonly Service[];
   /** Tamaño en la grilla bento de la Home. */
   size: "lg" | "md" | "sm";
+  /** core: los 4 pilares del modelo de atención · extra: servicio extra (teleconsulta). */
+  kind: "core" | "extra";
 }
 
 export interface Treatment {
@@ -428,6 +440,10 @@ export interface DensitometryContent {
 
 export interface ServiceDetail {
   intro: string;
+  /** Para quién es, en una frase. */
+  forWhom: string;
+  /** Cómo me preparo (lista corta). */
+  preparation: readonly string[];
   highlights: readonly string[];
   /** Descripción breve de cada subservicio, por su nombre exacto en data/services.ts. */
   serviceNotes: Readonly<Record<string, string>>;

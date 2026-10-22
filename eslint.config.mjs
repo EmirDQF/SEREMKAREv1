@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Paquetes para Hostinger e informes generados (no son código fuente).
+    "deploy/**",
+    ".lighthouse/**",
   ]),
 ]);
 

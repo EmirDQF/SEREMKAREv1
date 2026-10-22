@@ -114,7 +114,7 @@ export default async function DoctorPage({ params }: PageProps<"/staff/[slug]">)
                   <GraduationCap aria-hidden strokeWidth={1.75} className="size-5 text-primary" /> Formación
                 </h2>
                 {doctor.education.length > 0 ? (
-                  <ul className="mt-3 space-y-2 text-[0.95rem] text-fg">
+                  <ul className="mt-3 space-y-2 text-base text-fg">
                     {doctor.education.map((item) => (
                       <li key={item} className="flex gap-2.5">
                         <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-teal" /> {item}
@@ -122,7 +122,7 @@ export default async function DoctorPage({ params }: PageProps<"/staff/[slug]">)
                     ))}
                   </ul>
                 ) : (
-                  <p className="mt-3 text-[0.95rem] text-muted">Formación por confirmar.</p>
+                  <p className="mt-3 text-base text-muted">Formación por confirmar.</p>
                 )}
               </div>
               <div className="rounded-[1.5rem] border border-line bg-card-solid p-5 shadow-soft">

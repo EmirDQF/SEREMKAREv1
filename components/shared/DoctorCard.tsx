@@ -41,7 +41,7 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
           {credentialsLabel(doctor)}
         </p>
         {education ? (
-          <p className="mt-4 flex items-start gap-2 text-[0.95rem] text-muted">
+          <p className="mt-4 flex items-start gap-2 text-base text-muted">
             <GraduationCap aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0 text-primary" />
             {education}
           </p>

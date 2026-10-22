@@ -1,33 +1,35 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
-import { Providers } from "@/components/layout/Providers";
-import { CanvasHostLoader } from "@/components/3d/CanvasHostLoader";
+import localFont from "next/font/local";
+import { SiteEffects } from "@/components/layout/SiteEffects";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { site } from "@/data/site";
+import { CENTER_TAGLINE, site } from "@/data/site";
 import { DEFAULT_DESCRIPTION, SHARE_IMAGE } from "@/lib/seo";
 import { organizationSchema } from "@/lib/schema";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
+/*
+ * Texto: pila de fuentes del sistema (Segoe UI, Roboto, San Francisco). El elemento LCP de la Home
+ * es un párrafo: sin fuente web en la ruta crítica, se pinta con el primer HTML sin esperar descargas.
+ */
 
 /**
- * Títulos y botones: un solo archivo variable (600–800 en uso). Sin preload y con display «optional»:
- * si no llega en ~100 ms se queda la fuente de respaldo ajustada, sin cambio a mitad de carga (el
- * cambio movía el h1 y daba CLS 0,19 en /teleconsulta); en las visitas siguientes sale de la caché.
- * Solo se precarga Inter, la del texto (el elemento LCP es un párrafo).
+ * Títulos y botones: Plus Jakarta Sans (licencia SIL Open Font License 1.1), archivo variable 200–800,
+ * subconjunto latino (cubre á, é, ñ, ¿, ¡). Guardado en el proyecto (app/fonts) en lugar de
+ * next/font/google: el build ya no descarga nada de Google, así que no falla si el servidor de
+ * compilación no tiene salida a internet. Sin preload y con display «optional»: si no llega en ~100 ms
+ * se queda la fuente de respaldo ajustada, sin cambio a mitad de carga (CLS 0).
  */
-const jakarta = Plus_Jakarta_Sans({
+const jakarta = localFont({
+  src: "./fonts/plus-jakarta-sans-latin.woff2",
+  weight: "200 800",
+  style: "normal",
   variable: "--font-jakarta",
-  subsets: ["latin"],
   display: "optional",
   preload: false,
+  adjustFontFallback: "Arial",
 });
 
-const DEFAULT_TITLE = `Reumatólogo en Lima Norte y Callao | ${site.name}`;
+const DEFAULT_TITLE = `${CENTER_TAGLINE} en Lima Norte y Callao | ${site.name}`;
 
 /** Deben coincidir con THEME_STORAGE_KEY (lib/theme.ts) y MOTION_STORAGE_KEY (lib/motion-preference.ts). */
 const THEME_STORAGE_KEY = "sermekare-theme";
@@ -43,7 +45,8 @@ export const metadata: Metadata = {
     "reumatólogo Lima Norte",
     "infiltración ecoguiada Lima",
     "tratamiento artritis reumatoide Lima",
-    "viscosuplementación rodilla Lima",
+    "densitometría ósea Lima",
+    "centro de reumatología Lima",
     "artrosis",
     "osteoporosis",
     "teleconsulta reumatología",
@@ -64,8 +67,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b192c" },
+    { media: "(prefers-color-scheme: light)", color: "#f7fafe" },
+    { media: "(prefers-color-scheme: dark)", color: "#081128" },
   ],
 };
 
@@ -80,7 +83,7 @@ const NO_SCRIPT_STYLE = "[data-reveal],[data-kinetic] *{opacity:1!important;tran
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es-PE" data-theme="light" suppressHydrationWarning className={`${inter.variable} ${jakarta.variable}`}>
+    <html lang="es-PE" data-theme="light" suppressHydrationWarning className={jakarta.variable}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: PREFERENCES_SCRIPT }} />
         <noscript>
@@ -89,11 +92,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-dvh overflow-x-clip">
         <JsonLd data={organizationSchema()} />
-        <Providers>
-          {/* Cabecera y pie los pone cada grupo: (site) completo; (consultorio) mínimo. */}
-          {children}
-          <CanvasHostLoader />
-        </Providers>
+        {/* Cabecera y pie los pone cada grupo: (site) completo; (consultorio) mínimo. */}
+        {children}
+        {/* Hoja sin hijos: conecta menús, diálogos e interruptores del HTML de servidor (sin envolver la página). */}
+        <SiteEffects />
       </body>
     </html>
   );

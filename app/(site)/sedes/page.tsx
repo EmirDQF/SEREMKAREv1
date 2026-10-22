@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/pages/PageHero";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
+import { HoursBlock } from "@/components/shared/HoursBlock";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { LocationCard } from "@/components/shared/LocationCard";
 import { LocationWhatsAppPicker } from "@/components/shared/LocationWhatsAppPicker";
@@ -13,10 +14,8 @@ import { locationNamesLabel } from "@/lib/locations";
 import { breadcrumbSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 
-const TITLE = `Sedes de densitometría ósea en ${locationNamesLabel()} | ${site.name}`;
-const DESCRIPTION = `Densitometría ósea con cita previa en ${site.locations.length} sedes: ${site.locations
-  .map((location) => (location.reference ? `${location.name} (${location.reference.toLowerCase()})` : location.name))
-  .join(", ")}.`;
+const TITLE = `Sedes y horario: ${locationNamesLabel()} | ${site.name}`;
+const DESCRIPTION = `Reumatología y densitometría ósea con cita previa en ${site.locations.length} sedes: ${locationNamesLabel()}. Horario de atención, cómo llegar y WhatsApp de cada sede.`;
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Sedes", href: LOCATIONS_PATH },
@@ -44,6 +43,11 @@ export default function LocationsPage() {
           </LocationWhatsAppPicker>
         }
       />
+      <section aria-labelledby="horario-title" className="pb-10">
+        <div className="container-page">
+          <HoursBlock className="max-w-xl" />
+        </div>
+      </section>
       <section aria-label="Lista de sedes" className="pb-24">
         <div className="container-page">
           <RevealGroup as="ul" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

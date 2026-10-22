@@ -16,12 +16,77 @@ dato en el archivo indicado; la web se actualiza sola.
 | Duración de la consulta | `data/teleconsult-content.ts` → `teleconsultFacts.durationMinutes` | «Por confirmar» |
 | Política de cancelación y de fallas de conexión | `data/teleconsult-content.ts` → `teleconsultFacts` | No se publica |
 | Qué WhatsApp atiende la teleconsulta | `data/site.ts` → `WHATSAPP_LINES` (hoy la línea principal +51 994 931 540) | Línea principal |
-| Horario de las sedes | `data/site.ts` → `PROVISIONAL_HOURS` (`confirmed: true` para mostrarlo) | «Atención con cita previa» |
+| Horario por sede | `data/site.ts` → `OPENING_SCHEDULE` y `PROVISIONAL_HOURS` (`confirmed: true` publica «Abierto ahora» y el JSON-LD) | Horario general del cliente: Lun–Vie 08:00–20:00 · Sáb 08:00–13:00 · Domingos y feriados «Por confirmar» |
 | Correo y redes sociales reales | `data/site.ts` → `SAMPLE_EMAIL`, `SAMPLE_SOCIALS` + `data/visibility.ts` (`email`, `socials`) | Ocultos |
 | RUC (Libro de Reclamaciones) | `data/site.ts` → `taxId`, `data/legal.ts` | Pendiente |
 | Dominio | Variable `NEXT_PUBLIC_SITE_URL` | `https://sermekare.com` |
 | Direcciones a confirmar («Alfredo», «Sarmiento», «Lanfranco», puerta en Puente Piedra) | `data/site.ts` → `LOCATIONS` | Sin número de puerta |
 | Transcripción y audio del Dr. Ccolcca (opcional) | Nuevo | No se publica |
+
+## Posicionamiento y marca (mejora 2026)
+
+| Dato | Archivo | Hoy se muestra |
+|---|---|---|
+| Uso de la denominación «Centro de Excelencia en Reumatología» (posibles conflictos de marca; no implica acreditación) | `data/site.ts` → `CENTER_TAGLINE`, `CENTER_MISSION` | Publicado como aspiración, sin certificaciones ni rankings |
+| Nombre comercial («SERMEKARE» o «KARE SAC») | `data/site.ts` → `name` | SERMEKARE |
+
+## Servicios reactivados: confirmar con el cliente
+
+Se publican porque el cliente los listó (decisión D12 en `data/visibility.ts`). Para ocultar uno,
+añadir su nombre exacto a `HIDDEN_SERVICES`.
+
+| Servicio | Archivo | Confirmar |
+|---|---|---|
+| Apoyo terapéutico: administración EV/SC, pulsos, biotecnológicos, monitoreo de adherencia, gestión del riesgo e inmunizaciones | `data/services.ts`, `data/service-details.ts` | Que se ofrecen hoy y en qué sede |
+| Protocolos de administración (nuevo) | `data/services.ts` | Descripción y alcance |
+| Consulta externa: medicina general, psicología, nutrición, terapia ocupacional, terapia física | `data/services.ts` | Profesionales y sedes |
+| Procedimientos: infiltraciones ecoguiadas (reumatólogo y radiólogo), videocapilaroscopía | `data/services.ts` | Que se realizan y quién |
+| Laboratorio especializado dentro de procedimientos (nuevo) | `data/services.ts` | Alcance (¿propio o convenio?) |
+| Apoyo diagnóstico: VFA, composición corporal, caderas con prótesis, ecografía, laboratorio, evaluaciones estandarizadas | `data/services.ts` | Equipos disponibles por sede |
+| Teleinterconsulta y atención híbrida | `data/services.ts` | Que se ofrecen |
+| Reserva en línea de consulta presencial y control (hoy se coordinan por WhatsApp) | `components/consulta/AppointmentTypePicker.tsx`, `docs/CONFIGURAR-CITAS.md` | Tipo de evento presencial en Cal.com |
+
+## Precios
+
+| Dato | Archivo | Hoy se muestra |
+|---|---|---|
+| Consulta externa, procedimientos y terapia | `app/(site)/servicios/[slug]/page.tsx` → `priceFor` (y `data/pricing.ts` si se crea su ficha) | «Precio por confirmar» |
+| Paquete densitometría + teleconsulta | `data/pricing.ts` | «Precio por confirmar» |
+
+## Suplementos
+
+| Dato | Archivo | Hoy se muestra |
+|---|---|---|
+| Productos, marcas, presentaciones | `data/supplements.ts` → `CONFIRMED_SUPPLEMENTS` | «Catálogo en preparación» |
+| Precio y stock de cada producto | `data/supplements.ts` (`price`, `status`) | — |
+| Registro sanitario (DIGEMID) de cada producto — revisar con asesoría legal | `data/supplements.ts` (`sanitaryRegistry`; sin registro el producto no se publica) | — |
+| Activar el catálogo | `data/visibility.ts` → `supplementsCatalog: true` | Desactivado |
+| Entrega a domicilio o recojo en sede | `data/supplements.ts` → `SUPPLEMENTS_DELIVERY_NOTE` | «Te confirmamos por WhatsApp…» |
+| Ejemplo de diseño (no publicado) | `data/supplements.example.ts` | — |
+
+## Seguimiento
+
+| Dato | Archivo | Hoy se muestra |
+|---|---|---|
+| Intervalo de controles por tipo de paciente | `app/(site)/seguimiento/page.tsx`, `docs/PLANTILLAS-SEGUIMIENTO.md` | «Tu médico define cada cuánto» |
+| Plantillas de WhatsApp para el equipo | `docs/PLANTILLAS-SEGUIMIENTO.md` | Uso interno (envío manual) |
+
+## Rendimiento (técnico, no requiere al cliente)
+
+Detalle y números en `docs/MEJORA-2026.md` → «Fase A» y «Lo que no llegó a la meta».
+
+| Tarea | Dónde | Hoy |
+|---|---|---|
+| Medir con PageSpeed Insights sobre la URL real (los servidores de Google no tienen el retraso de presentación de cuadros de este equipo Windows) | https://pagespeed.web.dev | Pendiente de publicar |
+| LCP simulado (Lantern) ≤ 2,5 s: depende del runtime fijo de React/Next (130 KB gzip) que el simulador suma al LCP | `next.config.ts`, `app/(site)/page.tsx` | Ver tabla de `docs/MEJORA-2026.md` |
+| Revisar las imágenes del blog (hasta 130 KB en WebP) si se publican más artículos | `public/images/stock/` | Bajo 150 KB |
+
+## Diseño (para cuando haya datos reales)
+
+| Dato | Archivo | Hoy |
+|---|---|---|
+| Fotos reales de las sedes (fachada, sala de densitometría) para las tarjetas de sedes y el bloque de densitometría | `data/site.ts` → `LOCATIONS`, `public/images/` | Sin fotos (no se usan imágenes de stock como si fueran del centro) |
+| Productos de suplementos con foto, precio y registro sanitario: la tarjeta (`SupplementCard`) ya tiene el diseño | `data/supplements.ts` | «Catálogo en preparación» |
 
 ## Citas en línea (Cal.com + Google Meet)
 
@@ -42,7 +107,7 @@ Guía paso a paso: `docs/CONFIGURAR-CITAS.md`.
 | Testimonios | Reseñas reales con consentimiento escrito |
 | Aseguradoras / EPS | Convenios firmados |
 | Médicos de muestra | Staff real (nombre, CMP, RNE, foto) |
-| Tratamientos, infiltraciones, ecografía, terapias | Confirmar que la clínica los ofrece |
+| Páginas de tratamientos (`/tratamientos/*`) | Confirmar que la clínica los ofrece (`VISIBLE_TREATMENTS`) |
 | Llamada telefónica como modalidad | Confirmarla |
 | Especialidades gota, fibromialgia y espondiloartritis | Confirmarlas |
 

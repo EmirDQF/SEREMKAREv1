@@ -57,6 +57,12 @@ export function messageForDoctor(doctorName: string): string {
   return `Hola ${site.name}, quiero agendar una teleconsulta con ${doctorName}.`;
 }
 
+/** Pedido de un suplemento (solo el producto, nunca datos del visitante). Sin producto: consulta general. */
+export function supplementOrderMessage(product?: { name: string; presentation: string }): string {
+  if (!product) return `Hola ${site.name}, quisiera información sobre los suplementos que ofrecen.`;
+  return `Hola ${site.name}, quiero pedir: ${product.name} (${product.presentation}). ¿Está disponible?`;
+}
+
 export function buildMailtoLink(email: string, subject: string, body: string): string {
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
