@@ -305,6 +305,15 @@
   line-height: 1.04;
 }
 
+/* H1 del hero de la Home: titular largo (posicionamiento), un punto más contenido que text-display. */
+@utility text-hero {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 3.6vw + 0.75rem, 3.4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+}
+
 @utility text-h2 {
   font-family: var(--font-display);
   font-weight: 800;
