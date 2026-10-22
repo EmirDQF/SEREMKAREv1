@@ -43,8 +43,11 @@ export default function ServicesPage() {
         lead="Diagnóstico con densitometría, tratamiento, procedimientos y consulta con un equipo multidisciplinario. Y, como servicio extra, la teleconsulta."
       />
 
-      <section aria-label="Pilares de servicio" className="pb-16">
+      <section aria-labelledby="pilares-title" className="pb-16">
         <div className="container-page">
+          <h2 id="pilares-title" className="sr-only">
+            Pilares de servicio
+          </h2>
           <Reveal>
             <Link
               href={DENSITOMETRY_PATH}

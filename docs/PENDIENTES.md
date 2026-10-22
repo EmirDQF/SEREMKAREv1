@@ -73,13 +73,20 @@ añadir su nombre exacto a `HIDDEN_SERVICES`.
 
 ## Rendimiento (técnico, no requiere al cliente)
 
-Detalle en `docs/MEJORA-2026.md` → «Por qué el LCP simulado sigue sobre 2,0 s».
+Detalle y números en `docs/MEJORA-2026.md` → «Fase A» y «Lo que no llegó a la meta».
 
 | Tarea | Dónde | Hoy |
 |---|---|---|
-| Bajar el LCP simulado (Lighthouse) de la Home bajo 2,0 s: menos islas cliente en la Home o menos carga RSC | `app/(site)/page.tsx`, `next.config.ts` | 2,96 s simulado · 1,89 s con limitación real |
-| HTML de la Home de 84 KB gzip (CSS en línea + RSC) | `next.config.ts` (`inlineCss`) | Medir si conviene volver a `<link>` |
-| JS propio de `/densitometria-osea` (64 KB): cargar el explorador DXA y el medidor al hacer scroll | `components/densitometry/DensitometryLazy.tsx` | Se cargan con la página |
+| Medir con PageSpeed Insights sobre la URL real (los servidores de Google no tienen el retraso de presentación de cuadros de este equipo Windows) | https://pagespeed.web.dev | Pendiente de publicar |
+| LCP simulado (Lantern) ≤ 2,5 s: depende del runtime fijo de React/Next (130 KB gzip) que el simulador suma al LCP | `next.config.ts`, `app/(site)/page.tsx` | Ver tabla de `docs/MEJORA-2026.md` |
+| Revisar las imágenes del blog (hasta 130 KB en WebP) si se publican más artículos | `public/images/stock/` | Bajo 150 KB |
+
+## Diseño (para cuando haya datos reales)
+
+| Dato | Archivo | Hoy |
+|---|---|---|
+| Fotos reales de las sedes (fachada, sala de densitometría) para las tarjetas de sedes y el bloque de densitometría | `data/site.ts` → `LOCATIONS`, `public/images/` | Sin fotos (no se usan imágenes de stock como si fueran del centro) |
+| Productos de suplementos con foto, precio y registro sanitario: la tarjeta (`SupplementCard`) ya tiene el diseño | `data/supplements.ts` | «Catálogo en preparación» |
 
 ## Citas en línea (Cal.com + Google Meet)
 

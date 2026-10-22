@@ -45,7 +45,7 @@ export function PillarCard({ pillar, index }: PillarCardProps) {
       <div className="bento-content flex h-full flex-col p-6 sm:p-7">
         <div className="flex items-center justify-between gap-4">
           <IconBadge name={pillar.icon} size={isLarge ? "lg" : "md"} />
-          <span aria-hidden className="data-mono text-2xl font-bold text-teal/70 dark:text-teal/60">
+          <span aria-hidden className="data-mono text-2xl font-bold text-primary">
             {String(index).padStart(2, "0")}
           </span>
         </div>
