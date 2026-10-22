@@ -12,6 +12,9 @@ export type BookingEnv = Readonly<Record<string, string | undefined>>;
 const DEFAULT_CALCOM_API_URL = "https://api.cal.com/v2";
 const DEFAULT_CALCOM_WEB_URL = "https://cal.com";
 
+/** «calcom», aunque en el panel se escriba con mayúsculas o espacios («Calcom », «CALCOM»). */
+const wantsCalcomProvider = (env: BookingEnv): boolean => env.BOOKING_PROVIDER?.trim().toLowerCase() === "calcom";
+
 /** ID del tipo de evento de Cal.com según data/doctors.ts (null = sin configurar). */
 export const eventTypeFromData: EventTypeLookup = (doctorId, modality) => {
   const doctor = allDoctors.find((d) => d.slug === doctorId);
@@ -30,7 +33,7 @@ export function resolveProvider(
   modality: BookingModality,
   lookup: EventTypeLookup = eventTypeFromData,
 ): BookingProvider {
-  const wantsCalcom = env.BOOKING_PROVIDER === "calcom";
+  const wantsCalcom = wantsCalcomProvider(env);
   const apiKey = env.CALCOM_API_KEY?.trim();
   if (!wantsCalcom || !apiKey || lookup(doctorId, modality) === null) return demoProvider;
   return createCalcomProvider(
@@ -45,7 +48,7 @@ export function resolveProvider(
 
 /** Proveedor para buscar una cita por uid: demo si el uid es de demo; si no, Cal.com si está configurado. */
 export function resolveProviderForUid(env: BookingEnv, uid: string): BookingProvider {
-  if (uid.startsWith("demo-") || env.BOOKING_PROVIDER !== "calcom" || !env.CALCOM_API_KEY?.trim()) return demoProvider;
+  if (uid.startsWith("demo-") || !wantsCalcomProvider(env) || !env.CALCOM_API_KEY?.trim()) return demoProvider;
   return createCalcomProvider(
     {
       apiKey: env.CALCOM_API_KEY.trim(),

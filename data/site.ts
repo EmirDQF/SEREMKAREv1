@@ -1,6 +1,7 @@
 import { buildMapsEmbedUrl, buildMapsSearchUrl, formatAddress } from "@/lib/maps";
 import { visibility } from "@/data/visibility";
 import type { ClinicLocation, OpeningHours, OpeningScheduleRow, SiteConfig, WhatsAppLine } from "@/types/medical";
+import { DEFAULT_SITE_URL, resolveSiteUrl } from "@/lib/site-url";
 
 const MINUTES_PER_HOUR = 60;
 
@@ -63,8 +64,12 @@ const SAMPLE_SOCIALS: SiteConfig["socials"] = [
     { network: "youtube", label: "YouTube", href: "https://youtube.com/@sermekare" }, // PROVISIONAL
 ];
 
-/** CONFIRMAR: dominio real. Se define con NEXT_PUBLIC_SITE_URL al publicar (sin barra final). */
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://sermekare.com").replace(/\/$/, "");
+/**
+ * Dominio público (NEXT_PUBLIC_SITE_URL). Tolera espacios, barra final y la falta de https://; un valor
+ * imposible ya detiene el build con un mensaje claro en next.config.ts, así que aquí basta el respaldo.
+ */
+const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
+const SITE_URL = siteUrl.ok ? siteUrl.url : DEFAULT_SITE_URL;
 
 const DENSITOMETRY_SERVICE = "Densitometría ósea (DXA) de columna y caderas";
 

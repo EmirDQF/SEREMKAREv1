@@ -181,4 +181,9 @@ describe("resolveProvider", () => {
     const env = { BOOKING_PROVIDER: "calcom", CALCOM_API_KEY: "cal_x" };
     expect(resolveProvider(env, REAL_DOCTOR_SLUG, "meet", () => 99).id).toBe("calcom");
   });
+
+  it("tolerates case and spaces in BOOKING_PROVIDER, and stays in demo with an unknown value", () => {
+    expect(resolveProvider({ BOOKING_PROVIDER: " Calcom ", CALCOM_API_KEY: "cal_x" }, REAL_DOCTOR_SLUG, "meet", () => 99).id).toBe("calcom");
+    expect(resolveProvider({ BOOKING_PROVIDER: "calcomm", CALCOM_API_KEY: "cal_x" }, REAL_DOCTOR_SLUG, "meet", () => 99).id).toBe("demo");
+  });
 });

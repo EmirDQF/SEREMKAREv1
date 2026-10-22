@@ -8,6 +8,21 @@ archivo ZIP** al panel de Hostinger (hPanel), escribir unas variables y reinicia
 
 ---
 
+## Lista de control (marca las 10 antes de subir)
+
+- [ ] 1. Tengo esta carpeta completa: los dos ZIP, esta guía y `VERSION.txt`.
+- [ ] 2. Descargué el respaldo de la versión actual desde hPanel (Paso 0) y anoté el código `7446756`.
+- [ ] 3. Anoté las variables de entorno que ya existen en la aplicación (sobre todo Cal.com y WhatsApp).
+- [ ] 4. Sé en qué carpeta vive la aplicación Node.js de sermekare.com en hPanel.
+- [ ] 5. Voy a usar la **Opción A** (`sermekare-fuente.zip`); la B solo si la A falla.
+- [ ] 6. La versión de Node.js elegida en el panel es **22**.
+- [ ] 7. Tengo a mano el valor `https://sermekare.com` para `NEXT_PUBLIC_SITE_URL`.
+- [ ] 8. No voy a subir ningún archivo `.env` con claves (las claves van solo en el panel).
+- [ ] 9. Tengo 30 minutos sin apuro y el celular cargado para revisar al final.
+- [ ] 10. Sé cómo volver atrás (sección «Si algo sale mal», al final).
+
+---
+
 ## Qué hay en esta carpeta
 
 | Archivo | Para qué sirve |
@@ -15,7 +30,8 @@ archivo ZIP** al panel de Hostinger (hPanel), escribir unas variables y reinicia
 | `sermekare-fuente.zip` | **Opción A (recomendada).** El sitio sin compilar. Hostinger lo instala y lo compila. |
 | `sermekare-listo.zip` | **Opción B (plan de respaldo).** El sitio ya compilado. Se inicia con `server.js`, sin compilar nada. |
 | `sermekare-listo/` | La misma Opción B, descomprimida (por si prefieres subir la carpeta). |
-| `LEEME-SUBIR-A-HOSTINGER.md` / `.txt` | Esta guía. |
+| `LEEME-SUBIR-A-HOSTINGER.md` / `.txt` | Esta guía (el mismo texto en dos formatos). |
+| `VERSION.txt` | Fecha, versión y «huella» (SHA-256) de cada ZIP: sirve para saber exactamente qué se subió. |
 
 **¿Cuál elijo?** Empieza por la **Opción A**: es la forma normal de publicar una aplicación Node.js en
 Hostinger y deja todo listo para futuras actualizaciones. Si la compilación falla o tarda demasiado
@@ -53,6 +69,8 @@ Hostinger y deja todo listo para futuras actualizaciones. Si la compilación fal
 4. **Comando de instalación y compilación:** `npm ci && npm run build`
    - Si el panel tiene dos campos separados: instalación `npm ci` y compilación `npm run build`.
    - Si `npm ci` diera error, usa `npm install` en su lugar.
+   - Funciona aunque el panel instale en «modo producción»: todo lo que necesita la compilación está
+     en las dependencias principales.
 5. **Comando de inicio:** `npm run start`
    - Si el panel pide un «archivo de inicio» en vez de un comando, usa la **Opción B**.
 6. **Variables de entorno:** agrega o confirma las de la sección **«Variables de entorno»** de esta
@@ -179,7 +197,7 @@ archivos → subir → extraer, reemplazando) y reinicia la aplicación. Si Host
 | Lo que ves | Causa probable | Solución |
 |---|---|---|
 | El registro dice `Unsupported engine`, `SyntaxError` o la compilación se corta al empezar | **Versión de Node.js** antigua | En los ajustes de la aplicación elige **Node 22** y vuelve a desplegar |
-| La página carga pero con direcciones raras (por ejemplo, el sitemap no dice `https://sermekare.com`) o las citas en línea no responden | **Variables de entorno** faltantes o mal escritas | Revisa `NEXT_PUBLIC_SITE_URL` = `https://sermekare.com` (sin barra final) y las de Cal.com si las usas. En la Opción A, después de corregirlas **vuelve a compilar** |
+| El registro dice «NEXT_PUBLIC_SITE_URL tiene un valor no válido» o «Falta NEXT_PUBLIC_SITE_URL»; o la página carga con direcciones raras (el sitemap no dice `https://sermekare.com`); o las citas en línea no responden | **Variables de entorno** faltantes o mal escritas | Revisa `NEXT_PUBLIC_SITE_URL` = `https://sermekare.com` (sin barra final) y las de Cal.com si las usas. En la Opción A, después de corregirlas **vuelve a compilar** |
 | «503», «Application not responding» o la app se detiene sola | **Puerto o archivo de inicio** incorrecto | Opción A: comando de inicio `npm run start`. Opción B: archivo de inicio `server.js` (está en la raíz de la carpeta de la app, no dentro de otra carpeta). No fijes `PORT` a mano: lo pone Hostinger |
 
 Si nada de esto lo resuelve, copia las últimas líneas del registro (log) de la aplicación y envíalas a

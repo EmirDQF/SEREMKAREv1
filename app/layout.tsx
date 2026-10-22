@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { SiteEffects } from "@/components/layout/SiteEffects";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { CENTER_TAGLINE, site } from "@/data/site";
@@ -13,16 +13,20 @@ import "./globals.css";
  */
 
 /**
- * Títulos y botones: un solo archivo variable (600–800 en uso). Sin preload y con display «optional»:
- * si no llega en ~100 ms se queda la fuente de respaldo ajustada, sin cambio a mitad de carga (el
- * cambio movía el h1 y daba CLS 0,19 en /teleconsulta); en las visitas siguientes sale de la caché.
- * Ninguna fuente se precarga.
+ * Títulos y botones: Plus Jakarta Sans (licencia SIL Open Font License 1.1), archivo variable 200–800,
+ * subconjunto latino (cubre á, é, ñ, ¿, ¡). Guardado en el proyecto (app/fonts) en lugar de
+ * next/font/google: el build ya no descarga nada de Google, así que no falla si el servidor de
+ * compilación no tiene salida a internet. Sin preload y con display «optional»: si no llega en ~100 ms
+ * se queda la fuente de respaldo ajustada, sin cambio a mitad de carga (CLS 0).
  */
-const jakarta = Plus_Jakarta_Sans({
+const jakarta = localFont({
+  src: "./fonts/plus-jakarta-sans-latin.woff2",
+  weight: "200 800",
+  style: "normal",
   variable: "--font-jakarta",
-  subsets: ["latin"],
   display: "optional",
   preload: false,
+  adjustFontFallback: "Arial",
 });
 
 const DEFAULT_TITLE = `${CENTER_TAGLINE} en Lima Norte y Callao | ${site.name}`;

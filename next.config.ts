@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
+import { DEFAULT_SITE_URL, SITE_URL_HELP, resolveSiteUrl } from "./lib/site-url";
 
 const isProduction = process.env.NODE_ENV === "production";
+
+/*
+ * NEXT_PUBLIC_SITE_URL: un valor imposible detiene el build con instrucciones; si falta, se avisa y se
+ * usa https://sermekare.com (el dominio correcto), para que un olvido en el panel no tumbe el sitio.
+ */
+const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
+if (!siteUrl.ok) throw new Error(siteUrl.error);
+// Los procesos de compilación heredan el entorno: la marca evita repetir el aviso en cada uno.
+if (siteUrl.usedDefault && isProduction && !process.env.SITE_URL_WARNING_SHOWN) {
+  process.env.SITE_URL_WARNING_SHOWN = "1";
+  console.warn(`\n⚠ Falta NEXT_PUBLIC_SITE_URL: se usa ${DEFAULT_SITE_URL}.\n  ${SITE_URL_HELP}\n`);
+}
 
 /**
  * CSP sin nonces para conservar el render estático (Lighthouse/LCP). Scripts solo del propio
