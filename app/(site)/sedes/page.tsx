@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/pages/PageHero";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
+import { HoursBlock } from "@/components/shared/HoursBlock";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { LocationCard } from "@/components/shared/LocationCard";
 import { LocationWhatsAppPicker } from "@/components/shared/LocationWhatsAppPicker";
@@ -44,6 +45,11 @@ export default function LocationsPage() {
           </LocationWhatsAppPicker>
         }
       />
+      <section aria-labelledby="horario-title" className="pb-10">
+        <div className="container-page">
+          <HoursBlock className="max-w-xl" />
+        </div>
+      </section>
       <section aria-label="Lista de sedes" className="pb-24">
         <div className="container-page">
           <RevealGroup as="ul" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

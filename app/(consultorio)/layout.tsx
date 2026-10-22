@@ -6,7 +6,7 @@ import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { MedicalDisclaimer } from "@/components/shared/MedicalDisclaimer";
 import { clinicWhatsApp } from "@/lib/whatsapp";
 
-const WHATSAPP_MESSAGE = "Hola SERMEKARE, tengo una consulta sobre la teleconsulta.";
+const WHATSAPP_MESSAGE = "Hola SERMEKARE, tengo una duda sobre mi cita.";
 
 /**
  * Consultorio a pantalla completa, sin distracciones: logo, «Salir» y un acceso discreto a

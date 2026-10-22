@@ -73,6 +73,13 @@ export function BookingCalendar({ doctorId, selected, onSelect, onBack, onContin
             <button type="button" onClick={() => setReloadKey((k) => k + 1)} className={buttonVariants({ variant: "outline", className: "mt-4" })}>
               <RefreshCw aria-hidden /> Reintentar
             </button>
+            <p className="mt-3 text-sm text-muted">
+              ¿Sigue sin cargar?{" "}
+              <a href={clinicWhatsApp(EMPTY_MESSAGE)} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline underline-offset-4">
+                Escríbenos por WhatsApp<span className="sr-only"> (se abre en otra pestaña)</span>
+              </a>{" "}
+              y te damos un horario.
+            </p>
           </div>
         ) : null}
         {slots.status === "ready" && days.length === 0 ? <EmptyState /> : null}

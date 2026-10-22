@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Mail, Navigation } from "lucide-react";
 import { PageHero } from "@/components/pages/PageHero";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
+import { HoursBlock } from "@/components/shared/HoursBlock";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { LocationCard } from "@/components/shared/LocationCard";
 import { LocationWhatsAppPicker } from "@/components/shared/LocationWhatsAppPicker";
@@ -9,7 +10,7 @@ import { MapFacade } from "@/components/shared/MapFacade";
 import { RevealGroup, RevealItem } from "@/components/shared/Reveal";
 import { TiltCard } from "@/components/shared/TiltCard";
 import { buttonVariants } from "@/components/ui/button";
-import { BOOKING_HREF } from "@/data/navigation";
+import { APPOINTMENT_HREF } from "@/data/navigation";
 import { site } from "@/data/site";
 import { allWhatsAppLines, locationNamesLabel, primaryLocation } from "@/lib/locations";
 import { ORGANIZATION_ID, breadcrumbSchema } from "@/lib/schema";
@@ -91,8 +92,8 @@ export default function ContactPage() {
             <LocationWhatsAppPicker triggerClassName={buttonVariants({ variant: "whatsapp", size: "lg" })}>
               <WhatsAppIcon /> Escribir por WhatsApp
             </LocationWhatsAppPicker>
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
-              Agendar con el formulario
+            <a href={APPOINTMENT_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
+              Agendar cita en línea
             </a>
           </>
         }
@@ -101,6 +102,12 @@ export default function ContactPage() {
       <section aria-label="Canales de contacto" className="pb-12">
         <div className="container-page">
           <ChannelCards />
+        </div>
+      </section>
+
+      <section aria-labelledby="horario-title" className="pb-12">
+        <div className="container-page">
+          <HoursBlock className="max-w-xl" />
         </div>
       </section>
 

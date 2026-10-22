@@ -7,6 +7,8 @@ import { DoctorsSection } from "@/components/sections/DoctorsSection";
 import { BoneDensitySection } from "@/components/sections/BoneDensitySection";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { SupplementsStrip } from "@/components/sections/SupplementsStrip";
+import { PatientRoute } from "@/components/sections/PatientRoute";
+import { HoursSection } from "@/components/sections/HoursSection";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { FAQ } from "@/components/sections/FAQ";
 import { LocationCTA } from "@/components/sections/LocationCTA";
@@ -42,13 +44,17 @@ export default function Home() {
       <JsonLd data={teleconsultServiceSchema("/teleconsulta")} />
       <JsonLd data={physicianSchema({ name: doctor.name, path: `/staff/${doctor.slug}`, specialty: doctor.specialty, image: doctor.photo, knowsAbout: doctor.focus })} />
       {/* Orden móvil (decisión del cliente): hero → pilares → densitometría → servicio extra →
-          suplementos → doctor y equipo → sedes → preguntas → contacto.
+          suplementos → ruta del paciente + horario → doctor y equipo → sedes → preguntas → contacto.
           .cv-auto (content-visibility: auto): el navegador no pinta las secciones largas hasta acercarse. */}
       <Hero />
       <div className="cv-auto"><ServicesGrid /></div>
       <div className="cv-auto"><BoneDensitySection /></div>
       <div className="cv-auto"><TelemedicineBand /></div>
       <div className="cv-auto"><SupplementsStrip /></div>
+      <div className="cv-auto">
+        <PatientRoute />
+        <HoursSection />
+      </div>
       <div className="cv-auto"><DoctorsSection /></div>
       <TrustStrip />
       {visibility.insurers ? <InsurersIsland /> : null}
