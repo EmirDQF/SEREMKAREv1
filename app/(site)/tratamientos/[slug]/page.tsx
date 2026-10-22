@@ -12,7 +12,7 @@ import { RevealGroup, RevealItem } from "@/components/shared/Reveal";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { buttonVariants } from "@/components/ui/button";
 import { DENSITOMETRY_PATH } from "@/data/densitometry";
-import { BOOKING_HREF } from "@/data/navigation";
+import { APPOINTMENT_HREF } from "@/data/navigation";
 import { getTreatmentDetail } from "@/data/treatment-details";
 import { treatments } from "@/data/treatments";
 import { site } from "@/data/site";
@@ -86,7 +86,7 @@ export default async function TreatmentPage({ params }: PageProps<"/tratamientos
             >
               <WhatsAppIcon /> Agendar por WhatsApp
             </a>
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
+            <a href={APPOINTMENT_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
               Agendar cita
             </a>
           </>

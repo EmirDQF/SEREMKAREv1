@@ -29,8 +29,8 @@ export function PatientRoute({ id = "ruta-title", withLink = true, className }: 
   return (
     <section aria-labelledby={id} className={cn("section-y", className)}>
       <div className="container-page">
-        <p className="text-sm font-bold uppercase tracking-[0.08em] text-primary">Ruta del paciente</p>
-        <h2 id={id} className="text-h2 mt-2 max-w-2xl text-heading">
+        <p className="eyebrow">Ruta del paciente</p>
+        <h2 id={id} className="text-h2 mt-4 max-w-2xl text-heading">
           No te dejamos solo: te acompañamos antes, durante y después
         </h2>
         <ol className="relative mt-10 grid gap-4 md:grid-cols-4">

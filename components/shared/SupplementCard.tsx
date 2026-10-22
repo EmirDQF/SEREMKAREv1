@@ -11,7 +11,7 @@ export function SupplementCard({ product }: { product: Supplement }) {
   const soldOut = product.status === "agotado";
   return (
     <article className="flex h-full flex-col rounded-[1.75rem] border border-line bg-card-solid p-6 shadow-soft">
-      <p className="text-xs font-bold uppercase tracking-[0.08em] text-primary">{category?.name}</p>
+      <p className="eyebrow">{category?.name}</p>
       <h3 className="text-h3 mt-2 text-heading">{product.name}</h3>
       <dl className="mt-4 grid gap-2 text-[0.95rem]">
         <div className="flex justify-between gap-3">

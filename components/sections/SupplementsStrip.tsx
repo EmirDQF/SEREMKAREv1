@@ -16,8 +16,8 @@ export function SupplementsStrip() {
     <section aria-labelledby="suplementos-home-title" className="section-y bg-bg-alt">
       <div className="container-page grid items-center gap-8 lg:grid-cols-[1fr_1.3fr] lg:gap-14">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-primary">Suplementos</p>
-          <h2 id="suplementos-home-title" className="text-h2 mt-2 text-heading">
+          <p className="eyebrow">Suplementos</p>
+          <h2 id="suplementos-home-title" className="text-h2 mt-4 text-heading">
             Pide tus suplementos en un mensaje
           </h2>
           <p className="mt-4 text-lg text-muted">

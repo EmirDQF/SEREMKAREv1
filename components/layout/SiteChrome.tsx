@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { ViewTransition, type ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -10,7 +10,8 @@ export function SiteChrome({ children }: { children: ReactNode }) {
     <>
       <SiteHeader />
       <main id="contenido" tabIndex={-1} className="focus:outline-none">
-        {children}
+        {/* Fundido corto entre páginas (View Transitions API); sin soporte, navegación normal. */}
+        <ViewTransition>{children}</ViewTransition>
       </main>
       <Footer />
       <WhatsAppFloat />

@@ -30,8 +30,8 @@ export function SectionHeading({
     <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center", className)}>
       <p
         className={cn(
-          "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold tracking-wide",
-          inverted ? "bg-white/10 text-teal-200" : "bg-teal-tint text-primary",
+          "eyebrow",
+          inverted && "bg-white/10! text-teal-200!",
         )}
       >
         <span aria-hidden className={cn("size-1.5 rounded-full", inverted ? "bg-teal-300" : "bg-teal")} />

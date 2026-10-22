@@ -14,7 +14,7 @@ import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { buttonVariants } from "@/components/ui/button";
 import { DENSITOMETRY_PATH } from "@/data/densitometry";
-import { BOOKING_HREF } from "@/data/navigation";
+import { APPOINTMENT_HREF } from "@/data/navigation";
 import { site } from "@/data/site";
 import { specialties } from "@/data/specialties";
 import { getSpecialtyDetail } from "@/data/specialty-details";
@@ -75,8 +75,8 @@ export default async function SpecialtyPage({ params }: PageProps<"/especialidad
             <a href={clinicWhatsApp(message)} target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "primary", size: "lg" })}>
               <WhatsAppIcon /> Agendar evaluación
             </a>
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
-              Usar el formulario
+            <a href={APPOINTMENT_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
+              Agendar cita en línea
             </a>
           </>
         }

@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { buttonVariants, type ButtonVariant } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { DoctorHours } from "@/components/shared/DoctorHours";
-import { BOOKING_HREF } from "@/data/navigation";
+import { APPOINTMENT_HREF } from "@/data/navigation";
 import { clinicWhatsApp, messageForDoctor } from "@/lib/whatsapp";
 import { credentialsLabel } from "@/lib/doctor";
 import { cn } from "@/lib/utils";
@@ -40,7 +40,7 @@ export function DoctorAvailabilityDialog({ doctor, triggerClassName, triggerVari
         <DoctorHours doctor={doctor} className="mt-6" />
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <Link href={BOOKING_HREF} className={cn(buttonVariants({ variant: "primary" }), "flex-1")}>
+          <Link href={APPOINTMENT_HREF} className={cn(buttonVariants({ variant: "primary" }), "flex-1")}>
             <CalendarClock aria-hidden strokeWidth={1.75} />
             Reservar con {shortName(doctor.name)}
           </Link>

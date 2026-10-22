@@ -1,5 +1,5 @@
-import { BOOKING_HREF } from "@/data/navigation";
-import { Phone } from "lucide-react";
+import { APPOINTMENT_HREF } from "@/data/navigation";
+import { CalendarCheck, Phone } from "lucide-react";
 import { JointMotif } from "@/components/shared/JointMotif";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { LocationCard } from "@/components/shared/LocationCard";
@@ -41,8 +41,8 @@ export function LocationCTA() {
             Da el primer paso hoy. Te orientamos y agendamos tu consulta con el especialista adecuado.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "light", size: "lg" })}>
-              Agendar consulta
+            <a href={APPOINTMENT_HREF} className={buttonVariants({ variant: "light", size: "lg" })}>
+              <CalendarCheck aria-hidden strokeWidth={1.75} /> Agendar cita
             </a>
             <a
               href={clinicWhatsApp()}

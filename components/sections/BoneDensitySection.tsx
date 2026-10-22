@@ -54,12 +54,12 @@ export function BoneDensitySection() {
           </div>
           <dl className="grid gap-3 rounded-[1.75rem] border border-line bg-card-solid p-5 shadow-soft sm:p-6">
             {facts.map(({ icon: Icon, title, text }) => (
-              <div key={title} className="flex gap-3 border-b border-line pb-3 last:border-b-0 last:pb-0">
-                <Icon aria-hidden strokeWidth={1.75} className="mt-0.5 size-6 shrink-0 text-primary" />
-                <div>
-                  <dt className="font-display font-bold text-heading">{title}</dt>
-                  <dd className="text-[0.975rem] text-muted">{text}</dd>
-                </div>
+              <div key={title} className="border-b border-line pb-3 last:border-b-0 last:pb-0">
+                <dt className="flex items-center gap-3 font-display font-bold text-heading">
+                  <Icon aria-hidden strokeWidth={1.75} className="size-6 shrink-0 text-primary" />
+                  {title}
+                </dt>
+                <dd className="pl-9 text-[0.975rem] text-muted">{text}</dd>
               </div>
             ))}
           </dl>

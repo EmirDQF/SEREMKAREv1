@@ -34,7 +34,7 @@ export function HeroVisual() {
         <figcaption className="p-4 sm:p-5">
           <span className="block font-display text-lg font-bold leading-tight text-heading">{doctor.name}</span>
           <span className="block text-sm text-muted">{doctor.title}</span>
-          <span className="mt-4 block text-xs font-bold uppercase tracking-[0.08em] text-subtle">Modalidades de atención</span>
+          <span className="mt-4 block text-sm font-bold uppercase tracking-[0.08em] text-subtle">Modalidades de atención</span>
           <ul className="mt-2 grid grid-cols-2 gap-2">
             {CARE_MODES.map(({ label, icon: Icon }) => (
               <li key={label} className="flex min-h-12 items-center gap-2 rounded-2xl bg-bg-alt px-3 py-2 text-sm font-semibold text-heading">

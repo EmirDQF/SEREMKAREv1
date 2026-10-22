@@ -68,8 +68,8 @@ export function AppointmentTypePicker() {
   return (
     <section aria-labelledby="tipo-cita-title" className="grid gap-6">
       <div>
-        <p className="text-sm font-bold uppercase tracking-[0.08em] text-primary">Agendar cita</p>
-        <h1 id="tipo-cita-title" tabIndex={-1} className="text-h2 mt-2 text-heading focus:outline-none">
+        <p className="eyebrow">Agendar cita</p>
+        <h1 id="tipo-cita-title" tabIndex={-1} className="text-h2 mt-4 text-heading focus:outline-none">
           ¿Qué tipo de cita necesitas?
         </h1>
         <p className="mt-2 text-lg text-muted">Elige una opción. Te toma menos de un minuto.</p>

@@ -69,7 +69,37 @@ La varianza entre corridas en esta máquina es alta (±10 puntos); por eso se co
 
 ## Decisiones de diseño
 
-_(se completa por fase)_
+**Dirección** (skill `ecc:frontend-design-direction`): clínica, sobria y de alto contraste. El
+paciente llega con dolor o rigidez y quiere entender en 5 segundos quiénes somos, qué hacemos y
+cómo agendar. Tono «calma clínica»: superficies blancas, navy para el peso, teal para la acción,
+mucho aire. **Detalle memorable:** el bloque «Servicio extra» con borde punteado en azul de
+videollamada (se distingue de los pilares sin competir con ellos) y los pilares numerados 01–04.
+
+| Decisión | Por qué |
+|---|---|
+| Un solo CTA primario («Agendar cita», teal sólido con icono de calendario) en cabecera, hero, barra móvil y bandas | Un punto de entrada claro; la teleconsulta y la densitometría tienen su propio CTA solo en sus bloques |
+| Selector de tipo de cita sin JS (`/consulta-virtual?servicio=elegir`) | Presencial, densitometría, teleconsulta o control en un toque, sin cargar el consultorio |
+| Bento de 4 pilares sin 3D (`PillarCard`) | Antes cada tarjeta podía montar three.js; ahora icono lucide y lista con términos explicados entre paréntesis |
+| Teleconsulta como «Servicio extra» (borde punteado azul, 3 pasos, cuándo no sirve) | Decisión del cliente: deja de ser el eje, pero conserva todo su contenido real |
+| Horario visible en 4 lugares (Home, `/sedes`, `/contacto`, pie) | Mensaje 4 de los 5 segundos: dónde y cuándo |
+| Eyebrow único (utilidad `eyebrow`, la píldora de `SectionHeading`) | Una sola jerarquía de títulos en todo el sitio |
+| Tokens en `:root`: `--fs-body` (≥ 17 px), `--fs-lead`, `--space-section`, `--radius-control/panel`, `--ease-out-soft` | Escala fluida con `clamp`; cuerpo nunca < 16 px (baja visión) |
+| Vidrio de la cabecera 24 px → 12 px de blur, sin blur en móvil | Menos repintado al hacer scroll |
+| Sin ámbar en el aviso de suplementos | El sistema reserva el ámbar para las zonas de dolor |
+| Barra móvil: «Agendar cita» (2/3 del ancho) + WhatsApp (1/3), 56 px de alto, zona segura | Una acción principal evidente al alcance del pulgar |
+| TopBar y textos pequeños subidos a ≥ 14–15 px | Baja visión |
+
+**Movimiento** (skills `ecc:motion-patterns`, `ecc:make-interfaces-feel-better`): la skill propone
+`motion/react`; aquí se usan los equivalentes **en CSS** para no sumar JS a la Home:
+`<ViewTransition>` de React (ya incluido en el runtime) para un fundido de 0,2 s entre páginas;
+`@starting-style` en el menú «Más»; reveals ligados al scroll (`animation-timeline: view()`) solo en
+tablet/escritorio; `active:scale-[0.97]` en botones; solo `transform` y `opacity`, y todo apagado con
+`prefers-reduced-motion` o con el interruptor del pie.
+
+**Skills consultadas y alcance real:** `ecc:design-system` (auditoría de tokens existentes: ya
+había paleta, sombras multicapa y modo oscuro completos; se consolidó, no se rehízo),
+`ecc:frontend-a11y` (foco visible, áreas ≥ 48 px, etiquetas), `ecc:taste` (está orientada a
+videoclips; solo se aplicó su principio «coherencia antes que novedad»).
 
 ## Archivos modificados
 

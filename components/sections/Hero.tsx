@@ -23,7 +23,7 @@ export function Hero() {
       <div aria-hidden className="mesh-bg -z-10" />
       <div className="container-page grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-10">
         <div className="min-w-0">
-          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-card-solid/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-heading shadow-soft sm:text-sm">
+          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-card-solid/70 px-4 py-2 text-sm font-bold uppercase tracking-[0.06em] text-heading shadow-soft">
             <Stethoscope aria-hidden strokeWidth={1.75} className="size-4 shrink-0 text-primary" />
             {CENTER_TAGLINE}
           </p>

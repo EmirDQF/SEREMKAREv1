@@ -39,7 +39,7 @@ export function TelemedicineBand({ id = "tele-title" }: TelemedicineBandProps) {
     <section aria-labelledby={id} className="section-y">
       <div className="container-page">
         <div className="relative rounded-[2rem] border-2 border-dashed border-video/40 bg-[linear-gradient(180deg,var(--video-tint),transparent_70%)] p-6 sm:p-10 lg:p-12">
-          <p className="inline-flex items-center gap-2 rounded-full bg-video px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-on-video">
+          <p className="inline-flex items-center gap-2 rounded-full bg-video px-3.5 py-1.5 text-sm font-bold uppercase tracking-[0.08em] text-on-video">
             <Video aria-hidden strokeWidth={2} className="size-4" /> Servicio extra
           </p>
 

@@ -4,7 +4,7 @@ import { SiteChrome } from "@/components/layout/SiteChrome";
 import { JointMotif } from "@/components/shared/JointMotif";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { buttonVariants } from "@/components/ui/button";
-import { TRIAGE_HREF } from "@/data/navigation";
+import { APPOINTMENT_HREF, DENSITOMETRY_BOOKING_HREF } from "@/data/navigation";
 import { clinicWhatsApp } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default function NotFound() {
       <div aria-hidden className="mesh-bg -z-10" />
       <div className="container-page max-w-2xl text-center">
         <JointMotif mode="loop" className="mx-auto h-36 w-auto" />
-        <p className="mt-6 font-display text-sm font-bold uppercase tracking-[0.2em] text-primary">Error 404</p>
+        <p className="eyebrow mt-6">Error 404</p>
         <h1 className="text-h2 mt-3">Esta página se nos lesionó</h1>
         <p className="mt-4 text-lg text-muted">
           No encontramos lo que buscabas. Puede que el enlace haya cambiado o que la página esté en preparación.
@@ -28,10 +28,21 @@ export default function NotFound() {
           <Link href="/" className={buttonVariants({ variant: "primary", size: "lg" })}>
             Volver al inicio
           </Link>
-          <Link href={TRIAGE_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
-            ¿Dónde te duele?
+          <Link href={APPOINTMENT_HREF} className={buttonVariants({ variant: "outline", size: "lg" })}>
+            Agendar cita
           </Link>
         </div>
+        <ul className="mt-6 flex flex-wrap justify-center gap-x-6" aria-label="Accesos rápidos">
+          <li>
+            <Link href="/servicios" className="inline-flex min-h-12 items-center font-semibold text-primary hover:underline">Servicios</Link>
+          </li>
+          <li>
+            <Link href={DENSITOMETRY_BOOKING_HREF} className="inline-flex min-h-12 items-center font-semibold text-primary hover:underline">Reservar densitometría</Link>
+          </li>
+          <li>
+            <Link href="/sedes" className="inline-flex min-h-12 items-center font-semibold text-primary hover:underline">Sedes y horario</Link>
+          </li>
+        </ul>
         <a
           href={clinicWhatsApp()}
           target="_blank"

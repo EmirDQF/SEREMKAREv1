@@ -1,7 +1,7 @@
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { MedicalDisclaimer } from "@/components/shared/MedicalDisclaimer";
 import { buttonVariants } from "@/components/ui/button";
-import { BOOKING_HREF } from "@/data/navigation";
+import { APPOINTMENT_HREF } from "@/data/navigation";
 import { clinicWhatsApp } from "@/lib/whatsapp";
 
 interface CtaBandProps {
@@ -24,8 +24,8 @@ export function CtaBand({ title, text, message }: CtaBandProps) {
             <a href={clinicWhatsApp(message)} target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "whatsapp", size: "lg" })}>
               <WhatsAppIcon /> Agendar por WhatsApp
             </a>
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "light", size: "lg" })}>
-              Usar el formulario de citas
+            <a href={APPOINTMENT_HREF} className={buttonVariants({ variant: "light", size: "lg" })}>
+              Agendar cita en línea
             </a>
           </div>
         </div>
