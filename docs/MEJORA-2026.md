@@ -101,6 +101,64 @@ había paleta, sombras multicapa y modo oscuro completos; se consolidó, no se r
 `ecc:frontend-a11y` (foco visible, áreas ≥ 48 px, etiquetas), `ecc:taste` (está orientada a
 videoclips; solo se aplicó su principio «coherencia antes que novedad»).
 
+## Medición final (después de las fases 1–7)
+
+Mismo método que la línea base: `npm run build` + `next start -p 3100`, Lighthouse 13.5 móvil
+(simulado), mediana de 3, misma máquina (22-10-2026).
+
+### Lighthouse móvil — antes / después
+
+| Página | Rend. antes → después (3 corridas) | A11y | BP | SEO | LCP antes → después | CLS | TBT antes → después | Peso antes → después |
+|---|---|---|---|---|---|---|---|---|
+| `/` | 76 → **76** (83/76/75) | 100 | 100 | 100 | 3,86 → **2,96 s** | 0,000 | 339 → 728 ms | 445 → **354 KB** |
+| `/densitometria-osea` | 77 → **73** (73/70/74) | 100 | 100 | 100 | 3,95 → **3,23 s** | 0,000 | 414 → 879 ms | 445 → **403 KB** |
+| `/servicios` | 77 → **71** (70/71/84) | 98 | 100 | 100 | 3,60 → 4,14 s | 0,000 | 293 → 532 ms | 433 → **379 KB** |
+| `/consulta-virtual` | 79 → **87** (85/87/88) | 100 | 100 | 66* | 3,92 → **3,48 s** | 0,000 | 329 → 219 ms | 361 → **329 KB** |
+
+JS inicial (gzip, `scripts/measure-js.mjs`):
+
+| Página | Antes | Después |
+|---|---|---|
+| `/` | 157 KB (React/Next 136 + propio 21) | **142 KB** (130 + 12) — meta ≤ 150 KB ✔ |
+| `/servicios` | — | 142 KB (130 + 12) |
+| `/consulta-virtual` | 193 KB | **178 KB** (130 + 47) |
+| `/densitometria-osea` | — | 194 KB (130 + 64) |
+
+La puntuación de rendimiento oscila ±10 puntos entre corridas por el TBT (CPU de esta máquina),
+no por el contenido: peso, JS y LCP bajan en las cuatro páginas salvo el LCP de `/servicios`.
+
+### Por qué el LCP simulado sigue sobre 2,0 s
+
+- **Elemento LCP** — Home: el párrafo del hero (`section > .container-page > div.min-w-0 > p.mt-5`,
+  «Somos un centro especializado…»); `/servicios`: el párrafo introductorio (`div.mt-6`);
+  `/densitometria-osea`: `p.mt-6` del hero; `/consulta-virtual`: `h1#pregunta-titulo`. Todos son
+  **texto de servidor**: sin imagen, sin fuente web (pila del sistema) y sin animación de entrada.
+- **Fases (Home)**: TTFB 62 ms · *element render delay* 728 ms. No hay tiempo de carga de recurso.
+- **En el trazo real el LCP = FCP** en las 12 corridas (Home 0,71–0,84 s observado): el texto se
+  pinta en el primer cuadro. El simulador (Lantern) añade al camino del LCP la evaluación del chunk
+  del runtime de React/Next (`3794-*.js`, 65 KB gzip, ~950 ms de CPU con el freno ×4), y de ahí
+  salen los ~3 s.
+- **Con limitación real** (`--throttling-method=devtools`, Home, 3 corridas): LCP **2,09 / 1,89 /
+  1,85 s → mediana 1,89 s** ✔. En las corridas con TBT alto (958 y 1273 ms) el párrafo se pinta
+  justo después de la tarea larga de hidratación: esa tarea es la causa del retraso.
+- **Siguiente palanca** (no aplicada: implica rehacer, no mejorar): el HTML de la Home pesa 84 KB
+  gzip (CSS en línea + carga RSC) y el runtime de React/Next (130 KB) es fijo en el App Router.
+  Bajar el LCP simulado exige partir la hidratación (menos islas cliente en la Home) o reducir la
+  carga RSC; queda en `docs/PENDIENTES.md`.
+- `/densitometria-osea` lleva 64 KB de JS propio (explorador DXA, acordeón de Radix, medidor
+  T-score) que ya existían; fuera del alcance de esta rama.
+
 ## Archivos modificados
 
-_(se completa al final)_
+68 archivos (18 nuevos, 50 modificados) desde `publicacion-movil` (`7446756`). Por zona:
+`app/(site)/` (páginas), `components/sections` y `components/shared` (hero, pilares, horario, ruta
+del paciente, suplementos), `components/layout` (cabecera, barra móvil, pie), `data/` (navegación,
+servicios, suplementos), `app/globals.css` y `app/layout.tsx` (tokens y fuentes), `docs/`.
+
+Nuevos: `app/(site)/seguimiento/page.tsx`, `app/(site)/suplementos/page.tsx`,
+`components/consulta/AppointmentTypePicker.tsx`, `components/sections/{HoursSection,PatientRoute,SupplementsStrip}.tsx`,
+`components/shared/{HoursBlock,PillarCard,SupplementCard}.tsx`, `data/supplements.ts`,
+`data/supplements.example.ts`, `types/supplements.ts`, `tests/{navigation,services,supplements}.test.ts`,
+`docs/{MEJORA-2026,PLANTILLAS-SEGUIMIENTO,DESPLIEGUE-HOSTINGER}.md`.
+
+Verificación final: build ✔ · lint ✔ · typecheck ✔ · 316/316 tests ✔ · 0 enlaces rotos (91 URLs).

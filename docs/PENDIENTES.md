@@ -71,6 +71,16 @@ añadir su nombre exacto a `HIDDEN_SERVICES`.
 | Intervalo de controles por tipo de paciente | `app/(site)/seguimiento/page.tsx`, `docs/PLANTILLAS-SEGUIMIENTO.md` | «Tu médico define cada cuánto» |
 | Plantillas de WhatsApp para el equipo | `docs/PLANTILLAS-SEGUIMIENTO.md` | Uso interno (envío manual) |
 
+## Rendimiento (técnico, no requiere al cliente)
+
+Detalle en `docs/MEJORA-2026.md` → «Por qué el LCP simulado sigue sobre 2,0 s».
+
+| Tarea | Dónde | Hoy |
+|---|---|---|
+| Bajar el LCP simulado (Lighthouse) de la Home bajo 2,0 s: menos islas cliente en la Home o menos carga RSC | `app/(site)/page.tsx`, `next.config.ts` | 2,96 s simulado · 1,89 s con limitación real |
+| HTML de la Home de 84 KB gzip (CSS en línea + RSC) | `next.config.ts` (`inlineCss`) | Medir si conviene volver a `<link>` |
+| JS propio de `/densitometria-osea` (64 KB): cargar el explorador DXA y el medidor al hacer scroll | `components/densitometry/DensitometryLazy.tsx` | Se cargan con la página |
+
 ## Citas en línea (Cal.com + Google Meet)
 
 | Dato | Dónde |
