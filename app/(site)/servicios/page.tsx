@@ -6,11 +6,11 @@ import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { PageHero } from "@/components/pages/PageHero";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Reveal } from "@/components/shared/Reveal";
-import { ServiceCard } from "@/components/shared/ServiceCard";
-import { SpotlightCard } from "@/components/shared/SpotlightCard";
+import { PillarCard } from "@/components/shared/PillarCard";
 import { IconBadge } from "@/components/shared/Icon";
+import { TelemedicineBand } from "@/components/sections/TelemedicineBand";
 import { DENSITOMETRY_PATH } from "@/data/densitometry";
-import { servicePillars } from "@/data/services";
+import { corePillars } from "@/data/services";
 import { site } from "@/data/site";
 import { treatments } from "@/data/treatments";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 
 const TITLE = `Servicios de reumatología en Lima Norte y Callao | ${site.name}`;
 const DESCRIPTION =
-  "Teleconsulta reumatológica por videollamada para todo el Perú y densitometría ósea con cita previa en 3 sedes de Lima Norte y Callao.";
+  "Densitometría ósea y diagnóstico, terapia biológica y seguimiento, consulta multidisciplinaria y procedimientos guiados por ecografía. Teleconsulta como servicio extra.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Servicios", href: "/servicios" },
@@ -37,10 +37,10 @@ export default function ServicesPage() {
       <PageHero
         id="servicios-title"
         crumbs={CRUMBS}
-        eyebrow="Servicios"
-        title="Teleconsulta y densitometría ósea"
-        accent="densitometría ósea"
-        lead="Reumatología por videollamada y densitometría con cita previa en 3 sedes."
+        eyebrow="Modelo de atención integral"
+        title="Todos nuestros servicios"
+        accent="servicios"
+        lead="Diagnóstico con densitometría, tratamiento, procedimientos y consulta con un equipo multidisciplinario. Y, como servicio extra, la teleconsulta."
       />
 
       <section aria-label="Pilares de servicio" className="pb-16">
@@ -52,10 +52,7 @@ export default function ServicesPage() {
             >
               <IconBadge name="scan" size="lg" className="bg-white/10 text-teal-200" />
               <span className="flex-1">
-                <span className="flex items-center gap-2 font-display text-xl font-bold">
-                  Densitometría ósea
-                  <span className="rounded-full bg-teal px-2 py-0.5 text-xs font-bold text-navy">Nuevo</span>
-                </span>
+                <span className="block font-display text-xl font-bold">Densitometría ósea</span>
                 <span className="mt-1 block text-slate-300">
                   Mide la fuerza de tus huesos con un estudio breve. Resultados el mismo día o en 24 horas.
                 </span>
@@ -63,17 +60,17 @@ export default function ServicesPage() {
               <ArrowRight aria-hidden className="size-6 shrink-0 text-teal-200 transition-transform group-hover:translate-x-1" />
             </Link>
           </Reveal>
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {servicePillars.map((pillar, index) => (
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {corePillars.map((pillar, index) => (
               <Reveal
                 as="li"
                 key={pillar.slug}
-                delay={index * 0.06}
-                className={cn(pillar.size === "lg" && "sm:col-span-2 lg:row-span-2")}
+                className={cn(
+                  pillar.size === "lg" && "md:col-span-2 lg:row-span-2",
+                  index === corePillars.length - 1 && "md:col-span-2 lg:col-span-3",
+                )}
               >
-                <SpotlightCard className="h-full">
-                  <ServiceCard pillar={pillar} />
-                </SpotlightCard>
+                <PillarCard pillar={pillar} index={index + 1} />
               </Reveal>
             ))}
           </ul>
@@ -87,6 +84,8 @@ export default function ServicesPage() {
           ) : null}
         </div>
       </section>
+
+      <TelemedicineBand id="extra-title" />
 
       <ContactoDoctor />
 

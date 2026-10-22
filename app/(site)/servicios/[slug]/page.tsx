@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CalendarCheck, Check, ClipboardList, UserRound, Wallet } from "lucide-react";
 import { CtaBand } from "@/components/pages/CtaBand";
 import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { PageHero } from "@/components/pages/PageHero";
@@ -15,7 +15,8 @@ import { SpotlightCard } from "@/components/shared/SpotlightCard";
 import { TreatmentCard } from "@/components/shared/TreatmentCard";
 import { buttonVariants } from "@/components/ui/button";
 import { DENSITOMETRY_PATH } from "@/data/densitometry";
-import { BOOKING_HREF } from "@/data/navigation";
+import { APPOINTMENT_HREF, BOOKING_HREF, DENSITOMETRY_BOOKING_HREF } from "@/data/navigation";
+import { formatPrice, getPricing, PRICE_PENDING } from "@/data/pricing";
 import { getServiceDetail } from "@/data/service-details";
 import { servicePillars } from "@/data/services";
 import { site } from "@/data/site";
@@ -26,14 +27,33 @@ import { buildMetadata } from "@/lib/seo";
 import { doctorContact, messageAbout } from "@/lib/whatsapp";
 import type { Treatment } from "@/types/medical";
 
-/** Subservicios con página propia. */
-const SERVICE_LINKS: Readonly<Record<string, string>> = {
-  "Densitometría ósea": DENSITOMETRY_PATH,
-  Videocapilaroscopía: "/tratamientos/videocapilaroscopia",
-  "Infiltraciones ecoguiadas por reumatólogo": "/tratamientos/infiltraciones-ecoguiadas",
-  "Medicamentos biotecnológicos": "/tratamientos/terapias-biologicas",
-  "Terapia física": "/tratamientos/terapia-fisica",
+/** Subservicios con página propia (los tratamientos solo si están publicados en visibility). */
+const TREATMENT_LINKS: Readonly<Record<string, string>> = {
+  Videocapilaroscopía: "videocapilaroscopia",
+  "Infiltraciones ecoguiadas por reumatólogo": "infiltraciones-ecoguiadas",
+  "Medicamentos biotecnológicos": "terapias-biologicas",
+  "Terapia física": "terapia-fisica",
 };
+
+function serviceLink(name: string): string | undefined {
+  if (name === "Densitometría ósea") return DENSITOMETRY_PATH;
+  const slug = TREATMENT_LINKS[name];
+  return slug && findTreatment(slug) ? `/tratamientos/${slug}` : undefined;
+}
+
+/** «Agendar» de cada pilar: densitometría y teleconsulta abren su flujo; el resto, el selector. */
+function bookingFor(slug: string): { href: string; label: string } {
+  if (slug === "apoyo-diagnostico") return { href: DENSITOMETRY_BOOKING_HREF, label: "Agendar densitometría" };
+  if (slug === "telemedicina") return { href: BOOKING_HREF, label: "Agendar teleconsulta" };
+  return { href: APPOINTMENT_HREF, label: "Agendar cita" };
+}
+
+/** Precio visible: solo la densitometría y la teleconsulta tienen ficha en data/pricing.ts. */
+function priceFor(slug: string): string {
+  if (slug === "apoyo-diagnostico") return `Densitometría: ${formatPrice(getPricing("densitometria").price)}`;
+  if (slug === "telemedicina") return `Teleconsulta: ${formatPrice(getPricing("teleconsulta").price)}`;
+  return PRICE_PENDING; // CONFIRMAR: precios de consulta externa, procedimientos y terapia
+}
 
 export const dynamicParams = false;
 
@@ -66,6 +86,33 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
     { label: pillar.name, href: servicePath(slug) },
   ];
   const icon = <IconBadge name={pillar.icon} size="lg" />;
+  const booking = bookingFor(slug);
+  const essentials = [
+    { icon: UserRound, title: "¿Para quién es?", body: <p>{detail.forWhom}</p> },
+    {
+      icon: ClipboardList,
+      title: "¿Cómo me preparo?",
+      body: (
+        <ul className="space-y-1.5">
+          {detail.preparation.map((step) => (
+            <li key={step} className="flex gap-2">
+              <Check aria-hidden strokeWidth={2.25} className="mt-1 size-4 shrink-0 text-primary" />
+              {step}
+            </li>
+          ))}
+        </ul>
+      ),
+    },
+    {
+      icon: Wallet,
+      title: "¿Cuánto cuesta?",
+      body: (
+        <p>
+          {priceFor(slug)}. Te confirmamos el monto al agendar. <Link href="/tarifas" className="font-semibold text-primary underline-offset-4 hover:underline">Ver tarifas</Link>
+        </p>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -87,9 +134,10 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
         lead={detail.intro}
         actions={
           <>
-            <a href={BOOKING_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
-              Agendar teleconsulta
-            </a>
+            <Link href={booking.href} className={buttonVariants({ variant: "primary", size: "lg" })}>
+              <CalendarCheck aria-hidden strokeWidth={1.75} />
+              {booking.label}
+            </Link>
             {contact ? (
               <a href={contact.whatsappHref} target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "outline", size: "lg" })}>
                 <WhatsAppIcon className="text-whatsapp-strong" /> Consultar con el doctor
@@ -105,6 +153,29 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
         }
       />
 
+      <section aria-labelledby="esencial-title" className="pb-16">
+        <div className="container-page">
+          <h2 id="esencial-title" className="sr-only">
+            Lo esencial
+          </h2>
+          <ul className="grid gap-4 md:grid-cols-3">
+            {essentials.map(({ icon: Icon, title, body }) => (
+              <li key={title} className="rounded-[1.75rem] border border-line bg-card-solid p-6 text-muted shadow-soft">
+                <Icon aria-hidden strokeWidth={1.75} className="size-7 text-primary" />
+                <h3 className="text-h3 mt-3 text-heading">{title}</h3>
+                <div className="mt-2 text-[0.975rem]">{body}</div>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 flex flex-col items-start gap-3 rounded-[1.75rem] bg-navy p-6 text-white sm:flex-row sm:items-center sm:justify-between dark:bg-navy-3">
+            <p className="font-display text-lg font-bold">¿Qué hago ahora? Agenda y te confirmamos todo por WhatsApp.</p>
+            <Link href={booking.href} className={buttonVariants({ variant: "light", size: "lg", className: "shrink-0" })}>
+              {booking.label} <ArrowRight aria-hidden strokeWidth={1.75} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section aria-labelledby="incluye-title" className="section-y bg-bg-alt">
         <div className="container-page">
           <SectionHeading id="incluye-title" align="left" eyebrow="Qué incluye" title="Qué incluye este servicio" />
@@ -117,7 +188,7 @@ export default async function ServicePillarPage({ params }: PageProps<"/servicio
           </ul>
           <RevealGroup as="ul" className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {pillar.services.map((service) => {
-              const href = SERVICE_LINKS[service.name];
+              const href = serviceLink(service.name);
               return (
                 <RevealItem as="li" key={service.name}>
                   <SpotlightCard className="h-full">

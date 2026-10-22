@@ -1,120 +1,128 @@
-import Image from "next/image";
-import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
-import { Check, Mic, Phone, PhoneOff, Video } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Info, MonitorSmartphone, Users, Video } from "lucide-react";
 import { WhatsAppIcon } from "@/components/shared/BrandIcons";
-import { Reveal } from "@/components/shared/Reveal";
-import { TiltCard } from "@/components/shared/TiltCard";
+import { DoctorPortrait } from "@/components/shared/DoctorPortrait";
 import { buttonVariants } from "@/components/ui/button";
-import { doctors } from "@/data/doctors";
-import { homeImages } from "@/data/home";
-import { site } from "@/data/site";
-import { clinicWhatsApp, doctorContact } from "@/lib/whatsapp";
+import { REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
+import { BOOKING_HREF } from "@/data/navigation";
+import { getServiceDetail } from "@/data/service-details";
+import { teleconsultLimits } from "@/data/teleconsult-content";
+import { doctorContact } from "@/lib/whatsapp";
 
-const TELE_POINTS = [
-  "Controles y lectura de resultados sin moverte",
-  "Receta e indicaciones en formato digital",
-  "Atención híbrida: combinamos teleconsulta y presencial",
+/** 3 pasos simples (resumen de la guía real de /teleconsulta). */
+const STEPS = [
+  { title: "Agenda", body: "Elige tu horario aquí en la web o escríbenos por WhatsApp." },
+  { title: "Conéctate", body: "Videollamada por WhatsApp, Zoom o Google Meet, el que prefieras." },
+  { title: "Recibe tu plan", body: "Plan de tratamiento digital y, si el doctor lo indica, receta y órdenes." },
 ] as const;
 
-const TELE_MESSAGE = `Hola Doctor, quisiera agendar una teleconsulta con ${site.name}.`;
+/** Las otras dos modalidades a distancia, en una línea cada una. */
+const MORE_MODES = [
+  { icon: Users, title: "Teleinterconsulta", body: "Tu médico tratante y nuestro especialista revisan tu caso juntos, a distancia." },
+  { icon: MonitorSmartphone, title: "Atención híbrida", body: "Consulta presencial y seguimiento virtual, según lo que necesite tu tratamiento." },
+] as const;
 
-/** "Consulta desde tu casa u oficina", con mockup de videollamada. */
-export function TelemedicineBand() {
-  const [doctor] = doctors;
-  // WhatsApp directo con el doctor (wa.me + mensaje); si la línea no es válida, la línea principal.
-  const contact = doctorContact(TELE_MESSAGE);
-  const whatsappHref = contact?.whatsappHref ?? clinicWhatsApp(TELE_MESSAGE);
+interface TelemedicineBandProps {
+  /** id del h2 (la Home y /servicios usan ids distintos). */
+  id?: string;
+}
+
+/**
+ * «Servicio extra: Teleconsulta». Bloque visualmente distinto de los pilares (borde punteado en
+ * azul de videollamada sobre fondo claro). Componente de servidor, sin blur ni animaciones de JS.
+ */
+export function TelemedicineBand({ id = "tele-title" }: TelemedicineBandProps) {
+  const doctor = getDoctor(REAL_DOCTOR_SLUG);
+  const contact = doctorContact();
+  const { forWhom } = getServiceDetail("telemedicina");
   return (
-    <section aria-labelledby="tele-title" className="section-y">
+    <section aria-labelledby={id} className="section-y">
       <div className="container-page">
-        <div className="relative isolate grid items-center gap-12 overflow-hidden rounded-[2rem] bg-navy px-6 py-12 text-white sm:px-10 lg:grid-cols-2 lg:px-14 lg:py-16 dark:bg-navy-3">
-          <div aria-hidden className="absolute -left-24 -top-24 -z-10 size-80 rounded-full bg-teal/25 blur-3xl" />
-          <div aria-hidden className="absolute -bottom-24 right-0 -z-10 size-80 rounded-full bg-video-strong/20 blur-3xl" />
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-sm font-semibold text-teal-200">
-              <Video aria-hidden strokeWidth={1.75} className="size-4" /> Telemedicina
-            </p>
-            <h2 id="tele-title" className="text-h2 mt-4 text-white">
-              Consulta desde tu casa u oficina
-            </h2>
-            <p className="mt-4 text-lg text-slate-200">
-              Si tu agenda está llena, tu especialista se conecta contigo por videollamada en el horario que elijas.
-            </p>
-            <ul className="mt-6 space-y-3">
-              {TELE_POINTS.map((point) => (
-                <li key={point} className="flex gap-3 text-slate-100">
-                  <Check aria-hidden strokeWidth={2.25} className="mt-1 size-5 shrink-0 text-teal" />
-                  {point}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonVariants({ variant: "light", size: "lg" })}
+        <div className="relative rounded-[2rem] border-2 border-dashed border-video/40 bg-[linear-gradient(180deg,var(--video-tint),transparent_70%)] p-6 sm:p-10 lg:p-12">
+          <p className="inline-flex items-center gap-2 rounded-full bg-video px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-on-video">
+            <Video aria-hidden strokeWidth={2} className="size-4" /> Servicio extra
+          </p>
+
+          <div className="mt-5 grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
+            <div className="min-w-0">
+              <h2 id={id} className="text-h2 text-heading">
+                Teleconsulta: <span className="text-video">tu control desde casa</span>
+              </h2>
+              <p className="mt-4 text-lg text-muted">
+                <strong className="font-semibold text-heading">¿Para quién es?</strong> {forWhom}
+              </p>
+
+              <ol className="mt-8 grid gap-4 sm:grid-cols-3">
+                {STEPS.map((step, index) => (
+                  <li key={step.title} className="rounded-2xl border border-line bg-card-solid p-4 shadow-soft">
+                    <span
+                      aria-hidden
+                      className="grid size-9 place-items-center rounded-full bg-video-tint font-display font-bold text-video"
+                    >
+                      {index + 1}
+                    </span>
+                    <h3 className="mt-3 font-display text-lg font-bold text-heading">{step.title}</h3>
+                    <p className="mt-1 text-[0.95rem] text-muted">{step.body}</p>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <Link href={BOOKING_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
+                  <Video aria-hidden strokeWidth={1.75} />
+                  Agendar teleconsulta
+                </Link>
+                {contact ? (
+                  <a
+                    href={contact.whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonVariants({ variant: "outline", size: "lg" })}
+                  >
+                    <WhatsAppIcon className="text-whatsapp-strong" />
+                    Escríbele al doctor
+                    <span className="sr-only"> (WhatsApp, se abre en otra pestaña)</span>
+                  </a>
+                ) : null}
+              </div>
+              <Link
+                href="/teleconsulta"
+                className="mt-3 inline-flex min-h-12 items-center gap-1.5 font-display font-semibold text-video hover:underline"
               >
-                <WhatsAppIcon className="text-whatsapp-strong" />
-                Agendar teleconsulta
-                <span className="sr-only"> por WhatsApp (se abre en otra pestaña)</span>
-              </a>
-              {contact ? (
-                <a
-                  href={contact.telHref}
-                  className="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/30 px-5 font-semibold text-white transition-colors hover:bg-white/10"
-                >
-                  <Phone aria-hidden strokeWidth={1.75} className="size-5" />
-                  Llamar al {contact.display}
-                </a>
-              ) : null}
+                Cómo funciona la teleconsulta <ArrowRight aria-hidden strokeWidth={1.75} className="size-5" />
+              </Link>
+            </div>
+
+            <div className="min-w-0 space-y-4">
+              <div className="flex items-center gap-4 rounded-2xl border border-line bg-card-solid p-4 shadow-soft">
+                <span className="relative size-16 shrink-0 overflow-hidden rounded-2xl bg-bg-alt">
+                  <DoctorPortrait doctor={doctor} fill sizes="64px" alt="" />
+                </span>
+                <span>
+                  <span className="block font-display font-bold text-heading">{doctor.name}</span>
+                  <span className="block text-sm text-muted">{doctor.title} · por videollamada</span>
+                </span>
+              </div>
+              <ul className="space-y-3">
+                {MORE_MODES.map(({ icon: Icon, title, body }) => (
+                  <li key={title} className="flex gap-3 rounded-2xl border border-line bg-card-solid p-4">
+                    <Icon aria-hidden strokeWidth={1.75} className="mt-0.5 size-6 shrink-0 text-video" />
+                    <span>
+                      <span className="block font-display font-bold text-heading">{title}</span>
+                      <span className="block text-[0.95rem] text-muted">{body}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex gap-3 rounded-2xl border border-line bg-bg-alt p-4 text-[0.95rem] text-muted">
+                <Info aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0 text-heading" />
+                <p>
+                  <strong className="font-semibold text-heading">¿Cuándo no sirve?</strong> {teleconsultLimits.physicalExam}{" "}
+                  {teleconsultLimits.emergency}
+                </p>
+              </div>
             </div>
           </div>
-
-          <Reveal className="relative">
-            <span
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 size-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-teal/40 animate-pulse-ring"
-            />
-            <span
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 size-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-video-glow/30 animate-pulse-ring [animation-delay:1.2s]"
-            />
-            <div className="animate-float">
-              <TiltCard className="mx-auto max-w-lg rounded-[1.75rem]">
-                <div className="rounded-[1.75rem] border border-white/15 bg-white/10 p-3 shadow-lift backdrop-blur-xl">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem]">
-                    <Image
-                      src={homeImages.telemedicine}
-                      alt={homeImages.telemedicineAlt}
-                      fill
-                      sizes="(min-width: 1024px) 500px, 90vw"
-                      className="object-cover"
-                    />
-                    <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-navy/70 px-3 py-1 text-xs font-semibold text-white">
-                      <span aria-hidden className="size-2 rounded-full bg-coral" /> En consulta · 12:48
-                    </span>
-                    <div className="absolute bottom-3 right-3 w-[30%] overflow-hidden rounded-xl border-2 border-white/80 shadow-lift">
-                      <div className="relative aspect-[3/4]">
-                        <DoctorPortrait doctor={doctor} fill sizes="150px" alt={`Vista previa de ${doctor.name}`} />
-                      </div>
-                    </div>
-                    <div aria-hidden className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2">
-                      <span className="grid size-10 place-items-center rounded-full bg-white/90 text-navy">
-                        <Mic className="size-5" />
-                      </span>
-                      <span className="grid size-10 place-items-center rounded-full bg-white/90 text-navy">
-                        <Video className="size-5" />
-                      </span>
-                      <span className="grid size-10 place-items-center rounded-full bg-coral text-white">
-                        <PhoneOff className="size-5" />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </TiltCard>
-            </div>
-          </Reveal>
         </div>
       </div>
     </section>

@@ -3,15 +3,9 @@ import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/Hero";
 import { TelemedicineBand } from "@/components/sections/TelemedicineBand";
 import { TrustStrip } from "@/components/sections/TrustStrip";
-import { PainPoints } from "@/components/sections/PainPoints";
-import { SymptomTriageLazy } from "@/components/sections/SymptomTriageLazy";
-import { SymptomTriageTeaser } from "@/components/sections/SymptomTriageTeaser";
-import { ConsultaSteps } from "@/components/sections/ConsultaSteps";
 import { DoctorsSection } from "@/components/sections/DoctorsSection";
 import { BoneDensitySection } from "@/components/sections/BoneDensitySection";
-import { WhyUs } from "@/components/sections/WhyUs";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
-import { PricingPreview } from "@/components/sections/PricingPreview";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { FAQ } from "@/components/sections/FAQ";
 import { LocationCTA } from "@/components/sections/LocationCTA";
@@ -36,9 +30,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Home transaccional del consultorio virtual. Secciones sin datos reales (aseguradoras,
- * testimonios, video de muestra, tratamientos, comparador de infiltraciones) siguen en el código
- * y se reactivan desde data/visibility.ts.
+ * Home del Centro de Excelencia en Reumatología. Las secciones que ya no van en la Home
+ * (PainPoints, SymptomTriage, WhyUs, PricingPreview, ConsultaSteps) siguen en el código; las que no
+ * tienen datos reales (aseguradoras, testimonios) se reactivan desde data/visibility.ts.
  */
 export default function Home() {
   const doctor = getDoctor(REAL_DOCTOR_SLUG);
@@ -46,20 +40,16 @@ export default function Home() {
     <>
       <JsonLd data={teleconsultServiceSchema("/teleconsulta")} />
       <JsonLd data={physicianSchema({ name: doctor.name, path: `/staff/${doctor.slug}`, specialty: doctor.specialty, image: doctor.photo, knowsAbout: doctor.focus })} />
-      {/* Orden móvil: hero → banda de telemedicina → teleconsulta (3 pasos) → el doctor → servicios → sedes → preguntas → contacto.
+      {/* Orden móvil (decisión del cliente): hero → pilares → densitometría → servicio extra →
+          doctor y equipo → sedes → preguntas → contacto.
           .cv-auto (content-visibility: auto): el navegador no pinta las secciones largas hasta acercarse. */}
       <Hero />
-      <TelemedicineBand />
-      <ConsultaSteps />
+      <div className="cv-auto"><ServicesGrid /></div>
+      <div className="cv-auto"><BoneDensitySection /></div>
+      <div className="cv-auto"><TelemedicineBand /></div>
       <div className="cv-auto"><DoctorsSection /></div>
       <TrustStrip />
       {visibility.insurers ? <InsurersIsland /> : null}
-      <div className="cv-auto"><ServicesGrid /></div>
-      <div className="cv-auto"><BoneDensitySection /></div>
-      <div className="cv-auto"><PricingPreview /></div>
-      <div className="cv-auto"><PainPoints /></div>
-      <SymptomTriageLazy fallback={<SymptomTriageTeaser />} />
-      <div className="cv-auto"><WhyUs /></div>
       <Testimonials />
       <div className="cv-auto"><LocationCTA /></div>
       <div className="cv-auto"><FAQ /></div>

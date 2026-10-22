@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { ServiceCard } from "@/components/shared/ServiceCard";
-import { SectionHeading } from "@/components/shared/SectionHeading";
-import { SpotlightCard } from "@/components/shared/SpotlightCard";
+import { PillarCard } from "@/components/shared/PillarCard";
 import { Reveal } from "@/components/shared/Reveal";
-import { servicePillars } from "@/data/services";
+import { SectionHeading } from "@/components/shared/SectionHeading";
+import { corePillars } from "@/data/services";
 import { cn } from "@/lib/utils";
 
+/** «Modelo de atención integral»: los 4 pilares del centro en bento (el de diagnóstico, grande). */
 export function ServicesGrid() {
   return (
     <section aria-labelledby="servicios-title" className="section-y bg-bg-alt">
@@ -15,9 +15,9 @@ export function ServicesGrid() {
           <SectionHeading
             id="servicios-title"
             align="left"
-            eyebrow="Servicios"
-            title="Teleconsulta y diagnóstico, sin vueltas"
-            description="Reumatología por videollamada para todo el Perú y densitometría ósea con cita previa en nuestras sedes."
+            eyebrow="Modelo de atención integral"
+            title="Todo lo que necesitas, en un solo centro"
+            description="Diagnóstico, tratamiento, procedimientos y consulta con un equipo que trabaja con un mismo plan para ti."
           />
           <Link
             href="/servicios"
@@ -27,19 +27,22 @@ export function ServicesGrid() {
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {servicePillars.map((pillar, index) => (
+        <ul className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {corePillars.map((pillar, index) => (
             <Reveal
+              as="li"
               key={pillar.slug}
               delay={index * 0.06}
-              className={cn(pillar.size === "lg" && "sm:col-span-2 lg:row-span-2")}
+              className={cn(
+                pillar.size === "lg" && "md:col-span-2 lg:row-span-2",
+                // El último pilar cierra la grilla a lo ancho (sin huecos en 2 y 3 columnas).
+                index === corePillars.length - 1 && "md:col-span-2 lg:col-span-3",
+              )}
             >
-              <SpotlightCard className="h-full">
-                <ServiceCard pillar={pillar} />
-              </SpotlightCard>
+              <PillarCard pillar={pillar} index={index + 1} />
             </Reveal>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

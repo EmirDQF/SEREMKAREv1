@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Clock, ShieldCheck, Target } from "lucide-react";
+import { ArrowRight, Clock, ScanLine, ShieldCheck, Target } from "lucide-react";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { JsonLd } from "@/components/shared/JsonLd";
@@ -14,14 +14,17 @@ import { DensitometryChecklist } from "@/components/densitometry/DensitometryChe
 import { DensitometrySteps } from "@/components/densitometry/DensitometrySteps";
 import { DxaScanFX } from "@/components/densitometry/DxaScanFX";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { buttonVariants } from "@/components/ui/button";
 import { DENSITOMETRY_PATH, densitometry } from "@/data/densitometry";
+import { DENSITOMETRY_BOOKING_HREF } from "@/data/navigation";
+import { formatPrice, getPricing } from "@/data/pricing";
 import { site } from "@/data/site";
 import { breadcrumbSchema, diagnosticProcedureSchema, faqSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 
 const TITLE = `Densitometría ósea en Lima Norte y Callao | ${site.name}`;
 const DESCRIPTION =
-  "Densitometría ósea (DXA) en Los Olivos, Callao y Puente Piedra: prueba rápida e indolora para detectar osteopenia y osteoporosis antes de una fractura. Resultados el mismo día o en 24 horas. Agenda por WhatsApp.";
+  "Densitometría ósea (DXA) en Los Olivos, Callao y Puente Piedra: prueba rápida e indolora para detectar osteopenia y osteoporosis antes de una fractura. Resultados el mismo día o en 24 horas. Agenda en línea o por WhatsApp.";
 
 const CRUMBS = [
   { label: "Inicio", href: "/" },
@@ -34,6 +37,9 @@ export const metadata: Metadata = {
   ...buildMetadata({ title: TITLE, description: DESCRIPTION, path: DENSITOMETRY_PATH }),
   title: { absolute: TITLE },
 };
+
+/** «S/ …» o «Precio por confirmar» (data/pricing.ts). */
+const DENSITOMETRY_PRICE = formatPrice(getPricing("densitometria").price);
 
 const STUDY_BLOCKS = [
   { title: "Para qué sirve", icon: Target, items: densitometry.purpose },
@@ -67,7 +73,7 @@ export default function DensitometryPage() {
           <div>
             <Breadcrumbs items={CRUMBS} />
             <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-teal-tint px-3.5 py-1.5 text-sm font-semibold text-primary">
-              <span aria-hidden className="size-1.5 rounded-full bg-teal" /> Nuevo en {site.name}
+              <span aria-hidden className="size-1.5 rounded-full bg-teal" /> Diagnóstico de precisión en {site.name}
             </p>
             <h1 id="dxa-title" className="text-display mt-4 text-heading">
               <KineticText text="Densitometría ósea en Lima" accent="Densitometría ósea" priority />
@@ -75,7 +81,18 @@ export default function DensitometryPage() {
             <p className="mt-6 max-w-xl text-lg text-muted sm:text-xl">
               {densitometry.whatIs} {densitometry.technicalName} {densitometry.measuredAt}
             </p>
-            <BookDensitometryButton className="mt-8" />
+            <ul className="mt-6 flex flex-wrap gap-2 text-sm font-semibold text-heading">
+              <li className="rounded-full border border-line bg-card-solid px-3.5 py-1.5">10 a 20 minutos</li>
+              <li className="rounded-full border border-line bg-card-solid px-3.5 py-1.5">Resultado el mismo día o en 24 h</li>
+              <li className="rounded-full border border-line bg-card-solid px-3.5 py-1.5">{DENSITOMETRY_PRICE}</li>
+            </ul>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start">
+              <Link href={DENSITOMETRY_BOOKING_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
+                <ScanLine aria-hidden strokeWidth={1.75} />
+                Agendar densitometría
+              </Link>
+              <BookDensitometryButton variant="outline" label="Por WhatsApp, según tu sede" withSupport={false} />
+            </div>
           </div>
           <Reveal>
             <DxaScanFX />
@@ -221,9 +238,15 @@ export default function DensitometryPage() {
               <h2 id="dxa-cta" className="text-h3">
                 Cuida tus huesos (y los de tus padres) a tiempo
               </h2>
-              <p className="mt-2 text-muted">Resultados el mismo día o en 24 horas. No necesitas orden médica.</p>
+              <p className="mt-2 text-muted">Resultados el mismo día o en 24 horas. No necesitas orden médica. {DENSITOMETRY_PRICE}.</p>
             </div>
-            <BookDensitometryButton />
+            <div className="flex flex-col gap-3">
+              <Link href={DENSITOMETRY_BOOKING_HREF} className={buttonVariants({ variant: "primary", size: "lg" })}>
+                <ScanLine aria-hidden strokeWidth={1.75} />
+                Agendar densitometría
+              </Link>
+              <BookDensitometryButton variant="outline" label="Por WhatsApp, según tu sede" withSupport={false} />
+            </div>
           </div>
           <p className="mt-6 text-center text-sm text-muted">{densitometry.disclaimer}</p>
         </div>
