@@ -1,4 +1,4 @@
-import { site } from "@/data/site";
+import { CENTER_MISSION, CENTER_TAGLINE, site } from "@/data/site";
 import { primaryLocation, primaryWhatsAppLine } from "@/lib/locations";
 import type { ClinicLocation, FAQItem, OpeningHours } from "@/types/medical";
 
@@ -41,6 +41,7 @@ function openingHours(hours: OpeningHours): JsonLdObject {
 
 /** @id de la empresa (KARE SAC): la usan todos los nodos que la referencian. */
 export const ORGANIZATION_ID = `${site.url}/#organization`;
+
 const ORGANIZATION_REF = { "@id": ORGANIZATION_ID } as const;
 
 /** @id del MedicalClinic de una sede: vive en su propia página (/sedes/<slug>). */
@@ -49,7 +50,8 @@ export const locationClinicId = (location: ClinicLocation) => `${site.url}/sedes
 const locationRefs = (locations: readonly ClinicLocation[]) => locations.map((location) => ({ "@id": locationClinicId(location) }));
 
 /**
- * MedicalOrganization (la empresa). La dirección y el horario van en cada sede, no aquí.
+ * MedicalOrganization (la empresa). La dirección y el horario van en cada sede, no aquí: el horario
+ * general del cliente se muestra en la web pero no se publica en el JSON-LD hasta confirmarlo por sede.
  * No incluye aggregateRating a propósito: Google exige reseñas reales y verificables;
  * agregarlo cuando existan reseñas de pacientes reales.
  */
@@ -66,7 +68,8 @@ export function organizationSchema(): JsonLdObject {
     image: `${site.url}/opengraph-image`,
     telephone: `+${primaryWhatsAppLine().number}`,
     ...(site.email ? { email: site.email } : {}),
-    slogan: site.slogan,
+    slogan: CENTER_TAGLINE,
+    description: CENTER_MISSION,
     medicalSpecialty: ["Rheumatologic", "PhysicalTherapy"],
     subOrganization: locationRefs(site.locations),
     ...(site.socials.length > 0 ? { sameAs: site.socials.map((s) => s.href) } : {}),

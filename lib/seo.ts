@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LOCATIONS_PATH } from "@/data/navigation";
-import { site } from "@/data/site";
+import { CENTER_TAGLINE, site } from "@/data/site";
 import type { ClinicLocation } from "@/types/medical";
 
 interface PageSeo {
@@ -17,7 +17,7 @@ export const SHARE_IMAGE = {
   url: "/opengraph-image",
   width: 1200,
   height: 630,
-  alt: `${site.name}: teleconsulta con un médico reumatólogo`,
+  alt: `${site.name}, ${CENTER_TAGLINE}: Dr. Daniel Ccolcca, médico reumatólogo`,
 } as const;
 
 /** Metadata consistente por página (canonical, Open Graph y Twitter). */
@@ -54,4 +54,4 @@ export function locationMetadata(location: ClinicLocation): Metadata {
 }
 
 export const DEFAULT_DESCRIPTION =
-  "Reumatólogos certificados en Lima Norte y Callao. Diagnóstico oportuno de artrosis, artritis reumatoide, gota, lupus y osteoporosis, infiltraciones ecoguiadas y teleconsulta. Agenda por WhatsApp.";
+  "Centro especializado en reumatología en Lima Norte y Callao: densitometría ósea y diagnóstico, tratamiento, procedimientos guiados por ecografía y seguimiento continuo. Teleconsulta como servicio extra.";

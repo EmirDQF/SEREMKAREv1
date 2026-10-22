@@ -2,12 +2,12 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { REAL_DOCTOR_SHARE_PHOTO, REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
-import { site } from "@/data/site";
+import { CENTER_TAGLINE, site } from "@/data/site";
 import { locationNamesLabel } from "@/lib/locations";
 
 const doctor = getDoctor(REAL_DOCTOR_SLUG);
 
-export const alt = `${site.name}: teleconsulta con el ${doctor.name}, médico reumatólogo`;
+export const alt = `${site.name}, ${CENTER_TAGLINE}: ${doctor.name}, médico reumatólogo`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -35,14 +35,14 @@ export default function OpengraphImage() {
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontSize: 62, fontWeight: 800, lineHeight: 1.06, letterSpacing: -2 }}>
-              Teleconsulta con un reumatólogo sin salir de casa
+              {CENTER_TAGLINE}
             </div>
             <div style={{ marginTop: 24, fontSize: 30, color: "#CBD5E1" }}>
-              {`${doctor.name} · Videollamada para todo el Perú`}
+              {`${doctor.name} · Densitometría, tratamiento y seguimiento`}
             </div>
           </div>
           <div style={{ display: "flex", fontSize: 24, color: "#5EEAD4" }}>
-            {`Densitometría ósea en ${locationNamesLabel()}`}
+            {`Sedes en ${locationNamesLabel()} · Teleconsulta`}
           </div>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element -- ImageResponse (Satori) solo admite <img> */}
