@@ -18,6 +18,13 @@ export interface OpeningHours {
   confirmed: boolean;
 }
 
+/** Fila del horario general visible ("Lunes a viernes" · "08:00 a 20:00"). */
+export interface OpeningScheduleRow {
+  days: string;
+  shortDays: string;
+  hours: string;
+}
+
 /** Horario de teleconsulta: además de la franja, la duración de cada turno. */
 export interface TeleconsultHours extends OpeningHours {
   /** Duración de cada turno de teleconsulta, en minutos. */

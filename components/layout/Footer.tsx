@@ -7,13 +7,10 @@ import { FooterWaves } from "@/components/layout/FooterWaves";
 import { ComplaintsBookIcon, SocialIcon, WhatsAppIcon } from "@/components/shared/BrandIcons";
 import { MedicalDisclaimer } from "@/components/shared/MedicalDisclaimer";
 import { doctors } from "@/data/doctors";
-import { LOCATIONS_PATH, legalLinks } from "@/data/navigation";
-import { servicePillars } from "@/data/services";
-import { site } from "@/data/site";
-import { treatments } from "@/data/treatments";
-import { DENSITOMETRY_PATH } from "@/data/densitometry";
+import { LOCATIONS_PATH, footerOnlyLinks, legalLinks, mainNav } from "@/data/navigation";
+import { CENTER_MISSION, CENTER_TAGLINE, OPENING_SCHEDULE, site } from "@/data/site";
 import { specialties } from "@/data/specialties";
-import { allWhatsAppLines, formatLocationAddress, locationNamesLabel, primaryLocation } from "@/lib/locations";
+import { allWhatsAppLines, formatLocationAddress } from "@/lib/locations";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 /** Solo se descarga si hay correo real (site.email). */
@@ -52,9 +49,8 @@ export function Footer() {
       <div className="container-page grid gap-12 pt-16 lg:grid-cols-[1.2fr_2fr] lg:pt-20">
         <div>
           <Logo tone="inverted" showTagline />
-          <p className="mt-5 max-w-sm">
-            {site.legalTagline}. Densitometría ósea en {locationNamesLabel()} y teleconsulta para todo el Perú.
-          </p>
+          <p className="mt-5 max-w-sm font-display text-lg font-bold text-white">{CENTER_TAGLINE}</p>
+          <p className="mt-2 max-w-sm">{CENTER_MISSION}</p>
           {site.socials.length > 0 ? (
             <ul className="mt-6 flex gap-2" aria-label="Redes sociales">
               {site.socials.map((social) => (
@@ -86,14 +82,7 @@ export function Footer() {
             title="Especialidades"
             links={specialties.map((s) => ({ label: s.shortName, href: `/especialidades/${s.slug}` }))}
           />
-          <FooterColumn
-            title="Servicios"
-            links={[
-              ...servicePillars.map((p) => ({ label: p.name, href: `/servicios/${p.slug}` })),
-              { label: "Densitometría ósea", href: DENSITOMETRY_PATH },
-              ...(treatments.length > 0 ? [{ label: "Tratamientos", href: "/tratamientos" }] : []),
-            ]}
-          />
+          <FooterColumn title="Navegación" links={[...mainNav, ...footerOnlyLinks]} />
           <FooterColumn
             title="Directorio médico"
             links={[
@@ -122,9 +111,13 @@ export function Footer() {
               <li className="flex gap-2.5">
                 <Clock aria-hidden strokeWidth={1.75} className="mt-1 size-5 shrink-0 text-teal" />
                 <span>
-                  {primaryLocation().hours.label}
-                  <br />
-                  {primaryLocation().hours.closedLabel}
+                  <span className="block font-semibold text-white">Horario de atención</span>
+                  {OPENING_SCHEDULE.map((row) => (
+                    <span key={row.days} className="block">
+                      {row.days}: {row.hours}
+                    </span>
+                  ))}
+                  <span className="block text-sm text-slate-400">Con cita previa. Confirma el horario de tu sede por WhatsApp.</span>
                 </span>
               </li>
             </ul>
@@ -178,7 +171,7 @@ export function Footer() {
         </div>
         <MedicalDisclaimer tone="inverted" className="mt-6" />
         <p className="mt-6 text-sm text-slate-400">
-          © {year} {site.name} — {site.legalTagline}. Todos los derechos reservados.
+          © {year} {site.name} — {CENTER_TAGLINE}. {site.legalTagline}. Todos los derechos reservados.
         </p>
       </div>
     </footer>

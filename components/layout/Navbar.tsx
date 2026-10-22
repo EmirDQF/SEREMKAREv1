@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { CalendarCheck, ChevronDown, ScanLine } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { buttonVariants } from "@/components/ui/button";
-import { BOOKING_HREF, moreLinks, primaryLinks } from "@/data/navigation";
+import { APPOINTMENT_HREF, moreLinks, primaryLinks, type NavLink } from "@/data/navigation";
 import { site } from "@/data/site";
 import { locationNamesLabel, primaryLocation } from "@/lib/locations";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,12 @@ const MOBILE_MENU_BUTTONS = {
   whatsapp: buttonVariants({ variant: "whatsapp" }),
   call: buttonVariants({ variant: "outline" }),
 };
+
+/** Icono clínico sutil de Densitometría (servicio estrella), sin insignias de texto. */
+function NavIcon({ link }: { link: NavLink }) {
+  if (link.icon !== "scan") return null;
+  return <ScanLine aria-hidden strokeWidth={1.75} className="size-4 text-primary" />;
+}
 
 const NAV_ITEM =
   "inline-flex min-h-12 items-center gap-1 rounded-full px-3.5 font-display text-[0.95rem] font-semibold text-heading transition-colors hover:bg-teal-tint";
@@ -36,15 +42,13 @@ export function Navbar() {
       >
         <Link href="/" aria-label={`${site.name}, ir al inicio`} className="flex shrink-0 items-center gap-2 rounded-full">
           <Logo />
-          <span className="hidden rounded-full bg-teal-tint px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-primary xl:inline">
-            Telemedicina
-          </span>
         </Link>
 
-        <ul className="hidden items-center gap-0.5 lg:flex">
+        <ul className="hidden items-center gap-0.5 xl:flex">
           {primaryLinks.map((link) => (
             <li key={link.href}>
               <Link href={link.href} className={NAV_ITEM}>
+                <NavIcon link={link} />
                 {link.label}
               </Link>
             </li>
@@ -71,14 +75,15 @@ export function Navbar() {
         <div className="flex items-center gap-1">
           <ThemeToggle />
           <Link
-            href={BOOKING_HREF}
+            href={APPOINTMENT_HREF}
             className={cn(
               buttonVariants({ variant: "primary" }),
               "hidden sm:inline-flex",
               "shadow-[0_0_0_0_rgb(0_168_150/0.4),0_10px_28px_-10px_rgb(0_118_106/0.7)] hover:shadow-[0_0_0_6px_rgb(0_168_150/0.15),0_14px_36px_-8px_rgb(0_168_150/0.65)]",
             )}
           >
-            Agendar teleconsulta
+            <CalendarCheck aria-hidden strokeWidth={1.75} />
+            Agendar cita
           </Link>
           <MobileMenu
             logo={<Logo />}

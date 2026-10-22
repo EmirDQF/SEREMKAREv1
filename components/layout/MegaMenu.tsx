@@ -61,10 +61,7 @@ export function ServicesMenu() {
         >
           <IconBadge name="scan" className="bg-white/10 text-teal-200" />
           <span className="min-w-0 flex-1">
-            <span className="flex items-center gap-2 font-display font-semibold">
-              Densitometría ósea
-              <span className="rounded-full bg-teal px-2 py-0.5 text-xs font-bold text-navy">Nuevo</span>
-            </span>
+            <span className="block font-display font-semibold">Densitometría ósea</span>
             <span className="mt-0.5 block text-sm text-slate-300">
               Mide la fuerza de tus huesos en 10 a 20 minutos. Resultados el mismo día.
             </span>

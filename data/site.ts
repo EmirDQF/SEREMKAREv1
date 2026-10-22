@@ -1,8 +1,18 @@
 import { buildMapsEmbedUrl, buildMapsSearchUrl, formatAddress } from "@/lib/maps";
 import { visibility } from "@/data/visibility";
-import type { ClinicLocation, OpeningHours, SiteConfig, WhatsAppLine } from "@/types/medical";
+import type { ClinicLocation, OpeningHours, OpeningScheduleRow, SiteConfig, WhatsAppLine } from "@/types/medical";
 
 const MINUTES_PER_HOUR = 60;
+
+/**
+ * Posicionamiento del centro (decisión del cliente, 2026-10-22). Se usa en el hero, los metadatos
+ * y el pie. Es una aspiración, no una acreditación: no se afirman certificaciones ni rankings.
+ * CONFIRMAR: uso de la denominación y posibles conflictos de marca.
+ */
+export const CENTER_TAGLINE = "Centro de Excelencia en Reumatología";
+/** Una frase para metadatos y pie. */
+export const CENTER_MISSION =
+  "Centro especializado en reumatología con atención integral: prevención, diagnóstico, tratamiento y seguimiento continuo para mejorar la calidad de vida del paciente reumático.";
 const TIME_ZONE = "America/Lima";
 
 /** Las 3 líneas de WhatsApp de la tarjeta de KARE SAC (no hay teléfono fijo ni correo en la tarjeta). */
@@ -21,17 +31,27 @@ const [PRIMARY_LINE] = WHATSAPP_LINES;
 const DOCTOR_LINE: WhatsAppLine | null = PRIMARY_LINE;
 
 /**
- * PROVISIONAL: la tarjeta solo dice «Atención con cita previa». Los días y horas no se muestran
- * ni se publican en el JSON-LD mientras `confirmed` sea false.
+ * Horario general indicado por el cliente (2026-10-22): lunes a viernes 08:00–20:00 y sábados
+ * 08:00–13:00. Se muestra en la Home, /sedes, /contacto y el pie.
+ * CONFIRMAR: horario por sede. Mientras `confirmed` sea false no se publica en el JSON-LD ni se
+ * muestra «Abierto ahora» (el modelo OpeningHours tiene una sola franja y el sábado cierra antes).
  */
+export const OPENING_SCHEDULE: readonly OpeningScheduleRow[] = [
+  { days: "Lunes a viernes", shortDays: "Lun–Vie", hours: "08:00 a 20:00" },
+  { days: "Sábados", shortDays: "Sáb", hours: "08:00 a 13:00" },
+];
+
+/** "Lun–Vie 08:00 a 20:00 · Sáb 08:00 a 13:00" */
+export const OPENING_SCHEDULE_LABEL = OPENING_SCHEDULE.map((row) => `${row.shortDays} ${row.hours}`).join(" · ");
+
 const PROVISIONAL_HOURS: OpeningHours = {
   days: [1, 2, 3, 4, 5, 6],
   opensAt: 8 * MINUTES_PER_HOUR,
   closesAt: 20 * MINUTES_PER_HOUR,
   timeZone: TIME_ZONE,
-  label: "Atención con cita previa",
-  closedLabel: "Escríbenos por WhatsApp para coordinar tu cita",
-  confirmed: false,
+  label: OPENING_SCHEDULE_LABEL,
+  closedLabel: "Atención con cita previa: escríbenos por WhatsApp para coordinar",
+  confirmed: false, // CONFIRMAR: horario por sede
 };
 
 /** PROVISIONAL: datos de prueba, ocultos hasta tener los reales. */
