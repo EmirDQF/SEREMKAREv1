@@ -20,6 +20,19 @@ export const SHARE_IMAGE = {
   alt: `${site.name}, ${CENTER_TAGLINE}: Dr. Daniel Ccolcca, médico reumatólogo`,
 } as const;
 
+/** Largo recomendado de la meta descripción (Google corta hacia los 155–160 caracteres). */
+const META_DESCRIPTION_MAX = 158;
+
+/** Recorta un texto largo a una meta descripción: corta en la última frase o palabra completa que quepa. */
+export function metaDescription(text: string, max = META_DESCRIPTION_MAX): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const slice = clean.slice(0, max);
+  const sentenceEnd = slice.lastIndexOf(". ");
+  if (sentenceEnd > max * 0.6) return slice.slice(0, sentenceEnd + 1);
+  return `${slice.slice(0, slice.lastIndexOf(" ")).replace(/[,;:]$/, "")}…`;
+}
+
 /** Metadata consistente por página (canonical, Open Graph y Twitter). */
 export function buildMetadata({ title, description, path = "/" }: PageSeo): Metadata {
   return {
@@ -48,7 +61,7 @@ export function locationPageTitle(location: ClinicLocation): string {
 export function locationMetadata(location: ClinicLocation): Metadata {
   const title = `${locationPageTitle(location)} | ${site.name}`;
   return {
-    ...buildMetadata({ title, description: location.intro, path: `${LOCATIONS_PATH}/${location.id}` }),
+    ...buildMetadata({ title, description: metaDescription(location.intro), path: `${LOCATIONS_PATH}/${location.id}` }),
     title: { absolute: title },
   };
 }

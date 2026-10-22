@@ -14,7 +14,7 @@ import { LocationCTA } from "@/components/sections/LocationCTA";
 import { ContactoDoctor } from "@/components/shared/ContactoDoctor";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { REAL_DOCTOR_SLUG, getDoctor } from "@/data/doctors";
-import { CENTER_MISSION, CENTER_TAGLINE, site } from "@/data/site";
+import { CENTER_TAGLINE, site } from "@/data/site";
 import { physicianSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 
@@ -25,7 +25,8 @@ import { buildMetadata } from "@/lib/seo";
  */
 
 const HOME_TITLE = `${CENTER_TAGLINE} en Lima | ${site.name}`;
-const HOME_DESCRIPTION = `${CENTER_MISSION} Densitometría ósea en Lima Norte y Callao. Agenda tu cita en línea.`;
+const HOME_DESCRIPTION =
+  "Centro de reumatología en Lima Norte y Callao: densitometría ósea, tratamiento y seguimiento continuo de tus articulaciones y huesos. Agenda tu cita en línea.";
 
 export const metadata: Metadata = {
   ...buildMetadata({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" }),

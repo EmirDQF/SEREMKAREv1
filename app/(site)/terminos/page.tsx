@@ -12,7 +12,7 @@ const CRUMBS = [
 
 export const metadata: Metadata = buildMetadata({
   title: "Términos y condiciones",
-  description: `Condiciones de uso de la web y de los servicios de ${site.name}.`,
+  description: `Condiciones de uso de la web, de la teleconsulta y de los servicios de ${site.name}: citas, pagos, consentimiento y responsabilidades.`,
   path: "/terminos",
 });
 

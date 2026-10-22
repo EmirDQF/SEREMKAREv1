@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SHARE_IMAGE, buildMetadata, locationMetadata, locationPageTitle } from "@/lib/seo";
+import { SHARE_IMAGE, buildMetadata, locationMetadata, locationPageTitle, metaDescription } from "@/lib/seo";
 import { getLocation } from "@/lib/locations";
 import { site } from "@/data/site";
 
@@ -44,5 +44,25 @@ describe("locationMetadata", () => {
     const callao = locationMetadata(getLocation("callao"));
     expect(callao.description).toContain("Daniel Alcides Carrión");
     expect(callao.openGraph).toMatchObject({ url: "/sedes/callao", title: `Densitometría ósea en el Callao | ${site.name}` });
+  });
+});
+
+describe("metaDescription", () => {
+  it("keeps short descriptions untouched (collapsing whitespace)", () => {
+    expect(metaDescription("  Densitometría   ósea en Lima.  ")).toBe("Densitometría ósea en Lima.");
+  });
+
+  it("cuts long text at the last full sentence that fits", () => {
+    const text = `${"Primera frase con información útil para el paciente. ".repeat(2)}${"Segunda parte muy larga ".repeat(10)}`;
+    const result = metaDescription(text, 120);
+    expect(result.length).toBeLessThanOrEqual(120);
+    expect(result.endsWith(".")).toBe(true);
+  });
+
+  it("falls back to a word boundary with an ellipsis when there is no sentence break", () => {
+    const result = metaDescription("palabra ".repeat(40), 60);
+    expect(result.length).toBeLessThanOrEqual(61);
+    expect(result.endsWith("…")).toBe(true);
+    expect(result).not.toMatch(/ …$/);
   });
 });

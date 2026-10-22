@@ -40,9 +40,12 @@ export const footerOnlyLinks: readonly NavLink[] = [
   { label: "Contacto", href: "/contacto" },
 ];
 
+/** Pie de página: todos los textos legales y avisos médicos a un clic (el Libro de Reclamaciones va aparte, con su ícono). */
 export const legalLinks: readonly NavLink[] = [
   { label: "Política de privacidad", href: "/politica-de-privacidad" },
   { label: "Términos y condiciones", href: "/terminos" },
+  { label: "Consentimiento de teleconsulta", href: "/terminos#consentimiento-teleconsulta" },
+  { label: "Aviso de suplementos", href: "/suplementos#aviso-suplementos" },
   { label: "Links de interés", href: "/links-de-interes" },
 ];
 

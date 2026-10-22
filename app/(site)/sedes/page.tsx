@@ -14,10 +14,8 @@ import { locationNamesLabel } from "@/lib/locations";
 import { breadcrumbSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/seo";
 
-const TITLE = `Sedes de densitometría ósea en ${locationNamesLabel()} | ${site.name}`;
-const DESCRIPTION = `Densitometría ósea con cita previa en ${site.locations.length} sedes: ${site.locations
-  .map((location) => (location.reference ? `${location.name} (${location.reference.toLowerCase()})` : location.name))
-  .join(", ")}.`;
+const TITLE = `Sedes y horario: ${locationNamesLabel()} | ${site.name}`;
+const DESCRIPTION = `Reumatología y densitometría ósea con cita previa en ${site.locations.length} sedes: ${locationNamesLabel()}. Horario de atención, cómo llegar y WhatsApp de cada sede.`;
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Sedes", href: LOCATIONS_PATH },

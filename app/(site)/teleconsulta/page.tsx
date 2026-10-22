@@ -28,9 +28,9 @@ import { breadcrumbSchema, faqSchema, physicianSchema, teleconsultServiceSchema 
 import { buildMetadata } from "@/lib/seo";
 
 const PATH = "/teleconsulta";
-const TITLE = `Teleconsulta reumatológica por videollamada en todo el Perú | ${site.name}`;
+const TITLE = `Teleconsulta reumatológica por videollamada · Perú | ${site.name}`;
 const DESCRIPTION =
-  "Consulta con un reumatólogo desde casa por WhatsApp, Zoom o Google Meet: revisión de exámenes, plan de tratamiento y, si el doctor lo indica, receta y órdenes en formato digital.";
+  "Consulta con un reumatólogo desde casa por WhatsApp, Zoom o Meet: revisión de exámenes, plan de tratamiento y, si el doctor lo indica, receta digital.";
 const CRUMBS = [
   { label: "Inicio", href: "/" },
   { label: "Teleconsulta", href: PATH },
