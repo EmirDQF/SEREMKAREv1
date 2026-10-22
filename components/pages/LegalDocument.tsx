@@ -44,7 +44,7 @@ export function LegalDocument({ id, title, crumbs, intro, sections, children }: 
           <ol className="mt-2 grid gap-1 sm:grid-cols-2">
             {sections.map((section, index) => (
               <li key={section.heading}>
-                <a href={`#${section.anchor ?? `${id}-${index + 1}`}`} className="inline-flex min-h-10 items-center text-primary hover:underline">
+                <a href={`#${section.anchor ?? `${id}-${index + 1}`}`} className="inline-flex min-h-12 items-center text-primary hover:underline">
                   {index + 1}. {section.heading}
                 </a>
               </li>

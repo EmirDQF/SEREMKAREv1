@@ -19,7 +19,7 @@ export default function ConsultorioLayout({ children }: LayoutProps<"/">) {
       <div aria-hidden className="consulta-ambient -z-10" />
       <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-md">
         <div className="container-page flex h-16 items-center justify-between gap-3">
-          <Link href="/" aria-label="SERMEKARE, ir al inicio" className="shrink-0">
+          <Link href="/" aria-label="SERMEKARE, ir al inicio" className="inline-flex min-h-12 shrink-0 items-center">
             <Logo />
           </Link>
           <div className="flex items-center gap-1 sm:gap-2">
@@ -48,12 +48,12 @@ export default function ConsultorioLayout({ children }: LayoutProps<"/">) {
       </main>
       <footer className="container-page pb-10 pt-6 text-sm text-muted">
         <MedicalDisclaimer />
-        <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+        <p className="mt-4 flex flex-wrap items-center gap-x-4">
           <span>Atención conforme a la Ley Marco de Telesalud (Ley N.° 30421)</span>
-          <Link href="/politica-de-privacidad" className="underline underline-offset-4 hover:text-heading">
+          <Link href="/politica-de-privacidad" className="inline-flex min-h-12 items-center underline underline-offset-4 hover:text-heading">
             Privacidad (Ley N.° 29733)
           </Link>
-          <Link href="/terminos#consentimiento-teleconsulta" className="underline underline-offset-4 hover:text-heading">
+          <Link href="/terminos#consentimiento-teleconsulta" className="inline-flex min-h-12 items-center underline underline-offset-4 hover:text-heading">
             Consentimiento de teleconsulta
           </Link>
         </p>

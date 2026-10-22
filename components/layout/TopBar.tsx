@@ -9,14 +9,14 @@ import { clinicWhatsApp } from "@/lib/whatsapp";
 /** Franja superior. Componente de servidor: posicionamiento + «Agenda tu cita» + WhatsApp. */
 export function TopBar() {
   return (
-    <div className="h-10 bg-navy text-base text-slate-200">
+    <div className="h-12 bg-navy text-base text-slate-200">
       <div className="container-page flex h-full items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-5">
-          <Link href={LOCATIONS_PATH} className="hidden items-center gap-1.5 hover:text-white 2xl:inline-flex">
+          <Link href={LOCATIONS_PATH} className="hidden min-h-12 items-center gap-1.5 hover:text-white 2xl:inline-flex">
             <MapPin aria-hidden strokeWidth={1.75} className="size-4 text-teal" />
             {site.locations.length} sedes: {site.locations.map((location) => location.name).join(" · ")}
           </Link>
-          <Link href={APPOINTMENT_HREF} className="group inline-flex min-w-0 items-center gap-1.5 hover:text-white">
+          <Link href={APPOINTMENT_HREF} className="group inline-flex min-h-12 min-w-0 items-center gap-1.5 hover:text-white">
             <span className="truncate">
               <span className="font-semibold text-white">{CENTER_TAGLINE}</span>
               <span className="hidden md:inline"> y Densitometría</span>
@@ -33,7 +33,7 @@ export function TopBar() {
           href={clinicWhatsApp()}
           target="_blank"
           rel="noopener noreferrer"
-          className="-mr-2 inline-flex min-h-10 shrink-0 items-center gap-1.5 px-2 font-semibold text-white hover:text-teal-200"
+          className="-mr-3 inline-flex min-h-12 min-w-12 shrink-0 items-center justify-center gap-1.5 px-3 font-semibold text-white hover:text-teal-200"
         >
           <WhatsAppIcon className="size-4" />
           <span className="hidden lg:inline">{primaryWhatsAppLine().display}</span>

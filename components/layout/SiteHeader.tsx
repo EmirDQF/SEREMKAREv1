@@ -17,7 +17,7 @@ export function SiteHeader() {
       <header
         id={HEADER_ID}
         data-scrolled="false"
-        className="group/header fixed inset-x-0 top-0 z-[60] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] data-[scrolled=true]:-translate-y-10"
+        className="group/header fixed inset-x-0 top-0 z-[60] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] data-[scrolled=true]:-translate-y-12"
       >
         <a
           href="#contenido"
