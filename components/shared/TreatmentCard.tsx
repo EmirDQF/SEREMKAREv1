@@ -31,13 +31,13 @@ export function TreatmentCard({ treatment }: TreatmentCardProps) {
 
       <div className="mt-5 rounded-2xl bg-bg-alt p-4">
         <p className="text-sm font-semibold text-heading">¿Para quién está indicado?</p>
-        <p className="mt-1 text-[0.95rem] text-muted">{treatment.indicatedFor}</p>
+        <p className="mt-1 text-base text-muted">{treatment.indicatedFor}</p>
       </div>
 
       <p className="mt-5 text-sm font-semibold text-heading">Beneficios clave</p>
       <ul className="mt-2 space-y-1.5">
         {treatment.benefits.map((benefit) => (
-          <li key={benefit} className="flex items-start gap-2 text-[0.95rem] text-fg">
+          <li key={benefit} className="flex items-start gap-2 text-base text-fg">
             <Check aria-hidden strokeWidth={2} className="mt-1 size-4 shrink-0 text-primary" />
             {benefit}
           </li>

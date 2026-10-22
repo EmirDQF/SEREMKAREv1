@@ -9,7 +9,7 @@ import { clinicWhatsApp } from "@/lib/whatsapp";
 /** Franja superior. Componente de servidor: posicionamiento + «Agenda tu cita» + WhatsApp. */
 export function TopBar() {
   return (
-    <div className="h-10 bg-navy text-[0.9375rem] text-slate-200">
+    <div className="h-10 bg-navy text-base text-slate-200">
       <div className="container-page flex h-full items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-5">
           <Link href={LOCATIONS_PATH} className="hidden items-center gap-1.5 hover:text-white 2xl:inline-flex">

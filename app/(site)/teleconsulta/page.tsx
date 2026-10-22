@@ -136,7 +136,7 @@ export default function TeleconsultaPage() {
                   {index + 1}
                 </span>
                 <h3 className="mt-4 font-display text-lg font-bold text-heading">{step.title}</h3>
-                <p className="mt-2 text-[0.95rem] text-muted">{step.body}</p>
+                <p className="mt-2 text-base text-muted">{step.body}</p>
                 {step.pending.length > 0 ? (
                   <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted">
                     {PENDING}: {step.pending.join(", ").toLowerCase()}

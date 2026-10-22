@@ -204,7 +204,7 @@ function BookingDetails({ booking, now }: { booking: BookingConfirmation; now: n
           <h2 className="font-display text-lg font-bold text-heading">Prepárate para tu consulta</h2>
           <ul className="mt-4 grid gap-3">
             {PREPARE.map(({ icon: Icon, text }) => (
-              <li key={text} className="flex items-start gap-3 text-[0.95rem] text-fg">
+              <li key={text} className="flex items-start gap-3 text-base text-fg">
                 <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-teal-tint text-primary">
                   <Icon aria-hidden className="size-5" />
                 </span>

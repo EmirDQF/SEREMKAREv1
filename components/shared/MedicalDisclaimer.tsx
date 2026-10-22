@@ -11,7 +11,7 @@ export function MedicalDisclaimer({ className, tone = "default" }: MedicalDiscla
   return (
     <p
       className={cn(
-        "flex items-start gap-2.5 rounded-2xl px-4 py-3 text-[0.925rem] leading-relaxed",
+        "flex items-start gap-2.5 rounded-2xl px-4 py-3 text-base leading-relaxed",
         tone === "inverted" ? "bg-white/5 text-slate-300" : "bg-bg-alt text-muted",
         className,
       )}

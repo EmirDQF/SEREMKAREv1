@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { PALETTE } from "@/components/3d/palette";
-import { PALETTE_PAIRS, contrastRatio, evaluatePairs, parseColor, readThemeTokens } from "@/lib/contrast";
+import { BODY_PAIRS, PALETTE_PAIRS, contrastRatio, evaluatePairs, parseColor, readThemeTokens } from "@/lib/contrast";
 
 const css = readFileSync(new URL("../app/globals.css", import.meta.url), "utf8");
 
@@ -35,6 +35,14 @@ describe("palette tokens (app/globals.css)", () => {
     });
   }
 
+  for (const theme of ["light", "dark"] as const) {
+    it(`body text reaches WCAG AAA (7:1) in ${theme} mode`, () => {
+      const tokens = readThemeTokens(css, theme);
+      const failing = evaluatePairs(tokens, BODY_PAIRS).filter((row) => !row.pass);
+      expect(failing.map((row) => `${row.use}: ${row.ratio.toFixed(2)} < ${row.min}`)).toEqual([]);
+    });
+  }
+
   it("defines the new teleconsult tokens in both themes", () => {
     for (const theme of ["light", "dark"] as const) {
       const tokens = readThemeTokens(css, theme);
@@ -44,13 +52,15 @@ describe("palette tokens (app/globals.css)", () => {
     }
   });
 
-  it("uses the specified brand values", () => {
+  it("uses the 2026 palette (roles mapped to the OKLCH scales of scripts/palette.mjs)", () => {
     const light = readThemeTokens(css, "light");
     const dark = readThemeTokens(css, "dark");
-    expect(light["teal-strong"].toLowerCase()).toBe("#00766a");
-    expect(light.video.toLowerCase()).toBe("#0369a1");
-    expect(dark.background.toLowerCase()).toBe("#0b192c");
-    expect(dark.video.toLowerCase()).toBe("#7dd3fc");
+    expect(light["teal-strong"].toLowerCase()).toBe("#037066"); // teal-700
+    expect(light.foreground.toLowerCase()).toBe("#0f1d3a"); // navy-900
+    expect(light.video.toLowerCase()).toBe("#036881"); // aqua-700
+    expect(dark.background.toLowerCase()).toBe("#081128"); // navy-950
+    expect(dark["teal-strong"].toLowerCase()).toBe("#61e0d0"); // teal-300
+    expect(dark.video.toLowerCase()).toBe("#82d5f1"); // aqua-300
     expect(light.whatsapp.toLowerCase()).toBe("#25d366");
   });
 });

@@ -16,8 +16,8 @@ export interface ContrastPair {
   fg: string;
   bg: string;
   over?: string;
-  /** 4.5 texto normal · 3 texto grande, íconos y bordes de foco. */
-  min: 4.5 | 3;
+  /** 7 cuerpo (AAA) · 4.5 texto normal (AA) · 3 texto grande, íconos y bordes de foco. */
+  min: 7 | 4.5 | 3;
 }
 
 export interface ContrastRow extends ContrastPair {
@@ -25,8 +25,20 @@ export interface ContrastRow extends ContrastPair {
   pass: boolean;
 }
 
+const BODY = 7;
 const TEXT = 4.5;
 const NON_TEXT = 3;
+
+/** Texto de cuerpo (párrafos largos de pacientes, a menudo con baja visión): AAA en ambos temas. */
+export const BODY_PAIRS: readonly ContrastPair[] = [
+  { use: "Cuerpo · fondo", fg: "foreground", bg: "background", min: BODY },
+  { use: "Cuerpo · fondo alterno", fg: "foreground", bg: "background-alt", min: BODY },
+  { use: "Cuerpo · tarjeta", fg: "foreground", bg: "card-solid", min: BODY },
+  { use: "Cuerpo secundario · fondo", fg: "muted", bg: "background", min: BODY },
+  { use: "Cuerpo secundario · fondo alterno", fg: "muted", bg: "background-alt", min: BODY },
+  { use: "Cuerpo secundario · tarjeta", fg: "muted", bg: "card-solid", min: BODY },
+  { use: "Cuerpo sobre navy", fg: "on-navy-muted", bg: "navy", min: BODY },
+];
 
 export const PALETTE_PAIRS: readonly ContrastPair[] = [
   { use: "Texto · fondo", fg: "foreground", bg: "background", min: TEXT },

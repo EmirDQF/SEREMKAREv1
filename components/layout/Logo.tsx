@@ -51,7 +51,7 @@ export function Logo({ className, tone = "default", showTagline = false }: LogoP
           SERME<span className={inverted ? "text-teal" : "text-primary"}>KARE</span>
         </span>
         {showTagline ? (
-          <span className={cn("mt-1 block text-[0.7rem] font-medium", inverted ? "text-slate-300" : "text-muted")}>
+          <span className={cn("mt-1.5 block text-base font-medium", inverted ? "text-slate-300" : "text-muted")}>
             Reumatología y Salud Articular
           </span>
         ) : null}

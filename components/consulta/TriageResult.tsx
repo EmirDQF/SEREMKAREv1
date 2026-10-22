@@ -51,7 +51,7 @@ export function TriageResult({ result, onBook, onRestart }: TriageResultProps) {
           </p>
         ) : null}
         {result.bringExams ? (
-          <p className="mt-4 flex items-start gap-2 text-[0.95rem] text-muted">
+          <p className="mt-4 flex items-start gap-2 text-base text-muted">
             <FileText aria-hidden className="mt-0.5 size-5 shrink-0 text-primary" />
             Ten a mano tus exámenes previos. Puedes enviarlos por WhatsApp (foto o PDF) al agendar, así el doctor los revisa antes.
           </p>

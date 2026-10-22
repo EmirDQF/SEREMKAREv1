@@ -83,7 +83,7 @@ export function AppointmentTypePicker() {
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block font-display text-lg font-bold text-heading">{title}</span>
-                <span className="mt-0.5 block text-[0.95rem] text-muted">{forWhom}</span>
+                <span className="mt-0.5 block text-base text-muted">{forWhom}</span>
                 {viaWhatsApp ? (
                   <span className="mt-1.5 inline-flex items-center gap-1.5 text-sm font-semibold text-whatsapp-strong">
                     <WhatsAppIcon className="size-4" /> Se coordina por WhatsApp
@@ -109,7 +109,7 @@ export function AppointmentTypePicker() {
           );
         })}
       </ul>
-      <p className="flex items-start gap-2 rounded-2xl border border-alert/40 bg-alert-tint p-4 text-[0.95rem] text-alert-strong">
+      <p className="flex items-start gap-2 rounded-2xl border border-alert/40 bg-alert-tint p-4 text-base text-alert-strong">
         <Siren aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0 text-alert" />
         <span>
           ¿Tienes dolor de pecho, falta de aire, fiebre alta con una articulación caliente o una caída con dolor intenso? No esperes una

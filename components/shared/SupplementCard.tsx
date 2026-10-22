@@ -13,7 +13,7 @@ export function SupplementCard({ product }: { product: Supplement }) {
     <article className="flex h-full flex-col rounded-[1.75rem] border border-line bg-card-solid p-6 shadow-soft">
       <p className="eyebrow">{category?.name}</p>
       <h3 className="text-h3 mt-2 text-heading">{product.name}</h3>
-      <dl className="mt-4 grid gap-2 text-[0.95rem]">
+      <dl className="mt-4 grid gap-2 text-base">
         <div className="flex justify-between gap-3">
           <dt className="text-muted">Presentación</dt>
           <dd className="text-right font-semibold text-heading">{product.presentation}</dd>

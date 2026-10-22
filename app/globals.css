@@ -1,48 +1,57 @@
 @import "tailwindcss";
+/* Escalas 50–950 en OKLCH con alternativa hex (generadas con scripts/palette.mjs). */
+@import "./palette.css";
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* ==========================================================================
-   Design tokens — SERMEKARE
+   Design tokens — SERMEKARE 2026 «clínica de precisión»
    Claro por defecto; oscuro vía [data-theme="dark"] en <html>.
+
+   Este primer bloque son los ROLES (lo que usan los componentes), en hex: es la alternativa para
+   navegadores sin OKLCH y lo que verifica tests/contrast.test.ts (AA en todo, AAA en el cuerpo).
+   Cada rol sale de una escala 50–950 (más abajo, en OKLCH con alternativa hex; scripts/palette.mjs).
+   Paleta, ratios y reglas de uso: docs/MEJORA-2026.md → «Sistema visual».
    ========================================================================== */
 :root {
-  --background: #f8fafc;
-  --background-alt: #f1f5f9;
-  --foreground: #0b192c;
-  --heading: #0b192c;
-  --muted: #334155;
-  --subtle: #5f6f86; /* AA 4.5:1 también sobre --background-alt (#64748b daba 4.34:1) */
-  --card: rgb(255 255 255 / 0.8);
+  /* Superficies: blanco azulado (mist-50 ajustado) · alterno · tarjeta · tarjeta elevada */
+  --background: #f7fafe;
+  --background-alt: #ecf4fa;
+  --card: rgb(255 255 255 / 0.82);
   --card-solid: #ffffff;
-  --border: rgb(203 213 225 / 0.6);
-  --border-strong: #cbd5e1;
-  /* Teal decorativo (iconos, halos) y teal fuerte (botones / texto: AA) */
-  --teal: #00a896;
-  --teal-strong: #00766a;
-  --teal-strong-hover: #005f55;
-  --teal-tint: rgb(0 168 150 / 0.1);
+  /* Tinta: navy-900 (cuerpo, AAA 16:1) · navy-950 (títulos) · mist-700 (secundario, AAA) · mist-600 (etiquetas, AA) */
+  --foreground: #0f1d3a;
+  --heading: #081128;
+  --muted: #374554;
+  --subtle: #4e5c6b;
+  --border: rgb(201 211 222 / 0.72);
+  --border-strong: #c9d3de;
+  /* Teal clínico: decorativo (teal-500) y de acción (teal-700: botones y texto, AA 5,7:1) */
+  --teal: #0dac9d;
+  --teal-strong: #037066;
+  --teal-strong-hover: #00574f;
+  --teal-tint: rgb(13 172 157 / 0.1);
   --on-primary: #ffffff;
-  --link: #0369a1;
+  --link: #036881;
   --coral: #f97362;
   --coral-tint: rgb(249 115 98 / 0.12);
-  --ring: #0284c7;
-  /* Azul de teleconsulta: lo digital, la videollamada y la confianza profesional */
-  --video: #0369a1;
-  --video-strong: #075985;
-  --video-tint: rgb(2 132 199 / 0.1);
+  /* Foco: aqua-600, visible sobre claro y sobre tarjetas */
+  --ring: #0283a1;
+  /* Aqua tecnológico (teleconsulta, datos, videollamada): aqua-700 / aqua-800 / aqua-300 */
+  --video: #036881;
+  --video-strong: #005064;
+  --video-tint: rgb(2 131 161 / 0.1);
   --on-video: #ffffff;
-  --video-glow: #7dd3fc;
+  --video-glow: #82d5f1;
   /* Ámbar: solo zonas de dolor seleccionadas (relleno o punto; nunca como texto salvo --pain-text) */
   --pain: #f59e0b;
   --pain-text: #b45309;
   --pain-tint: rgb(245 158 11 / 0.14);
-  /* Rojo: solo urgencias y errores */
+  /* Rojo: solo urgencias y errores (estado de alerta) */
   --alert: #dc2626;
   --alert-tint: rgb(220 38 38 / 0.08);
-  /* Texto dentro del aviso rojo (#dc2626 sobre su tinte daba 4.28:1) */
   --alert-strong: #b91c1c;
-  /* Esmeralda: solo el estado "en línea" */
+  /* Esmeralda: estado de éxito y «en línea» */
   --online: #047857;
   --online-dot: #10b981;
   --online-tint: rgb(16 185 129 / 0.1);
@@ -50,30 +59,32 @@
   --online-glow: rgb(16 185 129 / 0.35);
   /* WhatsApp: verde de marca solo en el ícono y el botón flotante; texto sobre --whatsapp-strong */
   --whatsapp: #25d366;
-  --on-whatsapp-brand: #0b192c;
+  --on-whatsapp-brand: #081128;
   --whatsapp-strong: #0f7a6c;
   --whatsapp-strong-hover: #0b6358;
   --on-whatsapp: #ffffff;
   /* Estrellas de reseñas (excepción documentada al ámbar: convención universal) */
   --rating: #d97706;
-  /* Superficies navy (iguales en ambos temas) */
-  --navy: #0b192c;
-  --navy-2: #1e3e62;
-  --navy-3: #13243b;
+  /* Superficies navy (bandas oscuras, iguales en ambos temas): navy-900 · navy-700 · navy-800 */
+  --navy: #0f1d3a;
+  --navy-2: #263d70;
+  --navy-3: #192c55;
   --on-navy: #ffffff;
-  --on-navy-muted: #e2e8f0;
-  --on-navy-subtle: #94a3b8;
-  --joint-bone: #e2e8f0;
-  --joint-bone-stroke: #94a3b8;
-  --shadow-color: 215 40% 20%;
-  --grain-opacity: 0.035;
-  --glass-bg: rgb(255 255 255 / 0.7);
-  --glass-border: rgb(226 232 240 / 0.8);
+  --on-navy-muted: #dde5ed;
+  --on-navy-subtle: #9aa6b3;
+  --joint-bone: #dde5ed;
+  --joint-bone-stroke: #9aa6b3;
+  --shadow-color: 228 45% 18%;
+  --grain-opacity: 0.03;
+  --glass-bg: rgb(255 255 255 / 0.72);
+  --glass-border: rgb(221 229 237 / 0.85);
+  /* Borde luminoso de 1 px (vidrio fino): navy → teal → aqua muy tenue */
+  --edge-glow: linear-gradient(135deg, rgb(13 172 157 / 0.55), rgb(2 131 161 / 0.28) 45%, rgb(201 211 222 / 0.2) 75%);
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   /* Escala tipográfica fluida (clamp): cuerpo ≥ 16 px en cualquier pantalla (baja visión). */
   --fs-body: clamp(1.0625rem, 0.25vw + 1rem, 1.125rem);
   --fs-lead: clamp(1.125rem, 0.6vw + 1rem, 1.3125rem);
-  --fs-eyebrow: 0.875rem;
+  --fs-eyebrow: 1rem;
 
   /* Espaciado vertical: secciones y bloques (ritmo alternado bg / bg-alt). */
   --space-section: clamp(4rem, 9vw, 7.5rem);
@@ -81,29 +92,29 @@
 }
 
 [data-theme="dark"] {
-  --background: #0b192c;
-  --background-alt: #0f2036;
-  --foreground: #e6edf5;
-  --heading: #f8fafc;
-  --muted: #b8c4d4;
-  --subtle: #8fa0b6;
-  --card: rgb(19 36 59 / 0.82);
-  --card-solid: #13243b;
-  --border: rgb(71 95 128 / 0.45);
-  --border-strong: #334a68;
-  --teal: #2dd4bf;
-  --teal-strong: #2dd4bf;
-  --teal-strong-hover: #5eead4;
-  --teal-tint: rgb(45 212 191 / 0.12);
-  --on-primary: #0b192c;
-  --link: #7dd3fc;
+  --background: #081128;
+  --background-alt: #0c162c;
+  --foreground: #edf2f7;
+  --heading: #f7f9fc;
+  --muted: #c9d3de;
+  --subtle: #9aa6b3;
+  --card: rgb(18 29 54 / 0.84);
+  --card-solid: #121d36;
+  --border: rgb(120 144 194 / 0.24);
+  --border-strong: #38538d;
+  --teal: #61e0d0;
+  --teal-strong: #61e0d0;
+  --teal-strong-hover: #98eee1;
+  --teal-tint: rgb(97 224 208 / 0.12);
+  --on-primary: #081128;
+  --link: #82d5f1;
   --coral: #fb8a7b;
   --coral-tint: rgb(251 138 123 / 0.14);
-  --ring: #7dd3fc;
-  --video: #7dd3fc;
-  --video-strong: #38bdf8;
-  --video-tint: rgb(56 189 248 / 0.14);
-  --on-video: #0b192c;
+  --ring: #82d5f1;
+  --video: #82d5f1;
+  --video-strong: #49bee2;
+  --video-tint: rgb(130 213 241 / 0.13);
+  --on-video: #081128;
   --pain: #fbbf24;
   --pain-text: #fcd34d;
   --pain-tint: rgb(251 191 36 / 0.16);
@@ -117,15 +128,35 @@
   --online-glow: rgb(52 211 153 / 0.4);
   --whatsapp-strong: #25d366;
   --whatsapp-strong-hover: #4ade80;
-  --on-whatsapp: #0b192c;
+  --on-whatsapp: #081128;
   --rating: #fbbf24;
-  --joint-bone: #1e3e62;
-  --joint-bone-stroke: #5b7aa0;
-  --shadow-color: 220 60% 3%;
-  --grain-opacity: 0.05;
-  --glass-bg: rgb(15 23 42 / 0.7);
-  --glass-border: rgb(30 41 59 / 0.8);
+  --navy: #0c162c;
+  --navy-2: #192c55;
+  --navy-3: #121d36;
+  --joint-bone: #263d70;
+  --joint-bone-stroke: #7890c2;
+  --shadow-color: 232 70% 3%;
+  --grain-opacity: 0.045;
+  --glass-bg: rgb(12 22 44 / 0.72);
+  --glass-border: rgb(56 83 141 / 0.45);
+  --edge-glow: linear-gradient(135deg, rgb(97 224 208 / 0.5), rgb(130 213 241 / 0.24) 45%, rgb(120 144 194 / 0.12) 75%);
   color-scheme: dark;
+}
+
+/* Alias semánticos del sistema 2026 (nombres pedidos en la guía; apuntan a los roles de arriba). */
+:root {
+  --surface: var(--background);
+  --surface-alt: var(--background-alt);
+  --surface-raised: var(--card-solid);
+  --ink: var(--foreground);
+  --ink-muted: var(--muted);
+  --accent: var(--teal-strong);
+  --accent-ink: var(--on-primary);
+  --line: var(--border);
+  --focus: var(--ring);
+  --success: var(--online);
+  --warning: var(--pain-text);
+  --danger: var(--alert);
 }
 
 @theme inline {
@@ -176,8 +207,25 @@
   --color-on-whatsapp: var(--on-whatsapp);
   --color-rating: var(--rating);
 
+  /* Escalas completas (bg-navy-950, text-teal-200, border-aqua-300…). */
+  --color-navy-50: var(--navy-50); --color-navy-100: var(--navy-100); --color-navy-200: var(--navy-200); --color-navy-300: var(--navy-300); --color-navy-400: var(--navy-400); --color-navy-500: var(--navy-500); --color-navy-600: var(--navy-600); --color-navy-700: var(--navy-700); --color-navy-800: var(--navy-800); --color-navy-900: var(--navy-900); --color-navy-950: var(--navy-950);
+  --color-teal-50: var(--teal-50); --color-teal-100: var(--teal-100); --color-teal-200: var(--teal-200); --color-teal-300: var(--teal-300); --color-teal-400: var(--teal-400); --color-teal-500: var(--teal-500); --color-teal-600: var(--teal-600); --color-teal-700: var(--teal-700); --color-teal-800: var(--teal-800); --color-teal-900: var(--teal-900); --color-teal-950: var(--teal-950);
+  --color-aqua-50: var(--aqua-50); --color-aqua-100: var(--aqua-100); --color-aqua-200: var(--aqua-200); --color-aqua-300: var(--aqua-300); --color-aqua-400: var(--aqua-400); --color-aqua-500: var(--aqua-500); --color-aqua-600: var(--aqua-600); --color-aqua-700: var(--aqua-700); --color-aqua-800: var(--aqua-800); --color-aqua-900: var(--aqua-900); --color-aqua-950: var(--aqua-950);
+  --color-mist-50: var(--mist-50); --color-mist-100: var(--mist-100); --color-mist-200: var(--mist-200); --color-mist-300: var(--mist-300); --color-mist-400: var(--mist-400); --color-mist-500: var(--mist-500); --color-mist-600: var(--mist-600); --color-mist-700: var(--mist-700); --color-mist-800: var(--mist-800); --color-mist-900: var(--mist-900); --color-mist-950: var(--mist-950);
+  /* slate de Tailwind → mist (neutro frío de la marca): un solo gris en todo el sitio. */
+  --color-slate-50: var(--mist-50); --color-slate-100: var(--mist-100); --color-slate-200: var(--mist-200); --color-slate-300: var(--mist-300); --color-slate-400: var(--mist-400); --color-slate-500: var(--mist-500); --color-slate-600: var(--mist-600); --color-slate-700: var(--mist-700); --color-slate-800: var(--mist-800); --color-slate-900: var(--mist-900); --color-slate-950: var(--mist-950);
+
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: var(--font-jakarta), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  /* Texto mínimo 16 px (pacientes con baja visión): text-xs y text-sm ya no bajan de 1 rem; la
+     jerarquía la dan el peso y el color, no el tamaño. */
+  --text-xs: 1rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.5;
+
+  /* Datos (horario, T-score, pasos, precios): monoespaciada del sistema, sin descarga. */
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Consolas, monospace;
 
   /* Radios: control (botones, campos) · tarjeta · panel (bloques grandes). Concéntricos: panel = tarjeta + padding. */
   --radius-card: 1.5rem;
@@ -186,10 +234,13 @@
   --radius-panel: 1.75rem;
 
 
-  --shadow-soft: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 4px 12px hsl(var(--shadow-color) / 0.06),
-    0 16px 40px -12px hsl(var(--shadow-color) / 0.12);
-  --shadow-lift: 0 2px 4px hsl(var(--shadow-color) / 0.06), 0 12px 24px hsl(var(--shadow-color) / 0.1),
-    0 32px 64px -16px hsl(var(--shadow-color) / 0.2);
+  /* Sombras multicapa suaves (contacto + ambiente + caída), teñidas de navy. */
+  --shadow-soft: 0 1px 1px hsl(var(--shadow-color) / 0.05), 0 2px 6px hsl(var(--shadow-color) / 0.05),
+    0 12px 32px -12px hsl(var(--shadow-color) / 0.14);
+  --shadow-lift: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 8px 20px -4px hsl(var(--shadow-color) / 0.1),
+    0 28px 56px -18px hsl(var(--shadow-color) / 0.24);
+  /* Halo del CTA y de la tarjeta destacada (teal luminoso, sin blur grande). */
+  --shadow-glow: 0 0 0 1px rgb(13 172 157 / 0.18), 0 10px 30px -10px rgb(3 112 102 / 0.55), 0 0 42px -14px rgb(97 224 208 / 0.55);
 
   --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -274,20 +325,6 @@
     background: var(--teal-tint);
     color: var(--heading);
   }
-
-  /* Grano sutil para dar profundidad (solo tablet/escritorio: en móvil es una capa fija más que pintar) */
-  @media (max-width: 767px) {
-    body::before { display: none; }
-  }
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    pointer-events: none;
-    opacity: var(--grain-opacity);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
 }
 
 /* ==========================================================================
@@ -320,10 +357,11 @@
   border-radius: 9999px;
   padding: 0.375rem 0.875rem;
   font-size: var(--fs-eyebrow);
-  font-weight: 600;
-  letter-spacing: 0.025em;
+  font-weight: 650;
+  letter-spacing: 0.02em;
   background: var(--teal-tint);
   color: var(--teal-strong);
+  box-shadow: inset 0 0 0 1px rgb(13 172 157 / 0.22);
 }
 
 @utility text-display {
@@ -382,7 +420,7 @@
 @utility portrait-placeholder {
   background:
     radial-gradient(80% 60% at 30% 20%, rgb(255 255 255 / 0.18), transparent 60%),
-    linear-gradient(150deg, #0b192c 0%, #0b3a4a 55%, #00766a 100%);
+    linear-gradient(150deg, var(--navy-950) 0%, var(--navy-800) 50%, var(--teal-700) 100%);
 }
 
 /* Consultorio virtual: fondo off-white con luz ambiental teal muy suave (sin animación). */
@@ -391,8 +429,8 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(60% 45% at 15% 0%, rgb(0 168 150 / 0.1), transparent 70%),
-    radial-gradient(45% 40% at 100% 30%, rgb(2 132 199 / 0.07), transparent 70%);
+    radial-gradient(60% 45% at 15% 0%, rgb(13 172 157 / 0.1), transparent 70%),
+    radial-gradient(45% 40% at 100% 30%, rgb(2 131 161 / 0.07), transparent 70%);
 }
 
 /* Check «del dolor al alivio» de /cita-confirmada: el trazo se dibuja una sola vez. */
@@ -430,9 +468,10 @@
   inset: -10%;
   pointer-events: none;
   background:
-    radial-gradient(45% 40% at 22% 38%, rgb(0 168 150 / 0.24), transparent 70%),
-    radial-gradient(40% 35% at 82% 18%, rgb(2 132 199 / 0.2), transparent 70%),
-    radial-gradient(50% 45% at 60% 95%, rgb(45 212 191 / 0.1), transparent 70%);
+    radial-gradient(45% 40% at 22% 38%, rgb(13 172 157 / 0.24), transparent 70%),
+    radial-gradient(40% 35% at 82% 18%, rgb(2 131 161 / 0.22), transparent 70%),
+    radial-gradient(50% 45% at 60% 95%, rgb(97 224 208 / 0.1), transparent 70%),
+    radial-gradient(35% 30% at 10% 90%, rgb(82 109 166 / 0.18), transparent 70%);
   animation: var(--animate-mesh);
 }
 
@@ -468,12 +507,6 @@
   }
 }
 
-@utility shimmer-auto {
-  &::after {
-    animation: shimmer-sweep 6s cubic-bezier(0.22, 1, 0.36, 1) 2s infinite;
-  }
-}
-
 /* Borde con gradiente sutil para tarjetas destacadas */
 @utility gradient-border {
   position: relative;
@@ -483,7 +516,7 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, rgb(0 168 150 / 0.55), rgb(2 132 199 / 0.25) 45%, transparent 70%);
+    background: var(--edge-glow);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -491,57 +524,139 @@
   }
 }
 
-/* Fondo mesh animado muy suave */
-@utility mesh-bg {
+/* Fondo «aurora» clínico (mesh gradient en CSS): el único degradado expresivo del sistema, para el
+   hero y las bandas oscuras. Estático en móvil; en escritorio deriva muy lento (solo transform). */
+@utility aurora {
   position: absolute;
   /* Desborde fijo en rem: con un % el borde superior dependía del alto de la sección y se movía (CLS). */
   inset: -6rem;
   pointer-events: none;
   background:
-    radial-gradient(40% 35% at 20% 25%, rgb(0 168 150 / 0.16), transparent 70%),
-    radial-gradient(35% 30% at 80% 20%, rgb(2 132 199 / 0.12), transparent 70%),
-    radial-gradient(45% 40% at 70% 85%, rgb(30 62 98 / 0.1), transparent 70%);
+    radial-gradient(42% 38% at 18% 22%, rgb(13 172 157 / 0.2), transparent 70%),
+    radial-gradient(36% 32% at 82% 16%, rgb(2 131 161 / 0.16), transparent 70%),
+    radial-gradient(48% 42% at 68% 88%, rgb(56 83 141 / 0.14), transparent 72%),
+    radial-gradient(30% 28% at 40% 60%, rgb(130 213 241 / 0.1), transparent 70%);
   @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
     animation: var(--animate-mesh);
   }
 }
 
+/* Alias histórico (páginas internas): mismo fondo aurora. */
+@utility mesh-bg {
+  position: absolute;
+  inset: -6rem;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 38% at 18% 22%, rgb(13 172 157 / 0.18), transparent 70%),
+    radial-gradient(36% 32% at 82% 16%, rgb(2 131 161 / 0.14), transparent 70%),
+    radial-gradient(48% 42% at 68% 88%, rgb(56 83 141 / 0.12), transparent 72%);
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    animation: var(--animate-mesh);
+  }
+}
+
+/* Motivo «escáner» 1: cuadrícula de puntos tenue (retícula de imagen médica), desvanecida al borde. */
+@utility scan-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: radial-gradient(circle at 1px 1px, rgb(56 83 141 / 0.28) 1px, transparent 0);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(75% 65% at 50% 40%, #000 20%, transparent 75%);
+  [data-theme="dark"] & {
+    background-image: radial-gradient(circle at 1px 1px, rgb(130 213 241 / 0.2) 1px, transparent 0);
+  }
+}
+
+/* Motivo «escáner» 2: líneas de barrido horizontales finas (como el paso del brazo DXA). */
+@utility scan-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(180deg, rgb(13 172 157 / 0.06) 0 1px, transparent 1px 7px);
+  mask-image: linear-gradient(180deg, transparent, #000 25%, #000 70%, transparent);
+}
+
+/* Motivo «escáner» 3: una línea de luz que baja lento (solo escritorio, solo transform). */
+@utility scan-sweep {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(13 172 157 / 0.55) 30%, rgb(130 213 241 / 0.7) 50%, rgb(13 172 157 / 0.55) 70%, transparent);
+  box-shadow: 0 0 12px 1px rgb(97 224 208 / 0.35);
+  opacity: 0;
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    animation: scan-sweep 9s cubic-bezier(0.45, 0, 0.55, 1) 1.2s infinite;
+  }
+}
+@keyframes scan-sweep {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(var(--sweep-distance, 560px)); opacity: 0; }
+}
+
+/* Panel oscuro de «sala de imagen» (densitometría): navy profundo con borde luminoso. */
+@utility scan-panel {
+  isolation: isolate;
+  background: linear-gradient(160deg, var(--navy-900), var(--navy-950) 70%);
+  color: var(--on-navy-muted);
+  box-shadow: inset 0 0 0 1px rgb(130 213 241 / 0.14), var(--shadow-lift);
+}
+
+/* Vidrio fino: superficie translúcida + borde luminoso de 1 px. Blur solo en tablet/escritorio. */
+@utility glass-panel {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  @media (max-width: 767px) {
+    background: color-mix(in srgb, var(--card-solid) 96%, transparent);
+  }
+  @media (min-width: 768px) {
+    backdrop-filter: blur(10px) saturate(1.25);
+  }
+}
+
+/* Halo sutil: CTA principal y tarjeta destacada. */
+@utility glow-cta {
+  box-shadow: var(--shadow-glow);
+}
+@utility glow-card {
+  box-shadow: var(--shadow-glow), var(--shadow-lift);
+}
+
+/* Cifras y etiquetas de datos (horario, T-score, pasos, precios): monoespaciada tabular. */
+@utility data-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums slashed-zero;
+  letter-spacing: 0.01em;
+}
+
+/* Etiqueta técnica pequeña (sobre títulos de tarjetas, retículas): mono, mayúsculas, tracking amplio. */
+@utility tech-label {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 /* Palabra clave de los titulares: gradiente teal que se desplaza lentamente */
 @utility text-gradient-teal {
-  background-image: linear-gradient(90deg, var(--teal-strong), #0284c7, var(--teal-strong));
+  background-image: linear-gradient(90deg, var(--teal-strong), var(--video), var(--teal-strong));
   background-size: 200% 100%;
   background-clip: text;
   color: transparent;
 }
 
 @utility text-gradient-teal-light {
-  background-image: linear-gradient(90deg, #5eead4, #7dd3fc, #5eead4);
+  background-image: linear-gradient(90deg, var(--teal-300), var(--aqua-300), var(--teal-300));
   background-size: 200% 100%;
   background-clip: text;
   color: transparent;
-}
-
-/* Borde de gradiente cónico que gira lento (bento de "Por qué SERMEKARE") */
-@property --conic-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
-@utility conic-border {
-  position: relative;
-  isolation: isolate;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    padding: 1.5px;
-    background: conic-gradient(from var(--conic-angle), transparent 0deg, rgb(0 168 150 / 0.7) 70deg, rgb(2 132 199 / 0.45) 140deg, transparent 220deg);
-    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-    pointer-events: none;
-  }
 }
 
 /* Borde que se ilumina siguiendo al cursor (SpotlightCard): --spot-x / --spot-y */
@@ -557,21 +672,6 @@
   transition: opacity 0.3s ease;
 }
 
-/* Brillo breve cuando un contador termina */
-.counter-done {
-  animation: counter-glow 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@keyframes counter-glow {
-  0% { text-shadow: 0 0 0 transparent; }
-  30% { text-shadow: 0 0 28px rgb(45 212 191 / 0.85); }
-  100% { text-shadow: 0 0 0 transparent; }
-}
-
-
-@keyframes shimmer-sweep {
-  0%, 84% { transform: translateX(-120%); }
-  100% { transform: translateX(120%); }
-}
 
 /* Marquee: pausa con hover/foco o con data-paused */
 .marquee-track {
@@ -702,7 +802,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* Diálogo nativo (<dialog> con showModal): fondo, bloqueo del scroll y entrada. */
-dialog::backdrop { background: rgb(11 25 44 / 0.7); }
+dialog::backdrop { background: rgb(8 17 40 / 0.72); }
 html:has(dialog[open]) { overflow: hidden; }
 dialog[open] { animation: var(--animate-dialog-in); }
 
@@ -730,3 +830,160 @@ dialog[open] { animation: var(--animate-dialog-in); }
   [data-dropdown] > ul, dialog[open] { transition: none; animation: none; }
 }
 [data-reduce-motion="true"] dialog[open] { animation: none; }
+
+/* ==========================================================================
+   Sistema visual 2026: piezas «futuristas» baratas (CSS/SVG, solo transform y opacity)
+   ========================================================================== */
+
+/* Ilustración DXA: el brazo barre la camilla y revela la capa de rayos X (DxaScanFX). */
+.dxa-arm {
+  transform: translateX(330px);
+  @media (prefers-reduced-motion: no-preference) {
+    animation: dxa-arm 4.5s ease-in-out infinite alternate both;
+  }
+}
+.dxa-reveal {
+  transform-box: fill-box;
+  transform-origin: left center;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: dxa-reveal 4.5s ease-in-out infinite alternate both;
+  }
+}
+@keyframes dxa-arm {
+  from { transform: translateX(92px); }
+  to { transform: translateX(330px); }
+}
+@keyframes dxa-reveal {
+  from { transform: scaleX(0.056); }
+  to { transform: scaleX(1); }
+}
+[data-reduce-motion="true"] .dxa-arm { animation: none; transform: translateX(330px); }
+[data-reduce-motion="true"] .dxa-reveal { animation: none; transform: none; }
+
+/*
+ * Bento con foco que sigue al puntero, SOLO CSS y solo con mouse/trackpad: una rejilla 3×3 de zonas
+ * invisibles bajo el contenido fija --spot-x/--spot-y con :has(); @property las interpola (sin JS).
+ * El texto deja pasar el puntero a las zonas; enlaces y botones siguen recibiéndolo.
+ * En táctil: sin zonas y con un estado :active claro.
+ */
+@property --spot-x {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+@property --spot-y {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+.bento-card {
+  position: relative;
+  isolation: isolate;
+}
+.bento-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(380px circle at var(--spot-x) var(--spot-y), var(--teal-tint), transparent 65%);
+  transition: opacity 0.3s var(--ease-out-soft);
+}
+.bento-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(240px circle at var(--spot-x) var(--spot-y), var(--teal), transparent 70%);
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  transition: opacity 0.3s var(--ease-out-soft);
+}
+.bento-zones { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .bento-card { transition: --spot-x 0.45s var(--ease-out-soft), --spot-y 0.45s var(--ease-out-soft); }
+  .bento-card:hover::before,
+  .bento-card:hover::after,
+  .bento-card:focus-within::after { opacity: 1; }
+  .bento-zones {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    border-radius: inherit;
+  }
+  .bento-content { position: relative; z-index: 1; pointer-events: none; }
+  .bento-content :is(a, button, summary, input, label) { pointer-events: auto; }
+  .bento-card:has(.bento-zones > :nth-child(3n + 1):hover) { --spot-x: 16%; }
+  .bento-card:has(.bento-zones > :nth-child(3n + 2):hover) { --spot-x: 50%; }
+  .bento-card:has(.bento-zones > :nth-child(3n):hover) { --spot-x: 84%; }
+  .bento-card:has(.bento-zones > :nth-child(-n + 3):hover) { --spot-y: 12%; }
+  .bento-card:has(.bento-zones > :nth-child(n + 4):nth-child(-n + 6):hover) { --spot-y: 50%; }
+  .bento-card:has(.bento-zones > :nth-child(n + 7):hover) { --spot-y: 88%; }
+}
+@media (hover: none) {
+  .bento-card:active { border-color: var(--teal-strong); background-color: var(--teal-tint); }
+}
+
+/* Línea de progreso fina de la ruta del paciente: se completa al recorrerla (scroll-driven, sin JS). */
+@keyframes progress-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.progress-track { transform-origin: left center; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-reduce-motion="true"]) .progress-track {
+      animation: progress-fill linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 55%;
+    }
+  }
+}
+
+/* Micro-feedback de los botones: presión breve (solo transform), apagado con movimiento reducido. */
+@media (prefers-reduced-motion: reduce) {
+  .scan-sweep, .aurora, .mesh-bg { animation: none !important; }
+}
+[data-reduce-motion="true"] :is(.scan-sweep, .aurora, .mesh-bg) { animation: none !important; }
+
+/* Bordes de imágenes: contorno neutro interior para que no se fundan con la superficie. */
+.img-outline {
+  outline: 1px solid rgb(8 17 40 / 0.08);
+  outline-offset: -1px;
+}
+[data-theme="dark"] .img-outline { outline-color: rgb(255 255 255 / 0.1); }
+
+/* Marcas de encuadre en las 4 esquinas (visor de imagen médica): retrato del hero. */
+@utility frame-corners {
+  --corner: 18px;
+  --corner-color: rgb(255 255 255 / 0.85);
+  background:
+    linear-gradient(var(--corner-color) 0 0) top left / var(--corner) 1.5px,
+    linear-gradient(var(--corner-color) 0 0) top left / 1.5px var(--corner),
+    linear-gradient(var(--corner-color) 0 0) top right / var(--corner) 1.5px,
+    linear-gradient(var(--corner-color) 0 0) top right / 1.5px var(--corner),
+    linear-gradient(var(--corner-color) 0 0) bottom left / var(--corner) 1.5px,
+    linear-gradient(var(--corner-color) 0 0) bottom left / 1.5px var(--corner),
+    linear-gradient(var(--corner-color) 0 0) bottom right / var(--corner) 1.5px,
+    linear-gradient(var(--corner-color) 0 0) bottom right / 1.5px var(--corner);
+  background-repeat: no-repeat;
+}
+
+/* Escala T-score de la Home: una aguja de lectura recorre la escala (solo transform). */
+.tscore-sweep {
+  transform: translateX(96px);
+  @media (prefers-reduced-motion: no-preference) {
+    animation: tscore-sweep 6s ease-in-out infinite alternate both;
+  }
+}
+@keyframes tscore-sweep {
+  from { transform: translateX(16px); }
+  to { transform: translateX(300px); }
+}
+[data-reduce-motion="true"] .tscore-sweep { animation: none; transform: translateX(96px); }
