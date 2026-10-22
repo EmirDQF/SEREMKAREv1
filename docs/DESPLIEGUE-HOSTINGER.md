@@ -4,6 +4,12 @@ SERMEKARE es una app **Next.js 16 con servidor Node** (no es un sitio estático)
 `/consulta-virtual`, `/cita-confirmada/[uid]`, el webhook de Cal.com y las imágenes generadas
 (`/opengraph-image`, `/apple-icon`) necesitan `npm run start`. **No** uses `output: "export"`.
 
+> **Publicar sin GitHub (subiendo un ZIP):** `node scripts/package-hostinger.mjs` genera en `deploy/`
+> (carpeta no versionada) `sermekare-fuente.zip` (Opción A: Hostinger instala y compila),
+> `sermekare-listo.zip` (Opción B: ya compilado con `output: "standalone"`, arranca con
+> `node server.js`) y la guía `LEEME-SUBIR-A-HOSTINGER` (fuente en `docs/`). Los dos paquetes se
+> probaron en Linux con Node 22.
+
 ## 0. Antes de publicar (lista de control)
 
 Marca cada punto antes de fusionar a `main`:
@@ -42,7 +48,7 @@ existente: **Avanzado → Node.js**).
 | Origen | **Importar repositorio de Git** (GitHub) |
 | Repositorio | el de SERMEKARE |
 | Rama | `main` |
-| Versión de Node.js | **22.x** (mínimo 20.9; lo exige `engines.node` en `package.json`) |
+| Versión de Node.js | **22.x** (lo indica `engines.node` en `package.json`) |
 | Directorio raíz | `/` (la raíz del repositorio) |
 | Comando de instalación | `npm ci` (usa `package-lock.json`, versionado) |
 | Comando de compilación | `npm run build` (usa **webpack** a propósito: `next build --webpack`; no lo cambies) |

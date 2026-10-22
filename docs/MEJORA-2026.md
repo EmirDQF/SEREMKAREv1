@@ -82,6 +82,22 @@ vulnerabilidades.
 | LCP con limitación real ≤ 2,0 s | 2,06–2,90 s (antes 1,32–1,86 s) | Los mismos | Con el CSS externo hay una petición más antes del primer pintado; con la limitación de Lighthouse (562 ms de RTT) cuesta ~0,6 s. Es el precio de bajar el TBT a un tercio y el HTML 30–70 %: con `inlineCss` el LCP real de la Home era 1,89 s pero el TBT 867 ms. En redes reales con HTTP/2 (RTT de 50–150 ms) la diferencia es mucho menor |
 | TBT ≤ 300 ms | ✔ en simulado (187–266 ms); con limitación real ✔ en 3 de 4, `/servicios` 901 ms | Hidratación de la página | Varianza alta de esta máquina (corridas de 72 a 90 puntos) |
 
+### Comparación final: CSS en línea frente a CSS en archivo (Home, una sola vuelta)
+
+Build de producción, 5 corridas y mediana por variante, misma máquina (con el entorno de escritorio
+abierto: no fue posible cerrar todos los programas). Regla fijada antes de medir: quedarse con la
+variante de mejor LCP con limitación real **siempre que el TBT simulado no pase de 400 ms**.
+
+| Variante | LCP limitación real | TBT limitación real | LCP simulado | TBT simulado | Rend. simulado | Peso |
+|---|---|---|---|---|---|---|
+| CSS en archivo (`inlineCss: false`) | 2,80 s | 187 ms | 2,81 s | **261 ms** | **91** | 328 KB |
+| CSS en línea (`inlineCss: true`) | **2,12 s** | 408 ms | 3,38 s | 566 ms ✗ | 80 | 360 KB |
+
+**Decisión: se mantiene el CSS en archivo.** El CSS en línea gana 0,7 s de LCP con limitación real
+(se ahorra la petición del CSS), pero Next copia el CSS también dentro de la carga RSC y el TBT
+simulado sube a 566 ms, por encima del límite, con 11 puntos menos en la nota que mide PageSpeed
+Insights.
+
 ## Fase B — Sistema visual «clínica de precisión del futuro»
 
 Limpia, luminosa y tecnológica sin dejar de ser médica: superficies blanco-azuladas, navy índigo para

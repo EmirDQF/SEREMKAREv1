@@ -34,7 +34,14 @@ const SECURITY_HEADERS = [
 /** Imágenes de /public sin hash en el nombre: 30 días + revalidación (pueden reemplazarse). */
 const PUBLIC_IMAGE_CACHE = "public, max-age=2592000, stale-while-revalidate=86400";
 
+/**
+ * Paquete compilado para Hostinger (Opción B, `node server.js`): solo con HOSTINGER_STANDALONE=1.
+ * Sin la variable, el build y `npm run start` quedan exactamente como siempre.
+ */
+const STANDALONE = process.env.HOSTINGER_STANDALONE === "1";
+
 const nextConfig: NextConfig = {
+  ...(STANDALONE ? { output: "standalone" as const } : {}),
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [75],
